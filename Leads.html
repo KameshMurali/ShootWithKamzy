@@ -3,16 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retrieve Stored Data</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Stored Form Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <section id="data-display">
-        <h2>Stored Data</h2>
-        <div id="output"></div>
-        <button id="clear-storage">Clear Stored Data</button>
-    </section>
-    
-    <script src="LeadsScript.js"></script>
+    <h1>Stored Form Data</h1>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to display stored form data
+        function displayData() {
+            const existingEntries = JSON.parse(localStorage.getItem('formEntries')) || [];
+            const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+
+            // Clear previous entries
+            tableBody.innerHTML = '';
+
+            // Populate the table with stored entries
+            existingEntries.forEach(entry => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerText = entry.name;
+                row.insertCell(1).innerText = entry.email;
+                row.insertCell(2).innerText = entry.message;
+            });
+
+            // If no entries are found, display a message
+            if (existingEntries.length === 0) {
+                const row = tableBody.insertRow();
+                const cell = row.insertCell(0);
+                cell.colSpan = 3;
+                cell.innerText = 'No data available.';
+                cell.style.textAlign = 'center';
+            }
+        }
+
+        // Call displayData on page load
+        window.onload = displayData;
+    </script>
 </body>
 </html>
