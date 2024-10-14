@@ -1,36 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if there's saved data in local storage
-    const savedData = JSON.parse(localStorage.getItem('contactFormData'));
+// Function to save form data to local storage
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.querySelector('form'); // Assuming there's only one form on the page
 
-    // If data exists, populate the form fields
-    if (savedData) {
-        document.getElementById('name').value = savedData.name || '';
-        document.getElementById('email').value = savedData.email || '';
-        document.getElementById('message').value = savedData.message || '';
-    }
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission
+        // Get form values
+        const name = document.querySelector('input[name="name"]').value; // Adjust selector if needed
+        const email = document.querySelector('input[name="email"]').value; // Adjust selector if needed
+        const message = document.querySelector('textarea[name="message"]').value; // Adjust selector if needed
 
-        // Capture form values
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
+        // Create a new entry
+        const entry = { name, email, message };
 
-        // Create an object to store the data
-        const formData = {
-            name: name,
-            email: email,
-            message: message
-        };
+        // Get existing data from local storage
+        const existingEntries = JSON.parse(localStorage.getItem('formEntries')) || [];
 
-        // Update or create new entry in local storage
-        localStorage.setItem('contactFormData', JSON.stringify(formData));
+        // Add the new entry to existing data
+        existingEntries.push(entry);
 
-        // Notify the user
-        alert('Thank you for your message! Your details have been saved.');
+        // Save updated data back to local storage
+        localStorage.setItem('formEntries', JSON.stringify(existingEntries));
 
-        // Reset the form
-        document.getElementById('contact-form').reset();
+        // Reset form fields
+        contactForm.reset();
+
+        // Optional: Display success message
+        alert('Your message has been saved!');
     });
 });
