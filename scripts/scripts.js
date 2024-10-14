@@ -1,6 +1,6 @@
 // Function to save form data to local storage
 document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.querySelector('form'); // Assuming there's only one form on the page
+    const contactForm = document.querySelector('contact-form'); // Assuming there's only one form on the page
 
     contactForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
