@@ -1,14 +1,15 @@
 // Function to save form data to local storage
 document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.querySelector('contact-form'); // Assuming there's only one form on the page
+    const contactForm = document.querySelector('contact-form');
 
     contactForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
         // Get form values
-        const name = document.querySelector('input[name="name"]').value; // Adjust selector if needed
-        const email = document.querySelector('input[name="email"]').value; // Adjust selector if needed
-        const message = document.querySelector('textarea[name="message"]').value; // Adjust selector if needed
+        const name = document.querySelector('input[name="name"]').value; 
+        const email = document.querySelector('input[name="email"]').value; 
+         const contactNumber = document.querySelector('input[name="contactNumber"]').value;
+        const message = document.querySelector('textarea[name="message"]').value; 
 
         // Create a new entry
         const entry = { name, email, message };
