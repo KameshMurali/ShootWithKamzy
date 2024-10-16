@@ -29,3 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Your message has been saved!');
     });
 });
+
+ // Disable right-click context menu
+        document.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+        });
