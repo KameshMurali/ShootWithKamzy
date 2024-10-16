@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const message = document.querySelector('textarea[name="message"]').value; 
 
         // Create a new entry
-        const entry = { name, email, message };
+        const entry = { name, email, contactNumber,message };
 
         // Get existing data from local storage
         const existingEntries = JSON.parse(localStorage.getItem('formEntries')) || [];
