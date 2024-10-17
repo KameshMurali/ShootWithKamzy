@@ -70,6 +70,7 @@ nav ul li a {
 #portfolio h2 {
     font-size: 2.5em;
     margin-bottom: 30px;
+    text-align: center;
     color: #333;
 }
 /* Container for the gallery */
