@@ -30,7 +30,7 @@ nav ul li a {
     text-decoration: none;
 }
 .instagram-link {
-    text-align: center;
+    text-align: right;
     background-color: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -43,7 +43,7 @@ nav ul li a {
     color: #262626; /* Instagram dark color */
     font-size: 18px;
     display: flex;
-    align-items: center;
+    align-items: right;
 }
 
 .instagram-icon {
