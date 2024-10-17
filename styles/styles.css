@@ -73,8 +73,8 @@ nav ul li a {
 /* Fixed dimensions for images */
 .gallery-item img {
     display: block;
-    width: auto; /* Fixed width for images */
-    height: auto; /* Fixed height for images */
+    width: 700px; /* Fixed width for images */
+    height: 1000px; /* Fixed height for images */
     object-fit: cover; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
