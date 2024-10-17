@@ -42,11 +42,12 @@ nav ul li a {
     color: #333;
 }
 
-/* Container for the gallery */
 .gallery {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 1200px; /* Fixed width for the gallery */
+    margin: 0 auto; /* Center the gallery */
     padding: 20px;
 }
 
