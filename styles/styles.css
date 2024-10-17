@@ -58,6 +58,8 @@ nav ul li a {
 .gallery-item {
     flex: 0 0 auto; /* Prevent flex items from shrinking */
     margin: 10px;
+     width: auto; /* Fixed width for images */
+    height: auto; /* Fixed height for images */
     overflow: hidden;
     border-radius: 8px;
     transition: transform 0.3s, box-shadow 0.3s;
