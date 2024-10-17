@@ -53,7 +53,7 @@ nav ul li a {
     border-radius: 8px; /* Optional border radius */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
 }
-/* 
+
 /* Individual image styles */
 .gallery-item {
     flex: 0 0 auto; /* Prevent flex items from shrinking */
@@ -69,8 +69,9 @@ nav ul li a {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-*/
+
 /* Fixed dimensions for images */
+/* 
 .gallery-item img {
     display: block;
     width: 100%; /* Fixed width for images */
@@ -83,7 +84,7 @@ nav ul li a {
 .gallery-item img:hover {
     transform: scale(1.1);
 }
-
+*/
 /* Lightbox Styles (Optional) */
 .lightbox {
     display: none;
