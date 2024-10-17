@@ -42,7 +42,7 @@ nav ul li a {
     text-decoration: none;
     color: #262626; /* Instagram dark color */
     font-size: 18px;
-    display: flex;
+    display: inline;
     align-items: right;
 }
 
