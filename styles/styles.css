@@ -45,8 +45,8 @@ nav ul li a {
 .gallery {
     display: flex;
     overflow-x: auto; /* Allow horizontal scrolling */
-    max-width: 100*; /* Fixed width for the gallery */
-    height: 100%; /* Fixed height for images */
+    max-width: 1200px; /* Fixed width for the gallery */
+    height: 300px; /* Fixed height for the gallery */
     margin: 20px auto; /* Center the gallery */
     padding: 10px;
     border: 1px solid #ddd; /* Optional border for the gallery */
@@ -68,11 +68,11 @@ nav ul li a {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive image styles */
+/* Fixed dimensions for images */
 .gallery-item img {
     display: block;
-    width: auto; /* Fixed width for images */
-    height: auto; /* Fixed height for images */
+    width: 200px; /* Fixed width for images */
+    height: 200px; /* Fixed height for images */
     object-fit: cover; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
@@ -114,7 +114,6 @@ nav ul li a {
     cursor: pointer;
     font-size: 18px;
 }
-
 /* Media Queries for Responsive Design */
 @media (min-width: 600px) {
     .gallery-item {
