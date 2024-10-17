@@ -45,8 +45,8 @@ nav ul li a {
 .gallery {
     display: flex;
     overflow-x: auto; /* Allow horizontal scrolling */
-    max-width: 1200px; /* Fixed width for the gallery */
-    height: 300px; /* Fixed height for images */
+    max-width: 100*; /* Fixed width for the gallery */
+    height: 100%; /* Fixed height for images */
     margin: 20px auto; /* Center the gallery */
     padding: 10px;
     border: 1px solid #ddd; /* Optional border for the gallery */
@@ -71,8 +71,8 @@ nav ul li a {
 /* Responsive image styles */
 .gallery-item img {
     display: block;
-    width: 200px; /* Fixed width for images */
-    height: 200px; /* Fixed height for images */
+    width: auto; /* Fixed width for images */
+    height: auto; /* Fixed height for images */
     object-fit: cover; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
