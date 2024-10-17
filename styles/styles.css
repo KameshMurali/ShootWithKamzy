@@ -43,7 +43,7 @@ nav ul li a {
     color: #262626; /* Instagram dark color */
     font-size: 18px;
     display: inline;
-    align-items: right;
+    align-items: center;
 }
 
 .instagram-icon {
@@ -51,7 +51,7 @@ nav ul li a {
     height: 24px;
     margin-right: 10px; /* Space between icon and text */
     display: inline;
-    align-items: right;
+    align-items: center;
 }
 
 .instagram-link a:hover {
@@ -72,8 +72,8 @@ nav ul li a {
 .gallery {
     display: flex;
     overflow-x: auto; /* Allow horizontal scrolling */
-    width: 1200px; /* Fixed width for the gallery */
-    height: 500px; /* Fixed height for the gallery */
+    width: 250px; /* Fixed width for the gallery */
+    height: 250px; /* Fixed height for the gallery */
     margin: 20px auto; /* Center the gallery */
     padding: 10px;
     border: 1px solid #ddd; /* Optional border for the gallery */
