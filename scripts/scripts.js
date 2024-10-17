@@ -45,3 +45,12 @@ function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.style.display = 'none';
         }
+document.addEventListener('DOMContentLoaded', function () {
+            // Prevent default behavior on long press for images
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('touchstart', function (event) {
+                    event.preventDefault(); // Prevent long press context menu
+                });
+            });
+        });
