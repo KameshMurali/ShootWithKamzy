@@ -29,7 +29,32 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
 }
+.instagram-link {
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0; /* Space around the link */
+}
 
+.instagram-link a {
+    text-decoration: none;
+    color: #262626; /* Instagram dark color */
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.instagram-icon {
+    width: 30px; /* Adjust icon size */
+    height: 30px;
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.instagram-link a:hover {
+    color: #e1306c; /* Instagram pink color on hover */
+}
 #portfolio {
     padding: 40px 20px;
     text-align: center;
