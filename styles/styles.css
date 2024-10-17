@@ -58,7 +58,11 @@ nav ul li a {
     color: #e1306c; /* Instagram pink color on hover */
 }
 #portfolio {
-    padding: 40px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    /*padding: 40px 20px;*/
     text-align: center;
     background-color: #f0f0f0;
 }
