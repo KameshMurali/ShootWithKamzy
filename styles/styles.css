@@ -58,7 +58,7 @@ nav ul li a {
 .gallery-item {
     flex: 0 0 auto; /* Prevent flex items from shrinking */
     margin: 10px;
-     width: 1000px; /* Fixed width for images */
+    width: 1000px; /* Fixed width for images */
     height: 1000px; /* Fixed height for images */
     overflow: hidden;
     border-radius: 8px;
@@ -71,7 +71,7 @@ nav ul li a {
 }
 
 /* Fixed dimensions for images */
-/* 
+
 .gallery-item img {
     display: block;
     width: 100%; /* Fixed width for images */
@@ -84,7 +84,7 @@ nav ul li a {
 .gallery-item img:hover {
     transform: scale(1.1);
 }
-*/
+
 /* Lightbox Styles (Optional) */
 .lightbox {
     display: none;
