@@ -41,48 +41,60 @@ nav ul li a {
     margin-bottom: 30px;
     color: #333;
 }
-.copyright-overlay {
-    position: absolute;
-    bottom: 10px; /* Adjust as needed */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    color: white; /* Text color */
-    padding: 10px 20px; /* Padding */
-    border-radius: 5px; /* Rounded corners */
-    text-align: center;
-    font-size: 14px; /* Font size */
-}
-.portfolio-gallery {
+
+/* Container for the gallery */
+.gallery {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    padding: 20px;
 }
 
-.portfolio-item {
+/* Individual image styles */
+.gallery-item {
     position: relative;
-    width: 250px; /* Fixed width for consistency */
-    border-radius: 8px;
+    margin: 10px;
     overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.portfolio-item img {
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive image styles */
+.gallery-item img {
+    display: block;
     width: 100%;
     height: auto;
-    display: block;
     border-radius: 8px;
     transition: transform 0.3s;
 }
 
-.portfolio-item:hover {
-    transform: scale(1.10);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+.gallery-item img:hover {
+    transform: scale(1.1);
 }
 
-.portfolio-item:hover img {
-    transform: scale(1.1);
+/* Media Queries for Responsive Design */
+@media (min-width: 600px) {
+    .gallery-item {
+        width: calc(33.33% - 20px); /* 3 columns */
+    }
+}
+
+@media (max-width: 599px) {
+    .gallery-item {
+        width: calc(50% - 20px); /* 2 columns */
+    }
+}
+
+@media (max-width: 400px) {
+    .gallery-item {
+        width: 100%; /* 1 column */
+    }
 }
 section {
     padding: 20px;
