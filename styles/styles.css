@@ -50,6 +50,8 @@ nav ul li a {
     width: 24px; /* Adjust icon size */
     height: 24px;
     margin-right: 10px; /* Space between icon and text */
+    display: inline;
+    align-items: right;
 }
 
 .instagram-link a:hover {
