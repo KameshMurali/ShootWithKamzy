@@ -73,9 +73,9 @@ nav ul li a {
 /* Fixed dimensions for images */
 .gallery-item img {
     display: block;
-    width: 700px; /* Fixed width for images */
-    height: 1000px; /* Fixed height for images */
-    object-fit: cover; /* Maintain aspect ratio and cover the area */
+    width: 100%; /* Fixed width for images */
+    height: 100%; /* Fixed height for images */
+    object-fit: contain; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
 }
