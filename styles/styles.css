@@ -73,7 +73,7 @@ nav ul li a {
     display: flex;
     overflow-x: auto; /* Allow horizontal scrolling */
     width: 250px; /* Fixed width for the gallery */
-    height: 250px; /* Fixed height for the gallery */
+    height: auto; /* Fixed height for the gallery */
     margin: 20px auto; /* Center the gallery */
     padding: 10px;
     border: 1px solid #ddd; /* Optional border for the gallery */
@@ -102,7 +102,7 @@ nav ul li a {
 .gallery-item img {
     display: block;
     width: 100%; /* Fixed width for images */
-    height: 100%; /* Fixed height for images */
+    height: auto; /* Fixed height for images */
     object-fit: contain; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
