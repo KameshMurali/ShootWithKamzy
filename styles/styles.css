@@ -91,7 +91,7 @@ nav ul li a {
 .gallery-item {
     flex: 0 0 auto; /* Prevent flex items from shrinking */
     margin: 10px;
-    width: 1000px; /* Fixed width for images */
+    width: 100%; /* Fixed width for images -updated */
     height: auto; /* Fixed height for images */
     overflow: hidden;
     border-radius: 8px;
