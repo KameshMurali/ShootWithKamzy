@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get form values
         const name = document.querySelector('input[name="name"]').value; 
         const email = document.querySelector('input[name="email"]').value; 
-         const contactNumber = document.querySelector('input[name="contactNumber"]').value;
+        const contactNumber = document.querySelector('input[name="contactNumber"]').value;
         const message = document.querySelector('textarea[name="message"]').value; 
 
         // Create a new entry
