@@ -54,6 +54,7 @@ function closeLightbox() {
                 });
             });
         });*/
+//mouse event
 addEventListener('mousedown', function(event) {
     // Start a timer for the long press
     pressTimer = setTimeout(() => {
@@ -73,3 +74,11 @@ element.addEventListener('mouseleave', function() {
     // Clear the timer if mouse leaves the element
     clearTimeout(pressTimer);
 });
+//touch event
+// Touch events
+element.addEventListener('touchstart', startPressTimer);
+element.addEventListener('touchend', () => {
+    clearPressTimer();
+    console.log('Single click action');
+});
+element.addEventListener('touchmove', clearPressTimer); // Clear on touch move to avoid unintended actions
