@@ -45,7 +45,7 @@ function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.style.display = 'none';
         }
-document.addEventListener('DOMContentLoaded', function () {
+/*document.addEventListener('DOMContentLoaded', function () {
             // Prevent default behavior on long press for images
             const images = document.querySelectorAll('img');
             images.forEach(img => {
@@ -53,4 +53,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     event.preventDefault(); // Prevent long press context menu
                 });
             });
-        });
+        });*/
+addEventListener('mousedown', function(event) {
+    // Start a timer for the long press
+    pressTimer = setTimeout(() => {
+        // Prevent the default action for long press
+        event.preventDefault();
+        console.log('Long press prevented');
+    }, 500); // Adjust the time as needed
+});
+
+element.addEventListener('mouseup', function(event) {
+    // Clear the timer if mouse is released before long press
+    clearTimeout(pressTimer);
+    console.log('Single click action');
+});
+
+element.addEventListener('mouseleave', function() {
+    // Clear the timer if mouse leaves the element
+    clearTimeout(pressTimer);
+});
