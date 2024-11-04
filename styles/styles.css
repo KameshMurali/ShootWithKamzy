@@ -76,6 +76,7 @@ nav ul li a {
 }
 /* Container for the gallery */
 .gallery {
+    background: #D3D3D3;
     display: flex;
     flex-wrap: wrap;
     overflow-x: auto; /* Allow horizontal scrolling */
