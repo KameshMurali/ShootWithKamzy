@@ -115,6 +115,11 @@ nav ul li a {
     object-fit: contain; /* Maintain aspect ratio and cover the area */
     border-radius: 8px;
     transition: transform 0.3s;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  pointer-events: none; /* Optional: Blocks all pointer interaction */
+}
 }
 
 .gallery-item img:hover {
