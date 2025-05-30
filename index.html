@@ -31,8 +31,12 @@
     <div>
     
         <div class="gallery">
-        <div class="gallery-item">
+        <div class="gallery-item" style="position: relative; display: inline-block;">
             <img src="images/IMG_3218.jpeg" alt="Celeb Portrait" onclick="openLightbox(this)">
+            <div style="position: absolute; top: 0; left: 0; 
+              width: 100%; height: 100%; 
+              background-color: rgba(255,255,255,0); 
+              z-index: 10;"></div>
         </div>
         <div class="gallery-item">
             <img src="images/IMG_3219.jpeg" alt="ModelPortfolio & Product" onclick="openLightbox(this)">
