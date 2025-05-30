@@ -82,3 +82,23 @@ element.addEventListener('touchend', () => {
     console.log('Single click action');
 });
 element.addEventListener('touchmove', clearPressTimer); // Clear on touch move to avoid unintended actions
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // Prevent long-press on mobile
+  document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  let pressTimer;
+  document.addEventListener('touchstart', function(e) {
+    pressTimer = setTimeout(() => e.preventDefault(), 500);
+  });
+  document.addEventListener('touchend', function(e) {
+    clearTimeout(pressTimer);
+  });
+</script>
+
