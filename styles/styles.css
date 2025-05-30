@@ -119,7 +119,7 @@ nav ul li a {
   -webkit-touch-callout: none;
   user-select: none;
   pointer-events: none; /* Optional: Blocks all pointer interaction */
-}
+
 }
 
 .gallery-item img:hover {
