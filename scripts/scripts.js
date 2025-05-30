@@ -100,5 +100,4 @@ document.addEventListener('contextmenu', function(e) {
   document.addEventListener('touchend', function(e) {
     clearTimeout(pressTimer);
   });
-</script>
 
