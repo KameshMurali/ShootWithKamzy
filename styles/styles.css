@@ -11,6 +11,7 @@ body {
 }
 
 header {
+    font-family: "Playfair Display";
     background: #333;
     color: #fff;
     padding: 20px;
