@@ -29,7 +29,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(44, 62, 80, 0.95);
+    background: rgb(40, 40, 40);
     color: #ffffff;
     z-index: 1000;
 }
@@ -171,7 +171,7 @@ section h2 {
     align-items: center;
     justify-content: center;
     padding: 0.5rem; /* Added padding around slides */
-    background: rgba(255, 255, 255, 0.8); /* Transparent slide background */
+    background: rgba(255, 169, 169, 0); /* Transparent slide background */
     border-radius: 0.5rem;
 }
 
@@ -279,7 +279,7 @@ section h2 {
 
 /* Footer */
 footer {
-    background: var(--primary-color);
+    background: rgb(40, 40, 40);
     color: #ffffff;
     text-align: center;
     padding: 1rem 0;
@@ -363,10 +363,6 @@ input[type="tel"]:valid {
     .hero p {
         font-size: 1rem;
     }
-    .nav-links {
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
     .carousel .slide img {
         height: 400px;
     }
@@ -380,5 +376,21 @@ input[type="tel"]:valid {
     
     section {
         padding: 3rem 1rem;
+    }
+     /* Stack the logo and navigation vertically on mobile */
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .logo {
+        font-size: 1.5rem;       /* reduce logo size on small screens */
+        margin-bottom: 0.5rem;   /* space between the logo and links */
+    }
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-links li {
+        margin: 0.25rem 0;       /* small vertical spacing between links */
     }
 }
