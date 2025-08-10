@@ -16,8 +16,8 @@
 
 body {
     font-family: var(--font-body);
-    /* Light subtle background to avoid stark white */
-    background-color: #f5f6fa;
+    /* Pastel gradient background for the entire page */
+    background: linear-gradient(to bottom, #fdf5ff 0%, #f1f5ff 100%);
     color: var(--text-color);
     line-height: 1.6;
 }
@@ -133,9 +133,14 @@ section h2 {
 .carousel {
     position: relative;
     overflow: hidden;
-    /* Make carousel span the same width as other sections */
-    max-width: 100%;
+    /* Make carousel span the same width as other sections and look like a card */
+    max-width: 1200px;
     margin: 0 auto;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    overflow: hidden;
 }
 
 .slides {
@@ -150,10 +155,11 @@ section h2 {
 
 .slide img {
     width: 100%;
-    height: 400px;
+    height: 350px;
     object-fit: cover;
     user-select: none;
     pointer-events: none; /* prevent selecting image */
+    border-radius: 0.5rem;
 }
 
 .slide .copyright {
