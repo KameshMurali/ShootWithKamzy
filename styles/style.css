@@ -380,6 +380,7 @@ input[type="tel"]:valid {
     }
      /* Stack the logo and navigation vertically on mobile */
     .navbar {
+        background: rgb(40, 40, 40);
         flex-direction: column;
         align-items: flex-start;
     }
@@ -388,6 +389,7 @@ input[type="tel"]:valid {
         margin-bottom: 0.5rem;   /* space between the logo and links */
     }
     .nav-links {
+        background: rgb(40, 40, 40);
         flex-direction: row;
         width: 100%;
     }
