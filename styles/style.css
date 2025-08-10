@@ -388,7 +388,7 @@ input[type="tel"]:valid {
         margin-bottom: 0.5rem;   /* space between the logo and links */
     }
     .nav-links {
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
     }
     .nav-links li {
