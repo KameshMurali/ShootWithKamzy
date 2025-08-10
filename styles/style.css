@@ -356,6 +356,14 @@ input[type="tel"]:valid {
     border-color: #51cf66;
 }
 
+/* Size the Instagram icon */
+.instagram-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .hero h1 {
@@ -378,6 +386,7 @@ input[type="tel"]:valid {
     section {
         padding: 3rem 1rem;
     }
+
      /* Stack the logo and navigation vertically on mobile */
     .navbar {
         background: rgb(40, 40, 40);
@@ -396,5 +405,24 @@ input[type="tel"]:valid {
     }
     .nav-links li {
         margin: 0.25rem 0;       /* small vertical spacing between links */
+    }
+     .instagram-icon {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+    /* Size the Instagram icon */
+.instagram-icon img {
+    width: 24px;
+    height: 24px;
+}
+    .nav-links .instagram {
+        display: none;
+    }
+}
+
+/* On larger screens, hide the icon and show the text link */
+@media (min-width: 769px) {
+    .instagram-icon {
+        display: none;
     }
 }
