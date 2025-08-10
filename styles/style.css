@@ -255,7 +255,7 @@ section h2 {
     padding: 1rem;
     border: 1px solid #cccccc;
     border-radius: 0.25rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-family: var(--font-body);
     resize: vertical;
 }
@@ -383,6 +383,7 @@ input[type="tel"]:valid {
         background: rgb(40, 40, 40);
         flex-direction: column;
         align-items: flex-start;
+        height: auto;
     }
     .logo {
         font-size: 1.5rem;       /* reduce logo size on small screens */
