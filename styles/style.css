@@ -67,7 +67,8 @@ header {
 /* Hero Section */
 .hero {
     height: 90vh;
-    background-image: url('hero.png');
+    /* Updated path for hero background image to match images folder */
+    background-image: url('images/hero.png');
     background-size: cover;
     background-position: center;
     display: flex;
