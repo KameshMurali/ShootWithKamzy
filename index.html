@@ -7,7 +7,7 @@
     <!-- Google Fonts for modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <!-- Updated stylesheet path to reflect styles/ folder -->
     <link rel="stylesheet" href="styles/style.css">
 </head>
@@ -20,7 +20,7 @@
     </script>
     <header>
         <nav class="navbar">
-            <div class="logo">ShootWithKamzy</div>
+            <div class="logo">ShootWith<span class="logo-accent">Kamzy</span></div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#portfolio">Portfolio</a></li>
@@ -42,7 +42,6 @@
     </section>
 
     <!-- Portfolio Section with Carousel -->
-    <section class="portfolio" id="portfolio">
    <section class="portfolio" id="portfolio">
     <h2>Portfolio</h2>
     <div class="carousel">
@@ -161,11 +160,14 @@
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <h2>Contact</h2>
-        <form action="https://formspree.io/f/xwpkkrdj" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <input type="text" name="contactNumber" placeholder="Your Contact Number">
-            <textarea name="message" placeholder="Your Message" required></textarea>
+        <form id="contactForm" action="https://formspree.io/f/xwpkkrdj" method="POST" autocomplete="off">
+            <input type="text" name="name" id="name" placeholder="Your Name" required>
+            <input type="email" name="email" id="email" placeholder="Your Email" required>
+            <input type="tel" name="contactNumber" id="contactNumber" 
+               pattern="^\+[1-9]\d{1,14}$"
+               title="Please enter a valid phone number with country code (e.g., +971509943327)"
+               placeholder="Your Contact Number (e.g., +971509943327)" required>
+            <textarea name="message" id="message" placeholder="Your Message" required></textarea>
             <button type="submit">Send Message</button>
         </form>
     </section>
