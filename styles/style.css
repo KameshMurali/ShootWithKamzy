@@ -152,7 +152,7 @@ section h2 {
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95); /* More transparent background */
+    background: rgba(0, 0, 0, 0); /* More transparent background */
     border-radius: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 0.5rem; /* Reduced padding */
@@ -227,6 +227,8 @@ section h2 {
 .about p {
     margin: 0 auto;
     font-size: 1rem;
+    font-family: 'Calibri', sans-serif;
+    font-style: italic;
     line-height: 1.7;
     text-align: center;
     width: 100%;
