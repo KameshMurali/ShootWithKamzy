@@ -214,6 +214,7 @@ section h2 {
     opacity: 1;
 }
 
+/* Copyright section base styles */
 .copyright {
     position: absolute;
     bottom: 1rem;
@@ -221,8 +222,18 @@ section h2 {
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 1rem;
+    border-radius: 2rem;
     font-size: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .copyright {
+        padding: 0.1rem 0.8rem; /* Reduced vertical padding by 80% */
+        bottom: 0.5rem; /* Adjust bottom position for smaller size */
+        right: 0.5rem; /* Adjust right position for smaller size */
+        border-radius: 1rem; /* Smaller radius for smaller element */
+    }
 }
 
 /* Navigation buttons */
