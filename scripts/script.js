@@ -88,6 +88,32 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Sorry, there was an error sending your message. Please try again.');
         }
     });
+
+    // Prevent right-click
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevent touch and hold
+    document.addEventListener('touchstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Prevent drag
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    });
+
+    // Prevent touch selection
+    document.addEventListener('selectstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    });
 });
 
 // Clear form on back navigation

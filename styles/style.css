@@ -190,6 +190,19 @@ section h2 {
     transition: transform 0.3s ease;
     opacity: 1; /* Ensure full opacity */
     filter: none; /* Remove any filters that might cause fading */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard syntax */
+    pointer-events: none; /* Disable pointer events */
+}
+
+/* Prevent force touch on iOS */
+@media (hover: none) and (pointer: coarse) {
+    .slide img {
+        pointer-events: none;
+        -webkit-touch-callout: none !important;
+        touch-action: none;
+    }
 }
 
 /* Remove any opacity changes on active/inactive slides */
@@ -208,7 +221,7 @@ section h2 {
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
     font-size: 0.8rem;
 }
 
