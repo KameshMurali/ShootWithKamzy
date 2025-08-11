@@ -152,17 +152,21 @@ section h2 {
     overflow: hidden;
     width: 100%;
     max-width: 1500px;
-    margin: 0 auto;
-    background: rgba(0, 0, 0, 0); /* More transparent background */
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 0.5rem; /* Reduced padding */
+    margin: 2rem auto;
+    background: transparent;
+    border-radius: 1rem;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    perspective: 1000px;
 }
 
 .slides {
     display: flex;
-    transition: transform 0.5s ease-in-out;
-    height: 700px; /* Increased height */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 700px;
+    transform-style: preserve-3d;
 }
 
 .slide {
@@ -171,57 +175,81 @@ section h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem; /* Added padding around slides */
-    background: rgba(255, 169, 169, 0); /* Transparent slide background */
-    border-radius: 0.5rem;
+    transform-style: preserve-3d;
+    opacity: 1; /* Ensure full opacity */
+    background: transparent; /* Remove any background color */
 }
 
 .slide img {
-    max-width: 100%;
-    max-height: 680px; /* Slightly less than slide height */
-    width: auto; /* Allow natural image width */
-    height: auto; /* Allow natural image height */
+    width: auto;
+    height: 100%;
+    max-height: 680px;
     object-fit: contain;
-    user-select: none;
-    pointer-events: none;
-    border-radius: 0.3rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    opacity: 1; /* Ensure full opacity */
+    filter: none; /* Remove any filters that might cause fading */
 }
 
-.slide .copyright {
+/* Remove any opacity changes on active/inactive slides */
+.slide.active {
+    opacity: 1;
+}
+
+.slide:not(.active) {
+    opacity: 1;
+}
+
+.copyright {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #ffffff;
-    padding: 4px 8px;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
     font-size: 0.8rem;
-    border-radius: 4px;
 }
 
-.nav {
+/* Navigation buttons */
+.nav button {
     position: absolute;
     top: 50%;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
     transform: translateY(-50%);
-    pointer-events: none; /* let nav not block drag events */
-}
-
-.nav button {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    color: #ffffff;
-    font-size: 2rem;
-    padding: 0.2rem 0.6rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     cursor: pointer;
-    pointer-events: all; /* enable clicking on buttons */
-    transition: background 0.3s ease;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 10;
 }
 
 .nav button:hover {
-    background: var(--accent-color);
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav .prev {
+    left: 1rem;
+}
+
+.nav .next {
+    right: 1rem;
+}
+
+/* Add smooth transitions when slides change */
+.slide.active {
+    opacity: 1;
+    transform: translateZ(50px);
+}
+
+.slide:not(.active) {
+    opacity: 1;
 }
 
 /* About and Contact */
