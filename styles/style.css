@@ -462,7 +462,7 @@ input[type="tel"]:valid {
         display: none;
     }
      .copyright {
-        padding: 0.1rem 0.8rem; /* Reduced vertical padding by 80% */
+        padding: 0.1rem 0.9rem; /* Reduced vertical padding by 80% */
         bottom: 0.5rem; /* Adjust bottom position for smaller size */
         right: 0.5rem; /* Adjust right position for smaller size */
         border-radius: 1rem; /* Smaller radius for smaller element */
