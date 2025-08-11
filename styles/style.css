@@ -226,15 +226,6 @@ section h2 {
     font-size: 0.8rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .copyright {
-        padding: 0.1rem 0.8rem; /* Reduced vertical padding by 80% */
-        bottom: 0.5rem; /* Adjust bottom position for smaller size */
-        right: 0.5rem; /* Adjust right position for smaller size */
-        border-radius: 1rem; /* Smaller radius for smaller element */
-    }
-}
 
 /* Navigation buttons */
 .nav button {
@@ -469,6 +460,12 @@ input[type="tel"]:valid {
 }
     .nav-links .instagram {
         display: none;
+    }
+     .copyright {
+        padding: 0.1rem 0.8rem; /* Reduced vertical padding by 80% */
+        bottom: 0.5rem; /* Adjust bottom position for smaller size */
+        right: 0.5rem; /* Adjust right position for smaller size */
+        border-radius: 1rem; /* Smaller radius for smaller element */
     }
 }
 
