@@ -41,31 +41,23 @@ window.addEventListener('DOMContentLoaded', () => {
                 ease: 'power3.out'
             }, '-=0.5');
 
-        // Enhanced services section animation
-        const servicesTimeline = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.services',
-                start: 'top 75%',
-                end: 'center center',
-                toggleActions: 'play none none reverse',
-                scrub: 1.5
-            }
-        });
-
-        // Staggered service cards animation
+        // Services section animation - Fixed version
         gsap.utils.toArray('.service').forEach((service, i) => {
-            servicesTimeline.from(service, {
+            gsap.from(service, {
+                scrollTrigger: {
+                    trigger: service,
+                    start: 'top 80%',
+                    end: 'top 20%',
+                    toggleActions: 'play none none reverse',
+                    // Remove scrub to prevent stuttering
+                },
                 duration: 1,
                 y: 50,
                 opacity: 0,
-                rotation: 2,
                 scale: 0.95,
                 ease: 'power3.out',
-                stagger: {
-                    amount: 0.8,
-                    from: 'start'
-                }
-            }, i * 0.2);
+                delay: i * 0.2 // Stagger effect without timeline
+            });
         });
     });
 });
