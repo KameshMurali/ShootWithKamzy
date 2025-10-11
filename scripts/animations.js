@@ -1,6 +1,21 @@
 window.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Responsive breakpoints
+    const breakpoints = {
+        mobile: 480,
+        tablet: 768,
+        desktop: 1024
+    };
+
+    // Responsive values based on screen size
+    const getResponsiveValue = (mobile, tablet, desktop) => {
+        const width = window.innerWidth;
+        if (width <= breakpoints.mobile) return mobile;
+        if (width <= breakpoints.tablet) return tablet;
+        return desktop;
+    };
+
     // Preload hero image with priority
     const preloadHero = () => {
         return new Promise((resolve) => {
@@ -13,13 +28,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Initialize animations after hero image loads
     preloadHero().then(() => {
-        // Hero section animation with improved timing
-        gsap.from('.hero', {
-            duration: 1,
-            opacity: 0,
-            ease: 'power2.inOut',
-            clearProps: 'all'
-        });
+        // Hero section animation with responsive timing
+        gsap.timeline()
+            .from('.hero', {
+                duration: getResponsiveValue(0.6, 0.8, 1),
+                opacity: 0,
+                ease: 'power2.inOut',
+                clearProps: 'all'
+            })
 
         gsap.timeline()
             .from('.hero h1', {
@@ -41,23 +57,35 @@ window.addEventListener('DOMContentLoaded', () => {
                 ease: 'power3.out'
             }, '-=0.5');
 
-        // Services section animation - Fixed version
+                // Services section animation with responsive values
         gsap.utils.toArray('.service').forEach((service, i) => {
             gsap.from(service, {
                 scrollTrigger: {
                     trigger: service,
                     start: 'top 80%',
-                    end: 'top 20%',
-                    toggleActions: 'play none none reverse',
-                    // Remove scrub to prevent stuttering
+                    toggleActions: 'play none none reverse'
                 },
-                duration: 1,
-                y: 50,
+                duration: getResponsiveValue(0.6, 0.7, 0.8),
+                y: getResponsiveValue(20, 30, 40),
                 opacity: 0,
-                scale: 0.95,
-                ease: 'power3.out',
-                delay: i * 0.2 // Stagger effect without timeline
+                scale: getResponsiveValue(0.98, 0.96, 0.95),
+                ease: 'power2.out',
+                delay: i * getResponsiveValue(0.1, 0.15, 0.2)
             });
         });
     });
+
+    // Handle resize events
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 250);
+    });
+
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.globalTimeline.timeScale(0.5);
+    }
 });
