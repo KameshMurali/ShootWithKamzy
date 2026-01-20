@@ -113,60 +113,71 @@ header {
     transition: all 0.3s ease;
     position: relative;
 }
-
 .logo {
-    font-family: 'Cinzel', var(--font-heading);
-    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
-    font-weight: 700;
-    letter-spacing: 0.08rem;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    color: var(--text-primary);
-    transition: color 0.3s ease;
+  font-family: 'Cinzel', var(--font-heading);
+  font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.16em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  line-height: 1;
+  transition: color 220ms ease, opacity 220ms ease;
 }
 
 .logo-accent {
-    color: var(--accent-warm);
-    font-style: italic;
-    font-weight: 700;
+  color: var(--accent-warm);
+  font-style: normal;         /* italic off = more modern */
+  font-weight: 500;           /* lighter accent feels premium */
+  letter-spacing: 0.16em;
+  opacity: 0.92;
 }
 
-.kamzy-animate {
-    animation: kamzyPulse 2s ease-in-out infinite, kamzyGlow 2s ease-in-out infinite;
+/* Subtle “breath” instead of strong pulse/glow */
+.kamzy-animate { animation: none; }
+.kamzy-animate:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 10px 18px rgba(212, 165, 116, 0.16));
 }
 
-@keyframes kamzyPulse {
-    0%, 100% {
-        text-shadow: 0 0 5px rgba(212, 165, 116, 0.3);
-        transform: scale(1);
-    }
-    50% {
-        text-shadow: 0 0 15px rgba(212, 165, 116, 0.8), 0 0 25px rgba(212, 165, 116, 0.4);
-        transform: scale(1.05);
-    }
+@keyframes kamzyBreath {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 0 rgba(212, 165, 116, 0));
+  }
+  50% {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 10px 18px rgba(212, 165, 116, 0.14));
+  }
 }
 
-@keyframes kamzyGlow {
-    0%, 100% {
-        filter: drop-shadow(0 0 2px rgba(212, 165, 116, 0.4));
-    }
-    50% {
-        filter: drop-shadow(0 0 8px rgba(212, 165, 116, 0.8));
-    }
-}
-
+/* Instagram icon – responsive + cleaner hover */
 .instagram-icon img {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-left: 0.6rem;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    filter: brightness(0.9);
+  width: clamp(1.35rem, 1.8vw, 1.75rem);
+  height: clamp(1.35rem, 1.8vw, 1.75rem);
+  margin-left: clamp(0.35rem, 1vw, 0.6rem);
+  transition: transform 220ms ease, filter 220ms ease, opacity 220ms ease;
+  opacity: 0.9;
+  filter: saturate(0.9) brightness(0.95);
+  will-change: transform, filter;
 }
 
 .instagram-icon img:hover {
-    transform: scale(1.15);
-    filter: brightness(1.1);
+  transform: translateY(-1px) scale(1.06);
+  opacity: 1;
+  filter: saturate(1) brightness(1.05);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .kamzy-animate {
+    animation: none;
+  }
+  .instagram-icon img {
+    transition: none;
+  }
 }
 
 /* Theme Toggle Button */
