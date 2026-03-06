@@ -1,124 +1,296 @@
-// Simple carousel logic
 const slidesContainer = document.querySelector('.slides');
-const slides = document.querySelectorAll('.slide');
+const slides = Array.from(document.querySelectorAll('.slide'));
 const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
+const dotsContainer = document.querySelector('.carousel-dots');
 
 let currentIndex = 0;
+let autoSlideTimer;
 
-function showSlide(index) {
-  // ensure the index wraps around
-  currentIndex = (index + slides.length) % slides.length;
-  const offset = -currentIndex * 100;
-  slidesContainer.style.transform = `translateX(${offset}%)`;
+function updateSlidePosition() {
+    slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
 }
 
-// Button event listeners
-prevBtn.addEventListener('click', () => {
-  showSlide(currentIndex - 1);
-});
+function updateActiveDot() {
+    const dots = dotsContainer.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+        dot.setAttribute('aria-selected', String(index === currentIndex));
+    });
+}
 
-nextBtn.addEventListener('click', () => {
-  showSlide(currentIndex + 1);
-});
+function showSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+    updateSlidePosition();
+    updateActiveDot();
+}
 
-// Automatically cycle through slides every 5 seconds
-setInterval(() => {
-  showSlide(currentIndex + 1);
-}, 5000);
+function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideTimer = setInterval(() => showSlide(currentIndex + 1), 5000);
+}
 
-// Form handling
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contactForm');
-    form.reset();
-    
-    // Phone number validation
-    const phoneInput = document.getElementById('contactNumber');
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value;
-        
-        // Allow only '+' at start and numbers
-        value = value.replace(/[^\d+]/g, '');
-        
-        // Ensure '+' is only at the beginning
-        if (value.length > 0 && value[0] !== '+') {
-            value = '+' + value;
-        }
-        
-        // Remove any additional '+' symbols
-        value = '+' + value.replace(/\+/g, '');
-        
-        // Limit length to 15 digits (including country code)
-        if (value.length > 15) {
-            value = value.slice(0, 15);
-        }
-        
-        e.target.value = value;
+function stopAutoSlide() {
+    if (autoSlideTimer) {
+        clearInterval(autoSlideTimer);
+    }
+}
+
+function createCarouselDots() {
+    slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            startAutoSlide();
+        });
+        dotsContainer.appendChild(dot);
+    });
+}
+
+function initCarousel() {
+    if (!slides.length || !slidesContainer || !prevBtn || !nextBtn || !dotsContainer) {
+        return;
+    }
+
+    createCarouselDots();
+    showSlide(0);
+    startAutoSlide();
+
+    prevBtn.addEventListener('click', () => {
+        showSlide(currentIndex - 1);
+        startAutoSlide();
     });
 
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Validate phone number format
-        const phoneNumber = phoneInput.value;
+    nextBtn.addEventListener('click', () => {
+        showSlide(currentIndex + 1);
+        startAutoSlide();
+    });
+
+    const carousel = document.querySelector('.carousel');
+    carousel.addEventListener('mouseenter', stopAutoSlide);
+    carousel.addEventListener('mouseleave', startAutoSlide);
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            showSlide(currentIndex - 1);
+            startAutoSlide();
+        }
+        if (event.key === 'ArrowRight') {
+            showSlide(currentIndex + 1);
+            startAutoSlide();
+        }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50;
+
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeDistance = touchEndX - touchStartX;
+
+        if (Math.abs(swipeDistance) > minSwipeDistance) {
+            if (swipeDistance > 0) {
+                showSlide(currentIndex - 1);
+            } else {
+                showSlide(currentIndex + 1);
+            }
+            startAutoSlide();
+        }
+    }, { passive: true });
+}
+
+function setFormStatus(type, message) {
+    const formStatus = document.getElementById('formStatus');
+    formStatus.textContent = message;
+    formStatus.classList.remove('success', 'error');
+    if (type) {
+        formStatus.classList.add(type);
+    }
+}
+
+function sanitizePhone(value) {
+    let formatted = value.replace(/[^\d+]/g, '');
+    if (formatted && formatted[0] !== '+') {
+        formatted = `+${formatted}`;
+    }
+    formatted = `+${formatted.replace(/\+/g, '')}`;
+
+    if (formatted.length > 16) {
+        formatted = formatted.slice(0, 16);
+    }
+
+    return formatted;
+}
+
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    const phoneInput = document.getElementById('contactNumber');
+    if (!form || !phoneInput) {
+        return;
+    }
+
+    form.reset();
+
+    phoneInput.addEventListener('input', (event) => {
+        event.target.value = sanitizePhone(event.target.value);
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        setFormStatus('', 'Sending your message...');
+
         const phoneRegex = /^\+[1-9]\d{1,14}$/;
-        
-        if (!phoneRegex.test(phoneNumber)) {
-            alert('Please enter a valid international phone number with country code');
+        if (!phoneRegex.test(phoneInput.value)) {
+            setFormStatus('error', 'Enter a valid international phone number, like +971509943327.');
+            phoneInput.focus();
             return;
         }
 
         try {
-            const response = await fetch(this.action, {
+            const response = await fetch(form.action, {
                 method: 'POST',
-                body: new FormData(this),
-                headers: {
-                    'Accept': 'application/json'
-                }
+                body: new FormData(form),
+                headers: { Accept: 'application/json' }
             });
 
-            if (response.ok) {
-                this.reset();
-                window.history.replaceState({}, document.title, window.location.pathname);
-                alert('Thank you for your message!');
-            } else {
+            if (!response.ok) {
                 throw new Error('Form submission failed');
             }
+
+            form.reset();
+            setFormStatus('success', 'Message sent successfully. I will get back to you soon.');
         } catch (error) {
-            alert('Sorry, there was an error sending your message. Please try again.');
+            setFormStatus('error', 'Message failed to send. Please try again in a moment.');
+        }
+    });
+}
+
+function initSectionHighlight() {
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    if (!sections.length || !navLinks.length || !('IntersectionObserver' in window)) {
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                return;
+            }
+
+            navLinks.forEach((link) => {
+                const match = link.getAttribute('href') === `#${entry.target.id}`;
+                link.style.color = match ? 'var(--accent)' : '';
+            });
+        });
+    }, {
+        threshold: 0.45
+    });
+
+    sections.forEach((section) => observer.observe(section));
+}
+
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if (!revealElements.length || !('IntersectionObserver' in window)) {
+        // Fallback: show all elements immediately
+        revealElements.forEach(el => el.classList.add('visible'));
+        return;
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+}
+
+function initMobileMenu() {
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const overlay = document.querySelector('.mobile-nav-overlay');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+
+    if (!menuBtn || !overlay) {
+        return;
+    }
+
+    function toggleMenu() {
+        const isActive = menuBtn.classList.toggle('active');
+        overlay.classList.toggle('active');
+        menuBtn.setAttribute('aria-expanded', String(isActive));
+        document.body.style.overflow = isActive ? 'hidden' : '';
+    }
+
+    function closeMenu() {
+        menuBtn.classList.remove('active');
+        overlay.classList.remove('active');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach((link) => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    overlay.addEventListener('click', (event) => {
+        if (event.target === overlay) {
+            closeMenu();
         }
     });
 
-    // Prevent right-click
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-    });
-
-    // Prevent touch and hold
-    document.addEventListener('touchstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
-        }
-    }, { passive: false });
-
-    // Prevent drag
-    document.addEventListener('dragstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeMenu();
         }
     });
+}
 
-    // Prevent touch selection
-    document.addEventListener('selectstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
+function initContextMenuDisable() {
+    // Disable right-click context menu on images
+    document.addEventListener('contextmenu', (event) => {
+        if (event.target.tagName === 'IMG') {
+            event.preventDefault();
         }
     });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCarousel();
+    initContactForm();
+    initSectionHighlight();
+    initScrollReveal();
+    initMobileMenu();
+    initContextMenuDisable();
 });
 
-// Clear form on back navigation
-window.onpageshow = function(event) {
-    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        document.getElementById('contactForm').reset();
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        const form = document.getElementById('contactForm');
+        if (form) {
+            form.reset();
+            setFormStatus('', '');
+        }
     }
-};
+});
