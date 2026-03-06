@@ -107,7 +107,8 @@ h2 {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 3.5rem 0.8rem 1rem;
+    position: relative;
 }
 
 .logo {
@@ -480,6 +481,7 @@ footer {
 @media (max-width: 960px) {
     .mobile-menu-btn {
         display: flex;
+        margin-left: auto;
     }
 
     .mobile-nav-overlay {
@@ -497,6 +499,12 @@ footer {
     .navbar {
         flex-wrap: wrap;
         row-gap: 0.5rem;
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    .logo {
+        flex: 1;
     }
 
     .nav-links {
@@ -595,15 +603,20 @@ footer {
     display: none;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 5px;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 1px solid rgba(138, 181, 255, 0.35);
+    width: 44px;
+    height: 44px;
+    background: rgba(15, 24, 42, 0.8);
+    border: 1px solid rgba(138, 181, 255, 0.5);
     border-radius: 8px;
     cursor: pointer;
-    padding: 8px;
+    padding: 10px;
     z-index: 1001;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .mobile-menu-btn span {
