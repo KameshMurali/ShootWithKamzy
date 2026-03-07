@@ -26,26 +26,39 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
             <a href="https://www.instagram.com/shootwithkamzy" target="_blank" rel="noopener noreferrer" class="instagram-link">
                 Instagram
             </a>
+            <div class="mobile-actions">
+                <a href="https://www.instagram.com/shootwithkamzy" target="_blank" rel="noopener noreferrer" class="instagram-icon-link" aria-label="Instagram">
+                    <img src="images/ig.png" alt="" aria-hidden="true">
+                </a>
+                <button
+                    class="mobile-menu-btn"
+                    aria-label="Toggle menu"
+                    aria-expanded="false"
+                    aria-controls="mobileNavOverlay"
+                    type="button"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </nav>
     </header>
 
-    <div class="mobile-nav-overlay">
-        <ul class="mobile-nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="https://www.instagram.com/shootwithkamzy" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        </ul>
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <aside class="mobile-nav-drawer" aria-label="Mobile navigation">
+            <ul class="mobile-nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://www.instagram.com/shootwithkamzy" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            </ul>
+        </aside>
     </div>
 
     <main>
@@ -211,6 +224,13 @@
     <footer>
         <p>&copy; 2026 ShootWithKamzy</p>
     </footer>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch theme">
+        <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-knob"></span>
+        </span>
+        <span class="theme-toggle-text">Dark</span>
+    </button>
 
     <script src="scripts/script.js"></script>
     <script src="scripts/animations.js"></script>

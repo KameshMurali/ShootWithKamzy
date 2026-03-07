@@ -218,8 +218,8 @@ function initScrollReveal() {
             }
         });
     }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.01,
+        rootMargin: '0px 0px -10% 0px'
     });
 
     revealElements.forEach((el) => revealObserver.observe(el));
@@ -251,7 +251,27 @@ function initMobileMenu() {
     menuBtn.addEventListener('click', toggleMenu);
 
     mobileLinks.forEach((link) => {
-        link.addEventListener('click', closeMenu);
+        link.addEventListener('click', (event) => {
+            const href = link.getAttribute('href') || '';
+            if (!href.startsWith('#')) {
+                closeMenu();
+                return;
+            }
+
+            event.preventDefault();
+            const target = document.querySelector(href);
+            if (!target) {
+                closeMenu();
+                return;
+            }
+
+            target.classList.add('visible');
+            closeMenu();
+            requestAnimationFrame(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', href);
+            });
+        });
     });
 
     overlay.addEventListener('click', (event) => {
@@ -262,6 +282,12 @@ function initMobileMenu() {
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
+            closeMenu();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 480) {
             closeMenu();
         }
     });
@@ -276,7 +302,50 @@ function initContextMenuDisable() {
     });
 }
 
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) {
+        return;
+    }
+
+    const label = themeToggle.querySelector('.theme-toggle-text');
+    const storageKey = 'swk-theme';
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function updateToggleUi(theme) {
+        const nextTheme = theme === 'dark' ? 'light' : 'dark';
+        themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
+        if (label) {
+            label.textContent = theme === 'dark' ? 'Dark' : 'Light';
+        }
+    }
+
+    function applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+        updateToggleUi(theme);
+    }
+
+    const savedTheme = localStorage.getItem(storageKey);
+    const initialTheme = savedTheme || (systemPrefersDark.matches ? 'dark' : 'light');
+    applyTheme(initialTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme);
+        localStorage.setItem(storageKey, nextTheme);
+    });
+
+    systemPrefersDark.addEventListener('change', (event) => {
+        if (localStorage.getItem(storageKey)) {
+            return;
+        }
+        applyTheme(event.matches ? 'dark' : 'light');
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
     initCarousel();
     initContactForm();
     initSectionHighlight();
