@@ -16,17 +16,33 @@ window.addEventListener('DOMContentLoaded', () => {
         return desktop;
     };
 
-    // Preload hero image with priority
+    // Wait for hero media to be ready before entrance animation.
     const preloadHero = () => {
         return new Promise((resolve) => {
-            const heroImg = new Image();
-            heroImg.src = 'images/hero.png';
-            heroImg.fetchPriority = 'high';
-            heroImg.onload = () => resolve();
+            const heroVideo = document.querySelector('.hero-video');
+
+            if (!heroVideo) {
+                resolve();
+                return;
+            }
+
+            if (heroVideo.readyState >= 1) {
+                resolve();
+                return;
+            }
+
+            const onReady = () => {
+                heroVideo.removeEventListener('loadedmetadata', onReady);
+                heroVideo.removeEventListener('error', onReady);
+                resolve();
+            };
+
+            heroVideo.addEventListener('loadedmetadata', onReady, { once: true });
+            heroVideo.addEventListener('error', onReady, { once: true });
         });
     };
 
-    // Initialize animations after hero image loads
+    // Initialize animations after hero media is ready
     preloadHero().then(() => {
         // Hero section animation with responsive timing
         gsap.timeline()

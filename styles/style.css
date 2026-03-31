@@ -222,10 +222,26 @@ h2 {
     min-height: min(88vh, 760px);
     display: grid;
     place-items: center;
-    background:
-        linear-gradient(115deg, rgba(4, 8, 18, 0.62), rgba(15, 25, 45, 0.62)),
-        url('../images/hero.png') center / cover no-repeat;
+    position: relative;
     overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, rgba(4, 8, 18, 0.62), rgba(15, 25, 45, 0.62));
+    z-index: 1;
+}
+
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    background: #08111f;
 }
 
 .hero-overlay {
@@ -235,6 +251,8 @@ h2 {
     border: 1px solid var(--hero-overlay-border);
     background: var(--hero-overlay-bg);
     box-shadow: var(--shadow);
+    position: relative;
+    z-index: 2;
 }
 
 .eyebrow {
