@@ -103,43 +103,98 @@
 
         <section class="portfolio reveal" id="portfolio">
             <h2>Featured Portfolio</h2>
-            <p class="section-subtitle">A curated stream of recent work with a cinematic presentation.</p>
-            <div class="carousel" aria-label="Portfolio carousel">
-                <div class="slides">
-                    <div class="slide">
-                        <img src="images/photo1.jpg" alt="Fashion portrait in dramatic lighting" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo7.jpg" alt="Outdoor portrait with shallow depth of field" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo8.jpg" alt="Couple portrait composition" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo9.jpg" alt="Editorial style portrait" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo10.jpg" alt="Creative portrait with bold colors" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo11.jpg" alt="Lifestyle event capture" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
-                    </div>
-                    <div class="slide">
-                        <img src="images/photo12.jpg" alt="Automotive shoot frame" draggable="false" loading="lazy">
-                        <div class="copyright">© ShootWithKamzy</div>
+            <p class="section-subtitle">An editorial-style gallery built for browsing, not clicking through one frame at a time.</p>
+            <div class="portfolio-shell">
+                <div class="portfolio-intro">
+                    <p class="portfolio-kicker">Selected Frames</p>
+                    <h3>Drag across a living contact sheet of fashion portraits, couples sessions, product work, and mixed client shoots.</h3>
+                    <div class="portfolio-meta" aria-label="Portfolio gallery details">
+                        <span>7 spotlight images</span>
+                        <span>Scroll, drag, or use arrow keys</span>
+                        <span id="portfolioCurrentLabel">Now viewing: Fashion Portrait</span>
                     </div>
                 </div>
-                <div class="nav" aria-label="Carousel controls">
-                    <button class="prev" type="button" aria-label="Previous slide">&#10094;</button>
-                    <button class="next" type="button" aria-label="Next slide">&#10095;</button>
+
+                <div class="portfolio-gallery" aria-label="Portfolio gallery" tabindex="0">
+                    <div class="portfolio-track" id="portfolioTrack">
+                        <article class="portfolio-card is-featured" data-title="Fashion Portrait">
+                            <img src="images/photo1.jpg" alt="Fashion portrait of a woman in a green sari posing outside a modern glass building" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Fashion Portrait</p>
+                                <h3>Clean styling, elegant movement, and a polished editorial feel.</h3>
+                                <p>Designed to read as a signature portrait instead of just another gallery image.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card" data-title="Couples Portrait">
+                            <img src="images/photo7.jpg" alt="Close indoor portrait of a couple embracing and smiling" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Couples</p>
+                                <h3>Close, intimate framing built around connection and expression.</h3>
+                                <p>More personal and cinematic than a standard posed couple shot.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card is-tall" data-title="Creative Composite">
+                            <img src="images/photo8.jpg" alt="Composite image featuring a mermaid-inspired beach portrait and a custom motorcycle shot" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Creative Composite</p>
+                                <h3>A mixed concept board pairing fantasy portrait work with a custom bike frame.</h3>
+                                <p>This image reads more like a portfolio montage than a single-category shoot.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card" data-title="Client Work Mix">
+                            <img src="images/photo9.jpg" alt="Composite image showing an interior real-estate photo above an outdoor maternity portrait" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Client Work Mix</p>
+                                <h3>Interior photography and outdoor maternity portraiture in one frame.</h3>
+                                <p>A broader sample of client work rather than a single editorial story.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card is-wide" data-title="Product Campaign">
+                            <img src="images/photo10.jpg" alt="Product campaign layout for smoothie and shake menu items with branded pricing" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Product</p>
+                                <h3>Menu-board and hero-product visuals built for promotions and social campaigns.</h3>
+                                <p>Clear, commercial framing with pricing and branding baked into the composition.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card" data-title="Portfolio Mix">
+                            <img src="images/photo11.jpg" alt="Composite image with a skater portrait at sunset and two monochrome studio headshots" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Portfolio Mix</p>
+                                <h3>Action-led outdoor imagery paired with monochrome studio portraits.</h3>
+                                <p>A varied model portfolio sample rather than straight event coverage.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+
+                        <article class="portfolio-card is-featured" data-title="Runway Fashion">
+                            <img src="images/photo12.jpg" alt="Runway fashion photo of a model in a gold dress walking a catwalk" draggable="false" loading="lazy">
+                            <div class="portfolio-card-overlay">
+                                <p class="portfolio-card-tag">Runway</p>
+                                <h3>Runway styling captured with a strong full-length fashion presentation.</h3>
+                                <p>A clean closing statement for the gallery’s fashion side, not an automotive frame.</p>
+                            </div>
+                            <div class="copyright">© ShootWithKamzy</div>
+                        </article>
+                    </div>
+
+                    <div class="portfolio-gallery-footer">
+                        <div class="portfolio-progress" aria-hidden="true">
+                            <span id="portfolioProgressBar"></span>
+                        </div>
+                        <p class="portfolio-gallery-hint">Drag sideways to explore the full sequence.</p>
+                    </div>
                 </div>
-                <div class="carousel-dots" role="tablist" aria-label="Slide selector"></div>
             </div>
         </section>
 
@@ -215,31 +270,271 @@
 
         <section class="contact reveal" id="contact">
             <h2>Start Your Project</h2>
-            <p class="section-subtitle">Share your idea and I will get back to you with a tailored quote.</p>
-            <form id="contactForm" action="https://formspree.io/f/xwpkkrdj" method="POST" autocomplete="off" novalidate>
-                <label for="name" class="sr-only">Your Name</label>
-                <input type="text" name="name" id="name" placeholder="Your Name" required>
+            <p class="section-subtitle">A few quick steps so I can recommend the right package, timing, and quote.</p>
+            <div class="contact-shell">
+                <div class="contact-lead">
+                    <p class="contact-kicker">Guided Inquiry</p>
+                    <h3>Tell me what you are planning and I will reply with the best-fit approach for your shoot.</h3>
+                </div>
 
-                <label for="email" class="sr-only">Your Email</label>
-                <input type="email" name="email" id="email" placeholder="Your Email" required>
+                <form id="contactForm" class="booking-form" action="https://formspree.io/f/xwpkkrdj" method="POST" autocomplete="off" novalidate>
+                    <input type="hidden" name="inquirySource" value="Guided booking flow">
+                    <input type="hidden" name="inquirySummary" id="inquirySummary">
 
-                <label for="contactNumber" class="sr-only">Your Contact Number</label>
-                <input
-                    type="tel"
-                    name="contactNumber"
-                    id="contactNumber"
-                    pattern="^\+[1-9]\d{1,14}$"
-                    title="Please enter a valid phone number with country code (e.g., +971509943327)"
-                    placeholder="Your Contact Number (e.g., +971509943327)"
-                    required
-                >
+                    <div class="booking-progress-shell">
+                        <div class="booking-progress-bar" aria-hidden="true">
+                            <span id="bookingProgressBar"></span>
+                        </div>
+                        <div class="booking-step-indicators" aria-label="Inquiry steps">
+                            <div class="booking-step-indicator is-active" data-step-indicator>
+                                <span class="booking-step-number">1</span>
+                                <span class="booking-step-copy">
+                                    <strong>Project</strong>
+                                    <small>What are you booking?</small>
+                                </span>
+                            </div>
+                            <div class="booking-step-indicator" data-step-indicator>
+                                <span class="booking-step-number">2</span>
+                                <span class="booking-step-copy">
+                                    <strong>Details</strong>
+                                    <small>Timing, coverage, budget</small>
+                                </span>
+                            </div>
+                            <div class="booking-step-indicator" data-step-indicator>
+                                <span class="booking-step-number">3</span>
+                                <span class="booking-step-copy">
+                                    <strong>Reply</strong>
+                                    <small>Contact info and notes</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
-                <label for="message" class="sr-only">Your Message</label>
-                <textarea name="message" id="message" placeholder="Your Message" required></textarea>
+                    <div class="booking-steps">
+                        <section class="form-step is-active" data-step="0">
+                            <p class="form-step-kicker">Step 1</p>
+                            <h3>What are you looking to book?</h3>
+                            <p class="form-step-text">Choose the closest match so I can shape the right package around it.</p>
 
-                <button type="submit">Send Message</button>
-                <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-            </form>
+                            <fieldset class="booking-group" data-required-group data-error="Choose the kind of shoot you want to book.">
+                                <legend>Service type</legend>
+                                <div class="booking-choice-grid">
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Weddings & Events" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Weddings &amp; Events</strong>
+                                            <small>Celebrations, gatherings, and full-day coverage.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Fashion & Portfolio" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Fashion &amp; Portfolio</strong>
+                                            <small>Model books, editorial looks, and creative direction.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Portraits & Headshots" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Portraits &amp; Headshots</strong>
+                                            <small>Personal branding, studio portraits, and profile imagery.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Product & Brand" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Product &amp; Brand</strong>
+                                            <small>E-commerce, menus, campaigns, and branded visuals.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Videography" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Videography</strong>
+                                            <small>Reels, event films, and campaign motion content.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="serviceType" value="Other / Not sure yet" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Other / Not Sure Yet</strong>
+                                            <small>I just need help figuring out the best direction.</small>
+                                        </span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </section>
+
+                        <section class="form-step" data-step="1" hidden>
+                            <p class="form-step-kicker">Step 2</p>
+                            <h3>Shape the shoot</h3>
+                            <p class="form-step-text">A little context helps me recommend the right coverage and quote.</p>
+
+                            <div class="booking-field-grid">
+                                <fieldset class="booking-group" data-required-group data-error="Choose the type of coverage you need.">
+                                    <legend>Coverage</legend>
+                                    <div class="booking-choice-grid booking-choice-grid-compact">
+                                        <label class="booking-choice">
+                                            <input type="radio" name="coverageType" value="Photo" required>
+                                            <span class="booking-choice-body">
+                                                <strong>Photo</strong>
+                                                <small>Still images only.</small>
+                                            </span>
+                                        </label>
+                                        <label class="booking-choice">
+                                            <input type="radio" name="coverageType" value="Video" required>
+                                            <span class="booking-choice-body">
+                                                <strong>Video</strong>
+                                                <small>Motion content only.</small>
+                                            </span>
+                                        </label>
+                                        <label class="booking-choice">
+                                            <input type="radio" name="coverageType" value="Photo + Video" required>
+                                            <span class="booking-choice-body">
+                                                <strong>Photo + Video</strong>
+                                                <small>A combined package.</small>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="booking-group" data-required-group data-error="Choose your ideal timeline.">
+                                    <legend>Timeline</legend>
+                                    <div class="booking-choice-grid booking-choice-grid-compact">
+                                        <label class="booking-choice">
+                                            <input type="radio" name="timeline" value="ASAP" required>
+                                            <span class="booking-choice-body">
+                                                <strong>ASAP</strong>
+                                                <small>Need help soon.</small>
+                                            </span>
+                                        </label>
+                                        <label class="booking-choice">
+                                            <input type="radio" name="timeline" value="This month" required>
+                                            <span class="booking-choice-body">
+                                                <strong>This Month</strong>
+                                                <small>Ready to schedule now.</small>
+                                            </span>
+                                        </label>
+                                        <label class="booking-choice">
+                                            <input type="radio" name="timeline" value="Next 1-3 months" required>
+                                            <span class="booking-choice-body">
+                                                <strong>Next 1-3 Months</strong>
+                                                <small>Planning ahead.</small>
+                                            </span>
+                                        </label>
+                                        <label class="booking-choice">
+                                            <input type="radio" name="timeline" value="Just exploring" required>
+                                            <span class="booking-choice-body">
+                                                <strong>Just Exploring</strong>
+                                                <small>Still comparing options.</small>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="booking-field-grid">
+                                <label class="booking-field" for="preferredDate">
+                                    <span>Preferred date</span>
+                                    <input type="date" name="preferredDate" id="preferredDate">
+                                </label>
+
+                                <label class="booking-field" for="location">
+                                    <span>Location or venue</span>
+                                    <input type="text" name="location" id="location" placeholder="Dubai studio, beach, venue, office, home..." required>
+                                </label>
+                            </div>
+
+                            <fieldset class="booking-group" data-required-group data-error="Choose an approximate budget range.">
+                                <legend>Budget range</legend>
+                                <div class="booking-choice-grid booking-choice-grid-compact">
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="AED 300-1,000" required>
+                                        <span class="booking-choice-body">
+                                            <strong>AED 300-1,000</strong>
+                                            <small>Shorter or smaller sessions.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="AED 1,000-3,000" required>
+                                        <span class="booking-choice-body">
+                                            <strong>AED 1,000-3,000</strong>
+                                            <small>Most portrait and small event work.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="AED 3,000-5,000" required>
+                                        <span class="booking-choice-body">
+                                            <strong>AED 3,000-5,000</strong>
+                                            <small>Larger productions and premium shoots.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="AED 5,000+" required>
+                                        <span class="booking-choice-body">
+                                            <strong>AED 5,000+</strong>
+                                            <small>Extended coverage or multi-deliverable work.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="Need guidance" required>
+                                        <span class="booking-choice-body">
+                                            <strong>Need Guidance</strong>
+                                            <small>I want help choosing the right level.</small>
+                                        </span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </section>
+
+                        <section class="form-step" data-step="2" hidden>
+                            <p class="form-step-kicker">Step 3</p>
+                            <h3>Where should I send the quote?</h3>
+                            <p class="form-step-text">Leave your details and any important notes so I can reply with the right next steps.</p>
+
+                            <div class="booking-field-grid">
+                                <label class="booking-field" for="name">
+                                    <span>Your name</span>
+                                    <input type="text" name="name" id="name" placeholder="Your full name" required>
+                                </label>
+
+                                <label class="booking-field" for="email">
+                                    <span>Email</span>
+                                    <input type="email" name="email" id="email" placeholder="you@example.com" required>
+                                </label>
+
+                                <label class="booking-field booking-field-full" for="contactNumber">
+                                    <span>Phone number</span>
+                                    <input
+                                        type="tel"
+                                        name="contactNumber"
+                                        id="contactNumber"
+                                        pattern="^\+[1-9]\d{1,14}$"
+                                        title="Please enter a valid phone number with country code (e.g., +971509943327)"
+                                        placeholder="+971509943327"
+                                        required
+                                    >
+                                </label>
+
+                                <label class="booking-field booking-field-full" for="message">
+                                    <span>Extra notes</span>
+                                    <textarea name="message" id="message" placeholder="Share the mood, references, venue details, guest count, brand goals, or anything else that will help me quote properly."></textarea>
+                                </label>
+                            </div>
+
+                            <div class="booking-summary" id="bookingSummary" aria-live="polite"></div>
+                        </section>
+                    </div>
+
+                    <div class="booking-nav">
+                        <button type="button" class="booking-back" id="bookingBack">Back</button>
+                        <button type="button" class="booking-next" id="bookingNext">Continue</button>
+                        <button type="submit" class="booking-submit" id="bookingSubmit" hidden>Send Inquiry</button>
+                    </div>
+
+                    <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+                </form>
+            </div>
         </section>
     </main>
 
