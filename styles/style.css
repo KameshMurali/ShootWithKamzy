@@ -482,6 +482,7 @@ body[data-theme='light'] .hero-video-main {
     padding: 1rem;
     overflow: hidden;
     cursor: grab;
+    touch-action: pan-y pinch-zoom;
 }
 
 .portfolio-gallery:focus-visible {
@@ -500,10 +501,18 @@ body[data-theme='light'] .hero-video-main {
     gap: 1rem;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 0.55rem;
+    padding: 0 var(--portfolio-pad-right, 0px) 0.55rem var(--portfolio-pad-left, 0px);
     scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
     scrollbar-width: none;
     overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.portfolio-gallery.is-dragging .portfolio-track,
+.portfolio-gallery.is-settling .portfolio-track {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
 }
 
 .portfolio-track::-webkit-scrollbar {
@@ -522,10 +531,10 @@ body[data-theme='light'] .hero-video-main {
     transform: translateY(18px) scale(0.96);
     opacity: 0.72;
     transition:
-        transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
-        opacity 0.35s ease,
-        border-color 0.35s ease,
-        box-shadow 0.35s ease;
+        transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.2s ease,
+        border-color 0.22s ease,
+        box-shadow 0.24s ease;
 }
 
 .portfolio-card.is-active {
@@ -554,7 +563,7 @@ body[data-theme='light'] .hero-video-main {
     height: 100%;
     object-fit: cover;
     user-select: none;
-    transition: transform 0.55s ease, filter 0.4s ease;
+    transition: transform 0.28s ease, filter 0.24s ease;
 }
 
 .portfolio-card::after {
@@ -638,7 +647,7 @@ body[data-theme='light'] .hero-video-main {
     width: 18%;
     border-radius: inherit;
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    transition: width 0.25s ease;
+    transition: width 0.16s ease;
 }
 
 .portfolio-gallery-hint {
@@ -1116,6 +1125,12 @@ footer {
 
     .portfolio-card.is-tall {
         min-height: 500px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .portfolio {
+        margin-inline: calc((100vw - var(--content-max)) / -2 + 1rem);
     }
 }
 

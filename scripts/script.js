@@ -39,65 +39,18 @@ function initPortfolioGallery() {
     let isPointerDown = false;
     let dragStartX = 0;
     let startScrollLeft = 0;
+    let dragDistance = 0;
+    let hasDragged = false;
     let activeIndex = 0;
-    let activeSyncTimer = 0;
-    let activeSyncFrame = 0;
+    let settleAnimationFrame = 0;
+    let suppressCardClick = false;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const getMaxScroll = () => Math.max(track.scrollWidth - track.clientWidth, 0);
 
     function updateGalleryProgress() {
-        const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 1);
-        const progress = clamp(track.scrollLeft / maxScroll, 0, 1);
+        const progress = cards.length > 1 ? activeIndex / (cards.length - 1) : 1;
         progressBar.style.width = `${18 + progress * 82}%`;
-    }
-
-    function findActiveCardIndex() {
-        const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
-        const edgeThreshold = 2;
-
-        if (track.scrollLeft <= edgeThreshold) {
-            return 0;
-        }
-
-        if (track.scrollLeft >= maxScroll - edgeThreshold) {
-            return cards.length - 1;
-        }
-
-        const trackBox = track.getBoundingClientRect();
-        const trackCenter = trackBox.left + (trackBox.width / 2);
-        let bestIndex = 0;
-        let bestVisibility = -1;
-        let bestOverlap = -1;
-        let closestDistance = Number.POSITIVE_INFINITY;
-
-        cards.forEach((card, index) => {
-            const cardBox = card.getBoundingClientRect();
-            const overlap = Math.max(
-                0,
-                Math.min(cardBox.right, trackBox.right) - Math.max(cardBox.left, trackBox.left)
-            );
-            const visibility = overlap / Math.max(cardBox.width, 1);
-            const cardCenter = cardBox.left + (cardBox.width / 2);
-            const distance = Math.abs(trackCenter - cardCenter);
-
-            if (
-                visibility > bestVisibility + 0.001 ||
-                (
-                    Math.abs(visibility - bestVisibility) <= 0.001 &&
-                    (
-                        overlap > bestOverlap + 1 ||
-                        (Math.abs(overlap - bestOverlap) <= 1 && distance < closestDistance)
-                    )
-                )
-            ) {
-                bestVisibility = visibility;
-                bestOverlap = overlap;
-                closestDistance = distance;
-                bestIndex = index;
-            }
-        });
-
-        return bestIndex;
     }
 
     function setActiveCard(index) {
@@ -111,36 +64,84 @@ function initPortfolioGallery() {
         updateGalleryProgress();
     }
 
-    function syncActiveCard() {
-        setActiveCard(findActiveCardIndex());
-    }
-
-    function queueActiveCardSync(delay = isPointerDown ? 85 : 45) {
-        window.clearTimeout(activeSyncTimer);
-
-        if (activeSyncFrame) {
-            window.cancelAnimationFrame(activeSyncFrame);
-        }
-
-        activeSyncTimer = window.setTimeout(() => {
-            activeSyncFrame = window.requestAnimationFrame(() => {
-                activeSyncFrame = 0;
-                syncActiveCard();
-            });
-        }, delay);
-    }
-
-    function scrollToCard(index) {
-        const card = cards[index];
-        if (!card) {
+    function updateTrackEdgePadding() {
+        const firstCard = cards[0];
+        const lastCard = cards[cards.length - 1];
+        if (!firstCard || !lastCard) {
             return;
         }
 
-        const targetLeft = card.offsetLeft - ((track.clientWidth - card.offsetWidth) / 2);
-        track.scrollTo({
-            left: Math.max(0, targetLeft),
-            behavior: 'smooth'
-        });
+        const leftPad = Math.max(0, (track.clientWidth - firstCard.offsetWidth) / 2);
+        const rightPad = Math.max(0, (track.clientWidth - lastCard.offsetWidth) / 2);
+
+        track.style.setProperty('--portfolio-pad-left', `${leftPad}px`);
+        track.style.setProperty('--portfolio-pad-right', `${rightPad}px`);
+    }
+
+    function cancelSettleAnimation() {
+        if (settleAnimationFrame) {
+            window.cancelAnimationFrame(settleAnimationFrame);
+            settleAnimationFrame = 0;
+        }
+
+        gallery.classList.remove('is-settling');
+    }
+
+    function getCardTargetLeft(index) {
+        const card = cards[index];
+        if (!card) {
+            return track.scrollLeft;
+        }
+
+        return clamp(
+            card.offsetLeft - ((track.clientWidth - card.offsetWidth) / 2),
+            0,
+            getMaxScroll()
+        );
+    }
+
+    function scrollToCard(index, duration = 220) {
+        cancelSettleAnimation();
+
+        const targetLeft = getCardTargetLeft(index);
+        const startLeft = track.scrollLeft;
+        const delta = targetLeft - startLeft;
+
+        if (Math.abs(delta) < 1) {
+            track.scrollLeft = targetLeft;
+            setActiveCard(index);
+            return;
+        }
+
+        gallery.classList.add('is-settling');
+        const startTime = performance.now();
+        const easeOutCubic = (value) => 1 - ((1 - value) ** 3);
+
+        const step = (now) => {
+            const elapsed = Math.min((now - startTime) / duration, 1);
+            const eased = easeOutCubic(elapsed);
+
+            track.scrollLeft = startLeft + (delta * eased);
+            updateGalleryProgress();
+
+            if (elapsed < 1) {
+                settleAnimationFrame = window.requestAnimationFrame(step);
+                return;
+            }
+
+            settleAnimationFrame = 0;
+            gallery.classList.remove('is-settling');
+            track.scrollLeft = targetLeft;
+            setActiveCard(index);
+        };
+
+        settleAnimationFrame = window.requestAnimationFrame(step);
+    }
+
+    function focusCard(index, duration = 220) {
+        const nextIndex = clamp(index, 0, cards.length - 1);
+        setActiveCard(nextIndex);
+        scrollToCard(nextIndex, duration);
     }
 
     gallery.addEventListener('pointerdown', (event) => {
@@ -148,9 +149,12 @@ function initPortfolioGallery() {
             return;
         }
 
+        cancelSettleAnimation();
         isPointerDown = true;
+        hasDragged = false;
         dragStartX = event.clientX;
         startScrollLeft = track.scrollLeft;
+        dragDistance = 0;
         gallery.classList.add('is-dragging');
         gallery.setPointerCapture(event.pointerId);
     });
@@ -160,8 +164,11 @@ function initPortfolioGallery() {
             return;
         }
 
-        const delta = event.clientX - dragStartX;
-        track.scrollLeft = startScrollLeft - delta;
+        dragDistance = event.clientX - dragStartX;
+        if (Math.abs(dragDistance) > 6) {
+            hasDragged = true;
+        }
+        track.scrollLeft = clamp(startScrollLeft - dragDistance, 0, getMaxScroll());
     });
 
     function endDrag(event) {
@@ -176,7 +183,25 @@ function initPortfolioGallery() {
             gallery.releasePointerCapture(event.pointerId);
         }
 
-        queueActiveCardSync(30);
+        if (!hasDragged) {
+            track.scrollLeft = getCardTargetLeft(activeIndex);
+            return;
+        }
+
+        const swipeThreshold = Math.max(40, track.clientWidth * 0.07);
+        let nextIndex = activeIndex;
+
+        if (dragDistance <= -swipeThreshold) {
+            nextIndex = Math.min(activeIndex + 1, cards.length - 1);
+        } else if (dragDistance >= swipeThreshold) {
+            nextIndex = Math.max(activeIndex - 1, 0);
+        }
+
+        suppressCardClick = true;
+        focusCard(nextIndex, 200);
+        window.setTimeout(() => {
+            suppressCardClick = false;
+        }, 160);
     }
 
     gallery.addEventListener('pointerup', endDrag);
@@ -197,19 +222,38 @@ function initPortfolioGallery() {
             ? Math.min(activeIndex + 1, cards.length - 1)
             : Math.max(activeIndex - 1, 0);
 
-        activeIndex = nextIndex;
-        scrollToCard(nextIndex);
-        queueActiveCardSync(120);
+        focusCard(nextIndex, 180);
+    });
+
+    cards.forEach((card, index) => {
+        card.addEventListener('click', (event) => {
+            if (suppressCardClick) {
+                event.preventDefault();
+                return;
+            }
+
+            gallery.focus({ preventScroll: true });
+            focusCard(index, 170);
+        });
     });
 
     track.addEventListener('scroll', () => {
-        updateGalleryProgress();
-        queueActiveCardSync();
+        if (isPointerDown) {
+            const dragProgress = clamp(track.scrollLeft / Math.max(getMaxScroll(), 1), 0, 1);
+            progressBar.style.width = `${18 + dragProgress * 82}%`;
+        }
     }, { passive: true });
 
-    window.addEventListener('resize', syncActiveCard);
+    window.addEventListener('resize', () => {
+        updateTrackEdgePadding();
+        cancelSettleAnimation();
+        track.scrollLeft = getCardTargetLeft(activeIndex);
+        setActiveCard(activeIndex);
+    });
 
-    syncActiveCard();
+    updateTrackEdgePadding();
+    track.scrollLeft = getCardTargetLeft(0);
+    setActiveCard(0);
 }
 
 function initContactForm() {
