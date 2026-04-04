@@ -110,7 +110,7 @@
                     <h3>Pick any frame to swap the hero preview instantly across fashion portraits, couples sessions, product work, and mixed client shoots.</h3>
                     <div class="portfolio-meta" aria-label="Portfolio gallery details">
                         <span>7 spotlight images</span>
-                        <span>Tap, click, or use arrow keys</span>
+                        <span>Tap, swipe, click, or use arrow keys</span>
                         <span id="portfolioCurrentLabel">Selected frame: Fashion Portrait</span>
                     </div>
                 </div>
@@ -132,7 +132,12 @@
                         </div>
                     </article>
 
-                    <div class="portfolio-track" id="portfolioTrack" role="group" aria-label="Choose a featured portfolio frame">
+                    <div class="portfolio-mobile-nav" aria-label="Featured portfolio controls">
+                        <button class="portfolio-nav-btn" id="portfolioPrev" type="button" aria-label="Show previous portfolio frame">Previous</button>
+                        <button class="portfolio-nav-btn" id="portfolioNext" type="button" aria-label="Show next portfolio frame">Next</button>
+                    </div>
+
+                    <div class="portfolio-track" id="portfolioTrack" role="group" aria-label="Choose a featured portfolio frame" tabindex="0">
                         <button
                             class="portfolio-card is-active"
                             type="button"
@@ -269,7 +274,7 @@
                 </div>
 
                 <div class="portfolio-gallery-footer">
-                    <p class="portfolio-gallery-hint">Choose any frame to update the spotlight instantly. No dragging required.</p>
+                    <p class="portfolio-gallery-hint">Choose any frame to update the spotlight instantly. On phones, swipe the preview or use Previous and Next.</p>
                 </div>
             </div>
         </section>
@@ -338,7 +343,7 @@
         <section class="about reveal" id="about">
             <h2>About Me</h2>
             <p>
-                I am Kamesh, a photographer and videographer focused on creating premium visuals with storytelling depth.
+                A photographer and videographer focused on creating premium visuals with storytelling depth.
                 I work across fashion, family moments, events, real estate, and product campaigns. Every shoot is designed
                 around your goals so the final images and films feel intentional, striking, and memorable.
             </p>

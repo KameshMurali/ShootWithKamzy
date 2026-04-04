@@ -26,6 +26,7 @@ function sanitizePhone(value) {
 }
 
 function initPortfolioGallery() {
+    const spotlight = document.querySelector('.portfolio-spotlight');
     const track = document.getElementById('portfolioTrack');
     const cards = Array.from(document.querySelectorAll('.portfolio-card'));
     const currentLabel = document.getElementById('portfolioCurrentLabel');
@@ -34,8 +35,11 @@ function initPortfolioGallery() {
     const spotlightTag = document.getElementById('portfolioSpotlightTag');
     const spotlightTitle = document.getElementById('portfolioSpotlightTitle');
     const spotlightDescription = document.getElementById('portfolioSpotlightDescription');
+    const prevBtn = document.getElementById('portfolioPrev');
+    const nextBtn = document.getElementById('portfolioNext');
 
     if (
+        !spotlight ||
         !track ||
         !cards.length ||
         !currentLabel ||
@@ -43,13 +47,18 @@ function initPortfolioGallery() {
         !spotlightIndex ||
         !spotlightTag ||
         !spotlightTitle ||
-        !spotlightDescription
+        !spotlightDescription ||
+        !prevBtn ||
+        !nextBtn
     ) {
         return;
     }
 
     let activeIndex = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
     const hoverMediaQuery = window.matchMedia('(hover: hover)');
+    const mobileMediaQuery = window.matchMedia('(max-width: 640px)');
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
     const formatIndex = (value) => String(value).padStart(2, '0');
 
@@ -76,6 +85,16 @@ function initPortfolioGallery() {
         spotlightDescription.textContent = activeCard.dataset.description || '';
         spotlightIndex.textContent = `${formatIndex(nextIndex + 1)} / ${formatIndex(cards.length)}`;
         currentLabel.textContent = `Selected frame: ${activeCard.dataset.title || `Frame ${nextIndex + 1}`}`;
+        prevBtn.disabled = nextIndex === 0;
+        nextBtn.disabled = nextIndex === cards.length - 1;
+
+        if (mobileMediaQuery.matches) {
+            activeCard.scrollIntoView({
+                behavior: options.instant ? 'auto' : 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
 
         if (options.focus) {
             activeCard.focus({ preventScroll: true });
@@ -117,7 +136,38 @@ function initPortfolioGallery() {
         setActiveCard(nextIndex, { focus: true });
     });
 
-    setActiveCard(0);
+    prevBtn.addEventListener('click', () => {
+        setActiveCard(activeIndex - 1, { focus: true });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        setActiveCard(activeIndex + 1, { focus: true });
+    });
+
+    spotlight.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0]?.clientX ?? 0;
+        touchStartY = event.changedTouches[0]?.clientY ?? 0;
+    }, { passive: true });
+
+    spotlight.addEventListener('touchend', (event) => {
+        const touchEndX = event.changedTouches[0]?.clientX ?? 0;
+        const touchEndY = event.changedTouches[0]?.clientY ?? 0;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) < 36 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+            return;
+        }
+
+        if (deltaX < 0) {
+            setActiveCard(activeIndex + 1);
+            return;
+        }
+
+        setActiveCard(activeIndex - 1);
+    }, { passive: true });
+
+    setActiveCard(0, { instant: true });
 }
 
 function initContactForm() {
