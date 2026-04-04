@@ -173,21 +173,26 @@ window.addEventListener('DOMContentLoaded', () => {
                 duration: 0.45,
                 clearProps: 'all'
             }, '-=0.35')
+            .from('.portfolio-spotlight', {
+                y: 34,
+                autoAlpha: 0,
+                scale: 0.985,
+                duration: 0.8,
+                clearProps: 'all'
+            }, '-=0.22')
             .from(cards, {
-                y: 72,
-                x: (index) => (index % 2 === 0 ? -28 : 28),
+                y: 28,
                 autoAlpha: 0,
-                rotate: (index) => (index % 2 === 0 ? -2 : 2),
                 stagger: 0.08,
-                duration: 0.85,
+                duration: 0.55,
                 clearProps: 'all'
-            }, '-=0.2')
+            }, '-=0.45')
             .from('.portfolio-gallery-footer', {
-                y: 24,
+                y: 18,
                 autoAlpha: 0,
-                duration: 0.5,
+                duration: 0.4,
                 clearProps: 'all'
-            }, '-=0.45');
+            }, '-=0.25');
     }
 
     function initServicesMotion() {
@@ -293,6 +298,7 @@ window.addEventListener('DOMContentLoaded', () => {
             '.portfolio-kicker',
             '.portfolio-intro h3',
             '.portfolio-meta span',
+            '.portfolio-spotlight',
             '.portfolio-card',
             '.portfolio-gallery-footer',
             '.service',

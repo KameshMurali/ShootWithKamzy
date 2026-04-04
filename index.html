@@ -103,97 +103,173 @@
 
         <section class="portfolio reveal" id="portfolio">
             <h2>Featured Portfolio</h2>
-            <p class="section-subtitle">An editorial-style gallery built for browsing, not clicking through one frame at a time.</p>
+            <p class="section-subtitle">A fast editorial spotlight with quick-select frames instead of a laggy drag rail.</p>
             <div class="portfolio-shell">
                 <div class="portfolio-intro">
                     <p class="portfolio-kicker">Selected Frames</p>
-                    <h3>Drag across a living contact sheet of fashion portraits, couples sessions, product work, and mixed client shoots.</h3>
+                    <h3>Pick any frame to swap the hero preview instantly across fashion portraits, couples sessions, product work, and mixed client shoots.</h3>
                     <div class="portfolio-meta" aria-label="Portfolio gallery details">
                         <span>7 spotlight images</span>
-                        <span>Scroll, drag, or use arrow keys</span>
-                        <span id="portfolioCurrentLabel">Now viewing: Fashion Portrait</span>
+                        <span>Tap, click, or use arrow keys</span>
+                        <span id="portfolioCurrentLabel">Selected frame: Fashion Portrait</span>
                     </div>
                 </div>
 
-                <div class="portfolio-gallery" aria-label="Portfolio gallery" tabindex="0">
-                    <div class="portfolio-track" id="portfolioTrack">
-                        <article class="portfolio-card is-featured" data-title="Fashion Portrait">
-                            <img src="images/photo1.jpg" alt="Fashion portrait of a woman in a green sari posing outside a modern glass building" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Fashion Portrait</p>
-                                <h3>Clean styling, elegant movement, and a polished editorial feel.</h3>
-                                <p>Designed to read as a signature portrait instead of just another gallery image.</p>
-                            </div>
+                <div class="portfolio-gallery" aria-label="Portfolio showcase">
+                    <article class="portfolio-spotlight" aria-live="polite">
+                        <img
+                            id="portfolioSpotlightImage"
+                            src="images/photo1.jpg"
+                            alt="Fashion portrait of a woman in a green sari posing outside a modern glass building"
+                            loading="eager"
+                        >
+                        <div class="portfolio-spotlight-copy">
+                            <p class="portfolio-spotlight-index" id="portfolioSpotlightIndex">01 / 07</p>
+                            <p class="portfolio-card-tag" id="portfolioSpotlightTag">Fashion Portrait</p>
+                            <h3 id="portfolioSpotlightTitle">Clean styling, elegant movement, and a polished editorial feel.</h3>
+                            <p id="portfolioSpotlightDescription">Designed to read as a signature portrait instead of just another gallery image.</p>
                             <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card" data-title="Couples Portrait">
-                            <img src="images/photo7.jpg" alt="Close indoor portrait of a couple embracing and smiling" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Couples</p>
-                                <h3>Close, intimate framing built around connection and expression.</h3>
-                                <p>More personal and cinematic than a standard posed couple shot.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card is-tall" data-title="Creative Composite">
-                            <img src="images/photo8.jpg" alt="Composite image featuring a mermaid-inspired beach portrait and a custom motorcycle shot" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Creative Composite</p>
-                                <h3>A mixed concept board pairing fantasy portrait work with a custom bike frame.</h3>
-                                <p>This image reads more like a portfolio montage than a single-category shoot.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card" data-title="Client Work Mix">
-                            <img src="images/photo9.jpg" alt="Composite image showing an interior real-estate photo above an outdoor maternity portrait" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Client Work Mix</p>
-                                <h3>Interior photography and outdoor maternity portraiture in one frame.</h3>
-                                <p>A broader sample of client work rather than a single editorial story.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card is-wide" data-title="Product Campaign">
-                            <img src="images/photo10.jpg" alt="Product campaign layout for smoothie and shake menu items with branded pricing" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Product</p>
-                                <h3>Menu-board and hero-product visuals built for promotions and social campaigns.</h3>
-                                <p>Clear, commercial framing with pricing and branding baked into the composition.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card" data-title="Portfolio Mix">
-                            <img src="images/photo11.jpg" alt="Composite image with a skater portrait at sunset and two monochrome studio headshots" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Portfolio Mix</p>
-                                <h3>Action-led outdoor imagery paired with monochrome studio portraits.</h3>
-                                <p>A varied model portfolio sample rather than straight event coverage.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-
-                        <article class="portfolio-card is-featured" data-title="Runway Fashion">
-                            <img src="images/photo12.jpg" alt="Runway fashion photo of a model in a gold dress walking a catwalk" draggable="false" loading="lazy">
-                            <div class="portfolio-card-overlay">
-                                <p class="portfolio-card-tag">Runway</p>
-                                <h3>Runway styling captured with a strong full-length fashion presentation.</h3>
-                                <p>A clean closing statement for the gallery’s fashion side, not an automotive frame.</p>
-                            </div>
-                            <div class="copyright">© ShootWithKamzy</div>
-                        </article>
-                    </div>
-
-                    <div class="portfolio-gallery-footer">
-                        <div class="portfolio-progress" aria-hidden="true">
-                            <span id="portfolioProgressBar"></span>
                         </div>
-                        <p class="portfolio-gallery-hint">Drag sideways to explore the full sequence.</p>
+                    </article>
+
+                    <div class="portfolio-track" id="portfolioTrack" role="group" aria-label="Choose a featured portfolio frame">
+                        <button
+                            class="portfolio-card is-active"
+                            type="button"
+                            aria-pressed="true"
+                            aria-label="Show Fashion Portrait"
+                            data-title="Fashion Portrait"
+                            data-tag="Fashion Portrait"
+                            data-headline="Clean styling, elegant movement, and a polished editorial feel."
+                            data-description="Designed to read as a signature portrait instead of just another gallery image."
+                            data-image="images/photo1.jpg"
+                            data-alt="Fashion portrait of a woman in a green sari posing outside a modern glass building"
+                        >
+                            <img src="images/photo1.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Fashion Portrait</span>
+                                <span class="portfolio-card-name">Signature editorial frame</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Couples Portrait"
+                            data-title="Couples Portrait"
+                            data-tag="Couples"
+                            data-headline="Close, intimate framing built around connection and expression."
+                            data-description="More personal and cinematic than a standard posed couple shot."
+                            data-image="images/photo7.jpg"
+                            data-alt="Close indoor portrait of a couple embracing and smiling"
+                        >
+                            <img src="images/photo7.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Couples</span>
+                                <span class="portfolio-card-name">Close emotional portrait</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card is-tall"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Creative Composite"
+                            data-title="Creative Composite"
+                            data-tag="Creative Composite"
+                            data-headline="A mixed concept board pairing fantasy portrait work with a custom bike frame."
+                            data-description="This image reads more like a portfolio montage than a single-category shoot."
+                            data-image="images/photo8.jpg"
+                            data-alt="Composite image featuring a mermaid-inspired beach portrait and a custom motorcycle shot"
+                        >
+                            <img src="images/photo8.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Creative Composite</span>
+                                <span class="portfolio-card-name">Concept collage study</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Client Work Mix"
+                            data-title="Client Work Mix"
+                            data-tag="Client Work Mix"
+                            data-headline="Interior photography and outdoor maternity portraiture in one frame."
+                            data-description="A broader sample of client work rather than a single editorial story."
+                            data-image="images/photo9.jpg"
+                            data-alt="Composite image showing an interior real-estate photo above an outdoor maternity portrait"
+                        >
+                            <img src="images/photo9.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Client Work Mix</span>
+                                <span class="portfolio-card-name">Multi-brief client sample</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card is-wide"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Product Campaign"
+                            data-title="Product Campaign"
+                            data-tag="Product"
+                            data-headline="Menu-board and hero-product visuals built for promotions and social campaigns."
+                            data-description="Clear, commercial framing with pricing and branding baked into the composition."
+                            data-image="images/photo10.jpg"
+                            data-alt="Product campaign layout for smoothie and shake menu items with branded pricing"
+                        >
+                            <img src="images/photo10.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Product</span>
+                                <span class="portfolio-card-name">Commercial menu campaign</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Portfolio Mix"
+                            data-title="Portfolio Mix"
+                            data-tag="Portfolio Mix"
+                            data-headline="Action-led outdoor imagery paired with monochrome studio portraits."
+                            data-description="A varied model portfolio sample rather than straight event coverage."
+                            data-image="images/photo11.jpg"
+                            data-alt="Composite image with a skater portrait at sunset and two monochrome studio headshots"
+                        >
+                            <img src="images/photo11.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Portfolio Mix</span>
+                                <span class="portfolio-card-name">Movement plus studio contrast</span>
+                            </span>
+                        </button>
+
+                        <button
+                            class="portfolio-card"
+                            type="button"
+                            aria-pressed="false"
+                            aria-label="Show Runway Fashion"
+                            data-title="Runway Fashion"
+                            data-tag="Runway"
+                            data-headline="Runway styling captured with a strong full-length fashion presentation."
+                            data-description="A clean closing statement for the gallery's fashion side."
+                            data-image="images/photo12.jpg"
+                            data-alt="Runway fashion photo of a model in a gold dress walking a catwalk"
+                        >
+                            <img src="images/photo12.jpg" alt="" draggable="false" loading="lazy">
+                            <span class="portfolio-card-overlay">
+                                <span class="portfolio-card-tag">Runway</span>
+                                <span class="portfolio-card-name">Full-length catwalk moment</span>
+                            </span>
+                        </button>
                     </div>
+                </div>
+
+                <div class="portfolio-gallery-footer">
+                    <p class="portfolio-gallery-hint">Choose any frame to update the spotlight instantly. No dragging required.</p>
                 </div>
             </div>
         </section>

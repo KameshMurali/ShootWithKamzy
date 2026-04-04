@@ -26,233 +26,97 @@ function sanitizePhone(value) {
 }
 
 function initPortfolioGallery() {
-    const gallery = document.querySelector('.portfolio-gallery');
     const track = document.getElementById('portfolioTrack');
     const cards = Array.from(document.querySelectorAll('.portfolio-card'));
     const currentLabel = document.getElementById('portfolioCurrentLabel');
-    const progressBar = document.getElementById('portfolioProgressBar');
+    const spotlightImage = document.getElementById('portfolioSpotlightImage');
+    const spotlightIndex = document.getElementById('portfolioSpotlightIndex');
+    const spotlightTag = document.getElementById('portfolioSpotlightTag');
+    const spotlightTitle = document.getElementById('portfolioSpotlightTitle');
+    const spotlightDescription = document.getElementById('portfolioSpotlightDescription');
 
-    if (!gallery || !track || !cards.length || !currentLabel || !progressBar) {
+    if (
+        !track ||
+        !cards.length ||
+        !currentLabel ||
+        !spotlightImage ||
+        !spotlightIndex ||
+        !spotlightTag ||
+        !spotlightTitle ||
+        !spotlightDescription
+    ) {
         return;
     }
 
-    let isPointerDown = false;
-    let dragStartX = 0;
-    let startScrollLeft = 0;
-    let dragDistance = 0;
-    let hasDragged = false;
     let activeIndex = 0;
-    let settleAnimationFrame = 0;
-    let suppressCardClick = false;
-
+    const hoverMediaQuery = window.matchMedia('(hover: hover)');
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-    const getMaxScroll = () => Math.max(track.scrollWidth - track.clientWidth, 0);
+    const formatIndex = (value) => String(value).padStart(2, '0');
 
-    function updateGalleryProgress() {
-        const progress = cards.length > 1 ? activeIndex / (cards.length - 1) : 1;
-        progressBar.style.width = `${18 + progress * 82}%`;
-    }
+    function setActiveCard(index, options = {}) {
+        const nextIndex = clamp(index, 0, cards.length - 1);
+        const activeCard = cards[nextIndex];
 
-    function setActiveCard(index) {
-        activeIndex = index;
+        if (!activeCard) {
+            return;
+        }
+
+        activeIndex = nextIndex;
+
         cards.forEach((card, cardIndex) => {
-            card.classList.toggle('is-active', cardIndex === index);
+            const isActive = cardIndex === nextIndex;
+            card.classList.toggle('is-active', isActive);
+            card.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
 
-        const title = cards[index].dataset.title || `Frame ${index + 1}`;
-        currentLabel.textContent = `Now viewing: ${title}`;
-        updateGalleryProgress();
-    }
+        spotlightImage.src = activeCard.dataset.image || spotlightImage.src;
+        spotlightImage.alt = activeCard.dataset.alt || '';
+        spotlightTag.textContent = activeCard.dataset.tag || activeCard.dataset.title || `Frame ${nextIndex + 1}`;
+        spotlightTitle.textContent = activeCard.dataset.headline || activeCard.dataset.title || `Frame ${nextIndex + 1}`;
+        spotlightDescription.textContent = activeCard.dataset.description || '';
+        spotlightIndex.textContent = `${formatIndex(nextIndex + 1)} / ${formatIndex(cards.length)}`;
+        currentLabel.textContent = `Selected frame: ${activeCard.dataset.title || `Frame ${nextIndex + 1}`}`;
 
-    function updateTrackEdgePadding() {
-        const firstCard = cards[0];
-        const lastCard = cards[cards.length - 1];
-        if (!firstCard || !lastCard) {
-            return;
+        if (options.focus) {
+            activeCard.focus({ preventScroll: true });
         }
-
-        const leftPad = Math.max(0, (track.clientWidth - firstCard.offsetWidth) / 2);
-        const rightPad = Math.max(0, (track.clientWidth - lastCard.offsetWidth) / 2);
-
-        track.style.setProperty('--portfolio-pad-left', `${leftPad}px`);
-        track.style.setProperty('--portfolio-pad-right', `${rightPad}px`);
     }
 
-    function cancelSettleAnimation() {
-        if (settleAnimationFrame) {
-            window.cancelAnimationFrame(settleAnimationFrame);
-            settleAnimationFrame = 0;
-        }
-
-        gallery.classList.remove('is-settling');
-    }
-
-    function getCardTargetLeft(index) {
-        const card = cards[index];
-        if (!card) {
-            return track.scrollLeft;
-        }
-
-        return clamp(
-            card.offsetLeft - ((track.clientWidth - card.offsetWidth) / 2),
-            0,
-            getMaxScroll()
-        );
-    }
-
-    function scrollToCard(index, duration = 220) {
-        cancelSettleAnimation();
-
-        const targetLeft = getCardTargetLeft(index);
-        const startLeft = track.scrollLeft;
-        const delta = targetLeft - startLeft;
-
-        if (Math.abs(delta) < 1) {
-            track.scrollLeft = targetLeft;
+    cards.forEach((card, index) => {
+        card.addEventListener('click', () => {
             setActiveCard(index);
-            return;
-        }
+        });
 
-        gallery.classList.add('is-settling');
-        const startTime = performance.now();
-        const easeOutCubic = (value) => 1 - ((1 - value) ** 3);
+        card.addEventListener('focus', () => {
+            setActiveCard(index);
+        });
 
-        const step = (now) => {
-            const elapsed = Math.min((now - startTime) / duration, 1);
-            const eased = easeOutCubic(elapsed);
-
-            track.scrollLeft = startLeft + (delta * eased);
-            updateGalleryProgress();
-
-            if (elapsed < 1) {
-                settleAnimationFrame = window.requestAnimationFrame(step);
-                return;
+        card.addEventListener('mouseenter', () => {
+            if (hoverMediaQuery.matches) {
+                setActiveCard(index);
             }
-
-            settleAnimationFrame = 0;
-            gallery.classList.remove('is-settling');
-            track.scrollLeft = targetLeft;
-            setActiveCard(index);
-        };
-
-        settleAnimationFrame = window.requestAnimationFrame(step);
-    }
-
-    function focusCard(index, duration = 220) {
-        const nextIndex = clamp(index, 0, cards.length - 1);
-        setActiveCard(nextIndex);
-        scrollToCard(nextIndex, duration);
-    }
-
-    gallery.addEventListener('pointerdown', (event) => {
-        if (event.pointerType === 'mouse' && event.button !== 0) {
-            return;
-        }
-
-        cancelSettleAnimation();
-        isPointerDown = true;
-        hasDragged = false;
-        dragStartX = event.clientX;
-        startScrollLeft = track.scrollLeft;
-        dragDistance = 0;
-        gallery.classList.add('is-dragging');
-        gallery.setPointerCapture(event.pointerId);
+        });
     });
 
-    gallery.addEventListener('pointermove', (event) => {
-        if (!isPointerDown) {
-            return;
-        }
-
-        dragDistance = event.clientX - dragStartX;
-        if (Math.abs(dragDistance) > 6) {
-            hasDragged = true;
-        }
-        track.scrollLeft = clamp(startScrollLeft - dragDistance, 0, getMaxScroll());
-    });
-
-    function endDrag(event) {
-        if (!isPointerDown) {
-            return;
-        }
-
-        isPointerDown = false;
-        gallery.classList.remove('is-dragging');
-
-        if (event && gallery.hasPointerCapture(event.pointerId)) {
-            gallery.releasePointerCapture(event.pointerId);
-        }
-
-        if (!hasDragged) {
-            track.scrollLeft = getCardTargetLeft(activeIndex);
-            return;
-        }
-
-        const swipeThreshold = Math.max(40, track.clientWidth * 0.07);
+    track.addEventListener('keydown', (event) => {
         let nextIndex = activeIndex;
 
-        if (dragDistance <= -swipeThreshold) {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
             nextIndex = Math.min(activeIndex + 1, cards.length - 1);
-        } else if (dragDistance >= swipeThreshold) {
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
             nextIndex = Math.max(activeIndex - 1, 0);
-        }
-
-        suppressCardClick = true;
-        focusCard(nextIndex, 200);
-        window.setTimeout(() => {
-            suppressCardClick = false;
-        }, 160);
-    }
-
-    gallery.addEventListener('pointerup', endDrag);
-    gallery.addEventListener('pointercancel', endDrag);
-    gallery.addEventListener('pointerleave', (event) => {
-        if (isPointerDown && event.pointerType === 'mouse') {
-            endDrag(event);
-        }
-    });
-
-    gallery.addEventListener('keydown', (event) => {
-        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+        } else if (event.key === 'Home') {
+            nextIndex = 0;
+        } else if (event.key === 'End') {
+            nextIndex = cards.length - 1;
+        } else {
             return;
         }
 
         event.preventDefault();
-        const nextIndex = event.key === 'ArrowRight'
-            ? Math.min(activeIndex + 1, cards.length - 1)
-            : Math.max(activeIndex - 1, 0);
-
-        focusCard(nextIndex, 180);
+        setActiveCard(nextIndex, { focus: true });
     });
 
-    cards.forEach((card, index) => {
-        card.addEventListener('click', (event) => {
-            if (suppressCardClick) {
-                event.preventDefault();
-                return;
-            }
-
-            gallery.focus({ preventScroll: true });
-            focusCard(index, 170);
-        });
-    });
-
-    track.addEventListener('scroll', () => {
-        if (isPointerDown) {
-            const dragProgress = clamp(track.scrollLeft / Math.max(getMaxScroll(), 1), 0, 1);
-            progressBar.style.width = `${18 + dragProgress * 82}%`;
-        }
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-        updateTrackEdgePadding();
-        cancelSettleAnimation();
-        track.scrollLeft = getCardTargetLeft(activeIndex);
-        setActiveCard(activeIndex);
-    });
-
-    updateTrackEdgePadding();
-    track.scrollLeft = getCardTargetLeft(0);
     setActiveCard(0);
 }
 
