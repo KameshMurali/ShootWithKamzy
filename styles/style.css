@@ -654,42 +654,53 @@ body[data-theme='light'] .hero-video-main {
 
 .portfolio-card-overlay {
     position: absolute;
-    left: 0.9rem;
-    right: 0.9rem;
-    bottom: 0.9rem;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: 0.8rem;
     z-index: 1;
     display: grid;
-    gap: 0.3rem;
+    gap: 0.24rem;
+    align-content: end;
+    padding-right: 4.7rem;
 }
 
 .portfolio-card-tag {
     justify-self: start;
-    padding: 0.28rem 0.7rem;
+    max-width: 100%;
+    padding: 0.24rem 0.6rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(10px);
     color: #f5f9ff;
-    font-size: 0.74rem;
-    letter-spacing: 0.12em;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
 .portfolio-card-name {
     color: #f5f9ff;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.98rem;
-    line-height: 1.15;
+    font-size: clamp(0.8rem, 0.28vw + 0.72rem, 0.9rem);
+    line-height: 1.08;
+    max-width: 16ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-wrap: balance;
 }
 
 .copyright {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 0.3rem 0.75rem;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    padding: 0.22rem 0.58rem;
     border-radius: 999px;
     background: rgba(3, 7, 14, 0.68);
     border: 1px solid rgba(130, 177, 255, 0.35);
-    font-size: 0.74rem;
+    font-size: 0.64rem;
+    line-height: 1;
+    z-index: 1;
 }
 
 .portfolio-gallery-footer {
@@ -1292,18 +1303,28 @@ footer {
     }
 
     .portfolio-card-overlay {
-        left: 0.7rem;
-        right: 0.7rem;
-        bottom: 0.7rem;
+        left: 0.62rem;
+        right: 0.62rem;
+        bottom: 0.62rem;
+        gap: 0.18rem;
+        padding-right: 3.95rem;
     }
 
     .portfolio-card-tag {
-        padding: 0.24rem 0.58rem;
-        font-size: 0.68rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.6rem;
     }
 
     .portfolio-card-name {
-        font-size: 0.82rem;
+        font-size: 0.72rem;
+        max-width: 13ch;
+    }
+
+    .copyright {
+        right: 0.55rem;
+        bottom: 0.55rem;
+        padding: 0.18rem 0.5rem;
+        font-size: 0.58rem;
     }
 
     .portfolio-gallery-footer {
