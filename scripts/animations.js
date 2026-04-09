@@ -61,68 +61,105 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function initHeroMotion() {
+        const navItems = gsap.utils
+            .toArray('.nav-links li, .instagram-link, .mobile-actions > *')
+            .filter((element) => window.getComputedStyle(element).display !== 'none');
+
         const heroTimeline = gsap.timeline({
-            defaults: { ease: 'power3.out' }
+            defaults: { ease: 'power2.out' },
+            smoothChildTiming: true
         });
 
         heroTimeline
             .from('.site-header', {
-                y: -28,
+                y: -14,
                 autoAlpha: 0,
-                duration: 0.7,
+                duration: 0.72,
                 clearProps: 'all'
             })
+            .from('.logo', {
+                x: -10,
+                autoAlpha: 0,
+                duration: 0.55,
+                clearProps: 'all'
+            }, 0.14)
+            .from(navItems, {
+                y: -10,
+                autoAlpha: 0,
+                stagger: 0.06,
+                duration: 0.5,
+                clearProps: 'all'
+            }, 0.18)
             .from('.page-glow', {
                 autoAlpha: 0,
-                scale: 0.94,
-                duration: 1.1,
+                scale: 0.97,
+                duration: 1.35,
+                ease: 'sine.out',
                 clearProps: 'all'
             }, 0)
+            .from('.hero-media', {
+                clipPath: 'inset(6% 5% 9% 5% round 36px)',
+                scale: 1.02,
+                autoAlpha: 0,
+                duration: 1.35,
+                ease: 'sine.out',
+                clearProps: 'all'
+            }, 0.05)
+            .from('.hero-video-backdrop', {
+                scale: 1.18,
+                autoAlpha: 0,
+                duration: 1.35,
+                ease: 'sine.out',
+                clearProps: 'all'
+            }, 0.05)
             .from('.hero-video-main', {
-                scale: 1.08,
-                duration: 1.25,
-                ease: 'power2.out',
-                clearProps: 'transform'
+                scale: 1.06,
+                filter: 'blur(6px) brightness(0.86)',
+                duration: 1.45,
+                ease: 'sine.out',
+                clearProps: 'transform,filter'
             }, 0.05)
             .from('.hero-overlay', {
-                y: 56,
+                y: 30,
+                clipPath: 'inset(0 0 10% 0 round 24px)',
                 autoAlpha: 0,
-                duration: 0.95,
+                duration: 1.08,
+                ease: 'power2.out',
                 clearProps: 'all'
-            }, 0.15)
+            }, 0.18)
             .from('.eyebrow', {
-                y: 18,
+                y: 12,
                 autoAlpha: 0,
-                duration: 0.45,
+                duration: 0.52,
                 clearProps: 'all'
-            }, 0.35)
+            }, 0.34)
             .from('.hero h1', {
-                y: 40,
+                y: 26,
                 autoAlpha: 0,
-                duration: 0.8,
+                duration: 0.92,
                 clearProps: 'all'
             }, 0.42)
             .from('.hero-subtitle', {
-                y: 28,
+                y: 18,
                 autoAlpha: 0,
-                duration: 0.65,
+                duration: 0.78,
                 clearProps: 'all'
-            }, 0.56)
+            }, 0.54)
             .from('.hero-cta-row .btn', {
-                y: 18,
+                y: 12,
                 autoAlpha: 0,
-                stagger: 0.12,
-                duration: 0.55,
-                clearProps: 'all'
-            }, 0.7)
-            .from('.hero-metrics li', {
-                y: 18,
-                autoAlpha: 0,
-                scale: 0.96,
                 stagger: 0.1,
-                duration: 0.5,
+                duration: 0.62,
                 clearProps: 'all'
-            }, 0.82);
+            }, 0.68)
+            .from('.hero-metrics li', {
+                y: 12,
+                autoAlpha: 0,
+                scale: 0.98,
+                stagger: 0.08,
+                duration: 0.58,
+                clearProps: 'all'
+            }, 0.8);
 
         gsap.to('.hero-media', {
             yPercent: 5,
@@ -131,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: '.hero',
                 start: 'top top',
                 end: 'bottom top',
-                scrub: 0.6
+                scrub: 1.1
             }
         });
     }
@@ -291,7 +328,13 @@ window.addEventListener('DOMContentLoaded', () => {
     function initReducedMotion() {
         gsap.set([
             '.site-header',
+            '.logo',
+            '.nav-links li',
+            '.instagram-link',
+            '.mobile-actions > *',
             '.page-glow',
+            '.hero-media',
+            '.hero-video-backdrop',
             '.hero-video-main',
             '.hero-overlay',
             '.hero-metrics li',

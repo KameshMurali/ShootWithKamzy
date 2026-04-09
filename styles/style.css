@@ -28,7 +28,7 @@
     --radius-sm: 12px;
     --radius-md: 18px;
     --radius-lg: 28px;
-    --content-max: 1200px;
+    --content-max: 1400px;
     --header-height: 76px;
 }
 
@@ -61,6 +61,16 @@ body[data-theme='light'] {
     --hover-glow: rgba(176, 138, 76, 0.45);
 }
 
+body[data-theme='light'].camera-shutter-flash::after {
+    background:
+        radial-gradient(circle at var(--shutter-x, 50vw) var(--shutter-y, 50vh),
+            rgba(255, 255, 255, 0.16),
+            rgba(255, 255, 255, 0.05) 11%,
+            transparent 28%
+        ),
+        rgba(255, 255, 255, 0.025);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -83,6 +93,298 @@ body {
     min-height: 100vh;
 }
 
+body.camera-shutter-flash::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2140;
+    background:
+        radial-gradient(circle at var(--shutter-x, 50vw) var(--shutter-y, 50vh),
+            rgba(255, 255, 255, 0.22),
+            rgba(255, 255, 255, 0.08) 11%,
+            transparent 28%
+        ),
+        rgba(255, 255, 255, 0.05);
+    animation: shutter-screen-flash 0.34s ease-out forwards;
+}
+
+.camera-cursor,
+.camera-click-burst {
+    position: fixed;
+    inset: 0 auto auto 0;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.camera-cursor {
+    top: 0;
+    left: 0;
+    z-index: 2200;
+    width: 0;
+    height: 0;
+    transition: opacity 0.22s ease;
+    filter: drop-shadow(0 0 12px var(--hover-glow));
+    will-change: transform, opacity;
+}
+
+.camera-cursor.is-visible {
+    opacity: 1;
+}
+
+.camera-cursor.is-hidden {
+    opacity: 0;
+}
+
+.camera-cursor > span,
+.camera-cursor-orbit::before,
+.camera-click-burst::before,
+.camera-click-burst::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+}
+
+.camera-cursor-ring {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    transition:
+        width 0.22s ease,
+        height 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.22s ease;
+}
+
+.camera-cursor-center {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ffffff);
+    box-shadow: 0 0 14px var(--hover-glow);
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.camera-cursor-crosshair {
+    background: rgba(255, 255, 255, 0.45);
+    transition: width 0.22s ease, height 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+
+body[data-theme='light'] .camera-cursor-crosshair {
+    background: rgba(54, 39, 17, 0.36);
+}
+
+.camera-cursor-crosshair-x {
+    width: 54px;
+    height: 1px;
+    opacity: 0.38;
+}
+
+.camera-cursor-crosshair-y {
+    width: 1px;
+    height: 54px;
+    opacity: 0.38;
+}
+
+.camera-cursor-orbit {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.28);
+    animation: camera-orbit-spin 6.5s linear infinite;
+    transition: width 0.24s ease, height 0.24s ease, opacity 0.24s ease, transform 0.24s ease;
+    opacity: 0.72;
+}
+
+.camera-cursor-orbit::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--hover-glow);
+    transform: translate(17px, -50%);
+}
+
+.camera-cursor.is-aiming .camera-cursor-ring {
+    width: 48px;
+    height: 48px;
+    border-color: #ffffff;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 0 22px rgba(255, 255, 255, 0.08);
+}
+
+.camera-cursor.is-aiming .camera-cursor-crosshair-x {
+    width: 68px;
+    opacity: 0.64;
+}
+
+.camera-cursor.is-aiming .camera-cursor-crosshair-y {
+    height: 68px;
+    opacity: 0.64;
+}
+
+.camera-cursor.is-aiming .camera-cursor-orbit {
+    width: 72px;
+    height: 72px;
+    opacity: 0.92;
+    animation-duration: 4s;
+}
+
+.camera-cursor.is-shooting .camera-cursor-ring {
+    animation: camera-shutter-pulse 0.38s ease-out forwards;
+}
+
+.camera-cursor.is-shooting .camera-cursor-center {
+    animation: camera-center-pulse 0.24s ease-out forwards;
+}
+
+.camera-cursor.is-shooting .camera-cursor-orbit {
+    animation:
+        camera-orbit-spin 1.4s linear infinite,
+        camera-shutter-pulse 0.34s ease-out forwards;
+}
+
+.camera-click-burst {
+    z-index: 2160;
+}
+
+.camera-click-burst::before,
+.camera-click-burst::after {
+    content: "";
+    left: var(--burst-x, -999px);
+    top: var(--burst-y, -999px);
+}
+
+.camera-click-burst::before {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    opacity: 0;
+}
+
+.camera-click-burst::after {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08) 34%, transparent 68%);
+    opacity: 0;
+}
+
+.camera-click-burst.is-active {
+    opacity: 1;
+}
+
+.camera-click-burst.is-active::before {
+    animation: camera-burst-ring 0.5s ease-out forwards;
+}
+
+.camera-click-burst.is-active::after {
+    animation: camera-burst-flash 0.42s ease-out forwards;
+}
+
+@keyframes camera-orbit-spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes camera-shutter-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    35% {
+        transform: translate(-50%, -50%) scale(0.72);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes camera-center-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1.8);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes camera-burst-ring {
+    0% {
+        opacity: 0.75;
+        transform: translate(-50%, -50%) scale(0.65);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(4.2);
+    }
+}
+
+@keyframes camera-burst-flash {
+    0% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0.18);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.22);
+    }
+}
+
+@keyframes shutter-screen-flash {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (pointer: fine) and (hover: hover) {
+    body.camera-cursor-enabled,
+    body.camera-cursor-enabled a,
+    body.camera-cursor-enabled button,
+    body.camera-cursor-enabled .portfolio-card,
+    body.camera-cursor-enabled .theme-toggle,
+    body.camera-cursor-enabled .portfolio-nav-btn,
+    body.camera-cursor-enabled .instagram-link,
+    body.camera-cursor-enabled .mobile-menu-btn {
+        cursor: none;
+    }
+
+    body.camera-cursor-enabled input,
+    body.camera-cursor-enabled textarea,
+    body.camera-cursor-enabled select {
+        cursor: text;
+    }
+}
+
 .page-glow {
     position: fixed;
     inset: -30vh -20vw;
@@ -101,12 +403,12 @@ img {
 main {
     width: min(100%, var(--content-max));
     margin: 0 auto;
-    padding: calc(var(--header-height) + 1.5rem) 1rem 0;
+    padding: calc(var(--header-height) + 1.5rem) clamp(1rem, 2.4vw, 2rem) 0;
 }
 
 section {
     margin: 1.6rem 0;
-    padding: 1.4rem;
+    padding: clamp(1.4rem, 1vw + 1.1rem, 2rem);
     border: 1px solid var(--section-border);
     border-radius: var(--radius-lg);
     background: var(--section-bg);
@@ -154,7 +456,7 @@ h2 {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem clamp(1rem, 2.4vw, 2rem);
     position: relative;
 }
 
@@ -295,7 +597,7 @@ h2 {
 }
 
 .hero-overlay {
-    width: min(100%, 860px);
+    width: min(100%, 960px);
     padding: clamp(1.5rem, 2vw + 1rem, 2.75rem);
     border-radius: 24px;
     border: 1px solid var(--hero-overlay-border);
@@ -454,7 +756,7 @@ body[data-theme='light'] .hero-video-main {
 .portfolio-intro h3 {
     font-size: clamp(1.2rem, 1.4vw + 0.9rem, 1.8rem);
     line-height: 1.2;
-    width: min(100%, 820px);
+    width: min(100%, 920px);
 }
 
 .portfolio-meta {
@@ -763,14 +1065,14 @@ body[data-theme='light'] .hero-video-main {
 }
 
 .about p {
-    width: min(100%, 860px);
+    width: min(100%, 980px);
     margin: 0.45rem auto;
     color: var(--text-muted);
     text-align: center;
 }
 
 .contact-shell {
-    width: min(100%, 900px);
+    width: min(100%, 1040px);
     margin: 0 auto;
     display: grid;
     gap: 1rem;
@@ -791,7 +1093,7 @@ body[data-theme='light'] .hero-video-main {
 .contact-lead h3 {
     font-size: clamp(1.15rem, 1.1vw + 0.95rem, 1.65rem);
     line-height: 1.22;
-    width: min(100%, 700px);
+    width: min(100%, 780px);
 }
 
 .booking-form {

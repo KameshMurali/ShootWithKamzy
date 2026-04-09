@@ -607,8 +607,132 @@ function initThemeToggle() {
     });
 }
 
+function initCameraCursor() {
+    const cursor = document.getElementById('cameraCursor');
+    const clickBurst = document.getElementById('cameraClickBurst');
+    const finePointerQuery = window.matchMedia('(pointer: fine) and (hover: hover)');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (!cursor || !clickBurst || !finePointerQuery.matches || reducedMotionQuery.matches) {
+        return;
+    }
+
+    document.body.classList.add('camera-cursor-enabled');
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let animationFrame = 0;
+    let shootTimeout = 0;
+    let flashTimeout = 0;
+
+    const lerp = (start, end, amount) => start + ((end - start) * amount);
+
+    function renderCursor() {
+        currentX = lerp(currentX, targetX, 0.18);
+        currentY = lerp(currentY, targetY, 0.18);
+
+        cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+
+        if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+            animationFrame = window.requestAnimationFrame(renderCursor);
+            return;
+        }
+
+        animationFrame = 0;
+    }
+
+    function startCursorRender() {
+        if (!animationFrame) {
+            animationFrame = window.requestAnimationFrame(renderCursor);
+        }
+    }
+
+    function updateCursorState(target) {
+        const textField = target.closest('input, textarea, select, [contenteditable="true"]');
+        const framingTarget = target.closest('a, button, img, video, .hero-media, .portfolio-spotlight, .portfolio-card');
+
+        cursor.classList.toggle('is-hidden', Boolean(textField));
+        cursor.classList.toggle('is-aiming', Boolean(framingTarget) && !textField);
+    }
+
+    function showCursor() {
+        cursor.classList.add('is-visible');
+    }
+
+    function hideCursor() {
+        cursor.classList.remove('is-visible', 'is-aiming', 'is-hidden', 'is-shooting');
+    }
+
+    function triggerShutter(x, y) {
+        cursor.classList.remove('is-shooting');
+        clickBurst.classList.remove('is-active');
+        document.body.classList.remove('camera-shutter-flash');
+
+        document.body.style.setProperty('--shutter-x', `${x}px`);
+        document.body.style.setProperty('--shutter-y', `${y}px`);
+        clickBurst.style.setProperty('--burst-x', `${x}px`);
+        clickBurst.style.setProperty('--burst-y', `${y}px`);
+
+        void cursor.offsetWidth;
+        void clickBurst.offsetWidth;
+
+        cursor.classList.add('is-shooting');
+        clickBurst.classList.add('is-active');
+        document.body.classList.add('camera-shutter-flash');
+
+        window.clearTimeout(shootTimeout);
+        window.clearTimeout(flashTimeout);
+
+        shootTimeout = window.setTimeout(() => {
+            cursor.classList.remove('is-shooting');
+        }, 320);
+
+        flashTimeout = window.setTimeout(() => {
+            clickBurst.classList.remove('is-active');
+            document.body.classList.remove('camera-shutter-flash');
+        }, 360);
+    }
+
+    document.addEventListener('pointermove', (event) => {
+        if (event.pointerType !== 'mouse') {
+            return;
+        }
+
+        targetX = event.clientX;
+        targetY = event.clientY;
+
+        updateCursorState(event.target);
+        showCursor();
+        startCursorRender();
+    }, { passive: true });
+
+    document.addEventListener('pointerdown', (event) => {
+        if (event.pointerType !== 'mouse') {
+            return;
+        }
+
+        targetX = event.clientX;
+        targetY = event.clientY;
+
+        showCursor();
+        startCursorRender();
+        triggerShutter(event.clientX, event.clientY);
+    });
+
+    document.addEventListener('pointerleave', hideCursor);
+    window.addEventListener('blur', hideCursor);
+    window.addEventListener('mouseout', (event) => {
+        if (!event.relatedTarget) {
+            hideCursor();
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
+    initCameraCursor();
     initPortfolioGallery();
     initContactForm();
     initSectionHighlight();
