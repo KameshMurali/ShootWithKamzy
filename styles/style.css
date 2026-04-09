@@ -64,11 +64,11 @@ body[data-theme='light'] {
 body[data-theme='light'].camera-shutter-flash::after {
     background:
         radial-gradient(circle at var(--shutter-x, 50vw) var(--shutter-y, 50vh),
-            rgba(255, 255, 255, 0.16),
-            rgba(255, 255, 255, 0.05) 11%,
+            rgba(217, 191, 145, 0.22),
+            rgba(176, 138, 76, 0.08) 11%,
             transparent 28%
         ),
-        rgba(255, 255, 255, 0.025);
+        rgba(176, 138, 76, 0.035);
 }
 
 * {
@@ -180,6 +180,18 @@ body[data-theme='light'] .camera-cursor-crosshair {
     background: rgba(54, 39, 17, 0.36);
 }
 
+body[data-theme='light'] .camera-cursor-ring {
+    border-color: rgba(111, 78, 36, 0.72);
+    box-shadow:
+        0 0 0 1px rgba(111, 78, 36, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme='light'] .camera-cursor-center {
+    background: linear-gradient(135deg, #8f6732, #f7e2be);
+    box-shadow: 0 0 14px rgba(176, 138, 76, 0.34);
+}
+
 .camera-cursor-crosshair-x {
     width: 54px;
     height: 1px;
@@ -219,6 +231,13 @@ body[data-theme='light'] .camera-cursor-crosshair {
     box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.2),
         0 0 22px rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme='light'] .camera-cursor.is-aiming .camera-cursor-ring {
+    border-color: #6f4e24;
+    box-shadow:
+        0 0 0 1px rgba(111, 78, 36, 0.16),
+        0 0 22px rgba(176, 138, 76, 0.14);
 }
 
 .camera-cursor.is-aiming .camera-cursor-crosshair-x {
@@ -277,6 +296,20 @@ body[data-theme='light'] .camera-cursor-crosshair {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08) 34%, transparent 68%);
     opacity: 0;
+}
+
+body[data-theme='light'] .camera-click-burst::before {
+    border-color: rgba(111, 78, 36, 0.72);
+    box-shadow: 0 0 0 1px rgba(176, 138, 76, 0.12);
+}
+
+body[data-theme='light'] .camera-click-burst::after {
+    background: radial-gradient(
+        circle,
+        rgba(176, 138, 76, 0.36),
+        rgba(176, 138, 76, 0.14) 34%,
+        transparent 68%
+    );
 }
 
 .camera-click-burst.is-active {
