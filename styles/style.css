@@ -124,7 +124,6 @@ body.camera-shutter-flash::after {
     width: 0;
     height: 0;
     transition: opacity 0.22s ease;
-    filter: drop-shadow(0 0 12px var(--hover-glow));
     will-change: transform, opacity;
 }
 
@@ -209,9 +208,8 @@ body[data-theme='light'] .camera-cursor-center {
     height: 54px;
     border-radius: 50%;
     border: 1px dashed rgba(255, 255, 255, 0.28);
-    animation: camera-orbit-spin 6.5s linear infinite;
     transition: width 0.24s ease, height 0.24s ease, opacity 0.24s ease, transform 0.24s ease;
-    opacity: 0.72;
+    opacity: 0.52;
 }
 
 .camera-cursor-orbit::before {
@@ -254,7 +252,7 @@ body[data-theme='light'] .camera-cursor.is-aiming .camera-cursor-ring {
     width: 72px;
     height: 72px;
     opacity: 0.92;
-    animation-duration: 4s;
+    animation: camera-orbit-spin 8s linear infinite;
 }
 
 .camera-cursor.is-shooting .camera-cursor-ring {
@@ -571,7 +569,7 @@ h2 {
     inset: 0;
     background:
         radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.08), transparent 30%),
-        linear-gradient(125deg, rgba(6, 12, 25, 0.95), rgba(10, 18, 33, 0.78));
+        linear-gradient(125deg, rgba(6, 12, 25, 0.84), rgba(10, 18, 33, 0.64));
     z-index: 1;
 }
 
@@ -601,8 +599,8 @@ h2 {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(6, 10, 20, 0.18), rgba(6, 10, 20, 0.48)),
-        radial-gradient(circle at center, transparent 35%, rgba(6, 10, 20, 0.28) 100%);
+        linear-gradient(180deg, rgba(6, 10, 20, 0.1), rgba(6, 10, 20, 0.34)),
+        radial-gradient(circle at center, transparent 38%, rgba(6, 10, 20, 0.18) 100%);
     z-index: 2;
     pointer-events: none;
 }
@@ -617,16 +615,10 @@ h2 {
     background: #08111f;
 }
 
-.hero-video-backdrop {
-    object-fit: cover;
-    filter: blur(24px) saturate(0.85) brightness(0.42);
-    transform: scale(1.15);
-    opacity: 0.85;
-}
-
 .hero-video-main {
     object-fit: cover;
     z-index: 1;
+    filter: saturate(1.04) contrast(1.12) brightness(1.04);
 }
 
 .hero-overlay {
@@ -661,11 +653,6 @@ body[data-theme='light'] .hero-media::before {
     background:
         linear-gradient(180deg, rgba(29, 21, 10, 0.08), rgba(29, 21, 10, 0.2)),
         radial-gradient(circle at center, transparent 38%, rgba(29, 21, 10, 0.12) 100%);
-}
-
-body[data-theme='light'] .hero-video-backdrop {
-    filter: blur(24px) saturate(0.85) brightness(0.58);
-    opacity: 0.82;
 }
 
 body[data-theme='light'] .hero-video-main {

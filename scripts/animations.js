@@ -105,13 +105,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 ease: 'sine.out',
                 clearProps: 'all'
             }, 0.05)
-            .from('.hero-video-backdrop', {
-                scale: 1.18,
-                autoAlpha: 0,
-                duration: 1.35,
-                ease: 'sine.out',
-                clearProps: 'all'
-            }, 0.05)
             .from('.hero-video-main', {
                 scale: 1.06,
                 filter: 'blur(6px) brightness(0.86)',
@@ -334,7 +327,6 @@ window.addEventListener('DOMContentLoaded', () => {
             '.mobile-actions > *',
             '.page-glow',
             '.hero-media',
-            '.hero-video-backdrop',
             '.hero-video-main',
             '.hero-overlay',
             '.hero-metrics li',

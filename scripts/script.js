@@ -630,16 +630,19 @@ function initCameraCursor() {
     const lerp = (start, end, amount) => start + ((end - start) * amount);
 
     function renderCursor() {
-        currentX = lerp(currentX, targetX, 0.18);
-        currentY = lerp(currentY, targetY, 0.18);
+        currentX = lerp(currentX, targetX, 0.32);
+        currentY = lerp(currentY, targetY, 0.32);
 
         cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
 
-        if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+        if (Math.abs(targetX - currentX) > 0.2 || Math.abs(targetY - currentY) > 0.2) {
             animationFrame = window.requestAnimationFrame(renderCursor);
             return;
         }
 
+        currentX = targetX;
+        currentY = targetY;
+        cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
         animationFrame = 0;
     }
 
