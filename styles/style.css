@@ -917,15 +917,16 @@ body[data-theme='light'] .hero-video-main {
     transform: translateY(0) scale(1);
     opacity: 0.86;
     transition:
-        transform 0.18s ease,
-        opacity 0.2s ease,
-        border-color 0.22s ease,
-        box-shadow 0.24s ease;
+        transform 0.16s ease,
+        opacity 0.18s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .portfolio-card:hover,
 .portfolio-card:focus-visible {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
+    border-color: rgba(83, 231, 255, 0.28);
 }
 
 .portfolio-card.is-active {
@@ -956,7 +957,8 @@ body[data-theme='light'] .hero-video-main {
     height: 100%;
     object-fit: cover;
     user-select: none;
-    transition: transform 0.28s ease, filter 0.24s ease;
+    transform: translateZ(0);
+    transition: filter 0.2s ease;
 }
 
 .portfolio-card::after {
@@ -968,9 +970,7 @@ body[data-theme='light'] .hero-video-main {
         linear-gradient(125deg, transparent 18%, rgba(8, 15, 30, 0.16) 100%);
 }
 
-.portfolio-card:hover img,
 .portfolio-card.is-active img {
-    transform: scale(1.04);
     filter: saturate(1.05) contrast(1.02);
 }
 

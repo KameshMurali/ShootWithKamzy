@@ -57,7 +57,6 @@ function initPortfolioGallery() {
     let activeIndex = 0;
     let touchStartX = 0;
     let touchStartY = 0;
-    const hoverMediaQuery = window.matchMedia('(hover: hover)');
     const mobileMediaQuery = window.matchMedia('(max-width: 640px)');
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
     const formatIndex = (value) => String(value).padStart(2, '0');
@@ -67,6 +66,13 @@ function initPortfolioGallery() {
         const activeCard = cards[nextIndex];
 
         if (!activeCard) {
+            return;
+        }
+
+        if (nextIndex === activeIndex && !options.force) {
+            if (options.focus) {
+                activeCard.focus({ preventScroll: true });
+            }
             return;
         }
 
@@ -108,12 +114,6 @@ function initPortfolioGallery() {
 
         card.addEventListener('focus', () => {
             setActiveCard(index);
-        });
-
-        card.addEventListener('mouseenter', () => {
-            if (hoverMediaQuery.matches) {
-                setActiveCard(index);
-            }
         });
     });
 
@@ -167,7 +167,26 @@ function initPortfolioGallery() {
         setActiveCard(activeIndex - 1);
     }, { passive: true });
 
-    setActiveCard(0, { instant: true });
+    setActiveCard(0, { instant: true, force: true });
+
+    const preloadImages = () => {
+        cards.forEach((card) => {
+            const src = card.dataset.image;
+            if (!src || src === spotlightImage.src) {
+                return;
+            }
+
+            const image = new Image();
+            image.decoding = 'async';
+            image.src = src;
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(preloadImages, { timeout: 1200 });
+    } else {
+        window.setTimeout(preloadImages, 400);
+    }
 }
 
 function initContactForm() {
@@ -626,6 +645,8 @@ function initCameraCursor() {
     let animationFrame = 0;
     let shootTimeout = 0;
     let flashTimeout = 0;
+    let isTextFieldTarget = false;
+    let isFramingTarget = false;
 
     const lerp = (start, end, amount) => start + ((end - start) * amount);
 
@@ -654,10 +675,22 @@ function initCameraCursor() {
 
     function updateCursorState(target) {
         const textField = target.closest('input, textarea, select, [contenteditable="true"]');
-        const framingTarget = target.closest('a, button, img, video, .hero-media, .portfolio-spotlight, .portfolio-card');
+        const framingTarget = target.closest('a, button, .hero-media, .portfolio-spotlight');
+        const nextIsTextFieldTarget = Boolean(textField);
+        const nextIsFramingTarget = Boolean(framingTarget) && !nextIsTextFieldTarget;
 
-        cursor.classList.toggle('is-hidden', Boolean(textField));
-        cursor.classList.toggle('is-aiming', Boolean(framingTarget) && !textField);
+        if (
+            nextIsTextFieldTarget === isTextFieldTarget &&
+            nextIsFramingTarget === isFramingTarget
+        ) {
+            return;
+        }
+
+        isTextFieldTarget = nextIsTextFieldTarget;
+        isFramingTarget = nextIsFramingTarget;
+
+        cursor.classList.toggle('is-hidden', isTextFieldTarget);
+        cursor.classList.toggle('is-aiming', isFramingTarget);
     }
 
     function showCursor() {
@@ -666,6 +699,8 @@ function initCameraCursor() {
 
     function hideCursor() {
         cursor.classList.remove('is-visible', 'is-aiming', 'is-hidden', 'is-shooting');
+        isTextFieldTarget = false;
+        isFramingTarget = false;
     }
 
     function triggerShutter(x, y) {
@@ -706,9 +741,16 @@ function initCameraCursor() {
         targetX = event.clientX;
         targetY = event.clientY;
 
-        updateCursorState(event.target);
         showCursor();
         startCursorRender();
+    }, { passive: true });
+
+    document.addEventListener('pointerover', (event) => {
+        if (event.pointerType !== 'mouse') {
+            return;
+        }
+
+        updateCursorState(event.target);
     }, { passive: true });
 
     document.addEventListener('pointerdown', (event) => {
