@@ -94,7 +94,7 @@ function initPortfolioGallery() {
         prevBtn.disabled = nextIndex === 0;
         nextBtn.disabled = nextIndex === cards.length - 1;
 
-        if (mobileMediaQuery.matches) {
+        if (mobileMediaQuery.matches && !options.initial) {
             activeCard.scrollIntoView({
                 behavior: options.instant ? 'auto' : 'smooth',
                 block: 'nearest',
@@ -167,7 +167,7 @@ function initPortfolioGallery() {
         setActiveCard(activeIndex - 1);
     }, { passive: true });
 
-    setActiveCard(0, { instant: true, force: true });
+    setActiveCard(0, { instant: true, force: true, initial: true });
 
     const preloadImages = () => {
         cards.forEach((card) => {
@@ -454,9 +454,46 @@ function initContactForm() {
             resetGuidedFlow();
             setFormStatus('success', 'Inquiry sent successfully. I will get back to you with the best-fit package and next steps.');
         } catch (error) {
-            setFormStatus('error', 'Inquiry failed to send. Please try again in a moment.');
+            setFormStatus('error', 'Inquiry failed to send. You can send the same details straight to me on WhatsApp instead.');
+            offerWhatsAppFallback(form);
         }
     });
+}
+
+function offerWhatsAppFallback(form) {
+    const status = document.getElementById('formStatus');
+
+    if (!status || status.querySelector('.form-status-whatsapp')) {
+        return;
+    }
+
+    const data = new FormData(form);
+    const lines = [
+        'Hi Kamzy, my inquiry did not send through the website. Details:',
+        `Name: ${data.get('name') || '-'}`,
+        `Email: ${data.get('email') || '-'}`,
+        `Phone: ${data.get('contactNumber') || '-'}`,
+        `Service: ${data.get('serviceType') || '-'}`,
+        `Coverage: ${data.get('coverageType') || '-'}`,
+        `Timeline: ${data.get('timeline') || '-'}`,
+        `Location: ${data.get('location') || '-'}`,
+        `Budget: ${data.get('budgetRange') || '-'}`
+    ];
+
+    const notes = data.get('message');
+
+    if (notes) {
+        lines.push(`Notes: ${notes}`);
+    }
+
+    const link = document.createElement('a');
+    link.className = 'form-status-whatsapp btn btn-whatsapp';
+    link.href = `https://wa.me/971509943327?text=${encodeURIComponent(lines.join('\n'))}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Send via WhatsApp';
+    status.appendChild(document.createElement('br'));
+    status.appendChild(link);
 }
 
 function initSectionHighlight() {

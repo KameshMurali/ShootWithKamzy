@@ -847,6 +847,7 @@ body[data-theme='light'] .hero-video-main {
 }
 
 .portfolio-spotlight-copy h3 {
+    color: #f5f9ff;
     font-size: clamp(1.55rem, 1.4vw + 1rem, 2.1rem);
     line-height: 1.08;
     max-width: 15ch;
@@ -1481,8 +1482,15 @@ body[data-theme='light'] .hero-video-main {
 
 footer {
     text-align: center;
-    color: #95aad0;
+    color: var(--text-muted);
     padding: 1rem 0 1.6rem;
+}
+
+@media (max-width: 760px) {
+    /* clear the fixed WhatsApp button */
+    footer {
+        padding-bottom: 5rem;
+    }
 }
 
 .sr-only {
@@ -2203,7 +2211,7 @@ body[data-theme='light'] .theme-toggle-knob {
         gap: clamp(0.55rem, 1.5vw, 0.9rem);
     }
 
-    .nav-links li:last-child {
+    .nav-links li:nth-child(4) {
         display: none;
     }
 
@@ -2238,5 +2246,69 @@ body[data-theme='light'] .theme-toggle-knob {
 
     .mobile-nav-overlay {
         display: none !important;
+    }
+}
+
+/* WhatsApp CTA */
+.btn-whatsapp {
+    color: #04231a;
+    background: linear-gradient(100deg, #25d366, #5bf29a);
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.28);
+}
+
+.btn-whatsapp:hover {
+    box-shadow: 0 14px 28px rgba(37, 211, 102, 0.42);
+}
+
+.btn-whatsapp:active {
+    transform: translateY(0);
+}
+
+.whatsapp-fab {
+    position: fixed;
+    left: 1rem;
+    bottom: 1.1rem;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: #04231a;
+    background: linear-gradient(100deg, #25d366, #5bf29a);
+    box-shadow: 0 12px 26px rgba(4, 12, 20, 0.38);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(4, 12, 20, 0.46);
+}
+
+.footer-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-contact a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+.footer-contact a:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+    .hero-cta-row .btn-whatsapp {
+        display: none;
     }
 }
