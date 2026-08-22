@@ -6,6 +6,7 @@
     <title>Dubai Photographer &amp; Videographer — Weddings, Fashion, Brands | ShootWithKamzy</title>
     <meta name="description" content="Dubai photographer and videographer for weddings, fashion portfolios, headshots, product and automotive shoots. Transparent pricing, reply within 24 hours.">
     <link rel="canonical" href="https://shootwithkamzy.com/">
+    <link rel="preload" as="image" href="images/hero.webp" fetchpriority="high">
     <meta name="theme-color" content="#05070d">
 
     <meta property="og:type" content="website">
@@ -13,12 +14,12 @@
     <meta property="og:title" content="Dubai Photographer &amp; Videographer | ShootWithKamzy">
     <meta property="og:description" content="Weddings, fashion, headshots, product and automotive shoots across Dubai and the UAE.">
     <meta property="og:url" content="https://shootwithkamzy.com/">
-    <meta property="og:image" content="https://shootwithkamzy.com/images/hero.png">
+    <meta property="og:image" content="https://shootwithkamzy.com/images/og-cover.jpg">
     <meta property="og:image:alt" content="Cinematic photography by ShootWithKamzy in Dubai">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Dubai Photographer &amp; Videographer | ShootWithKamzy">
     <meta name="twitter:description" content="Weddings, fashion, headshots, product and automotive shoots across Dubai and the UAE.">
-    <meta name="twitter:image" content="https://shootwithkamzy.com/images/hero.png">
+    <meta name="twitter:image" content="https://shootwithkamzy.com/images/og-cover.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,11 +85,10 @@
                     muted
                     loop
                     playsinline
-                    preload="metadata"
-                    poster="images/hero.png"
-                >
-                    <source src="videos/hero.mp4" type="video/mp4">
-                </video>
+                    preload="none"
+                    poster="images/hero.webp"
+                    data-src="videos/hero-720.mp4"
+                ></video>
             </div>
             <div class="hero-overlay">
                 <p class="eyebrow">Dubai &middot; Photo + Video Studio</p>
@@ -125,7 +125,7 @@
                     <article class="portfolio-spotlight" aria-live="polite">
                         <img
                             id="portfolioSpotlightImage"
-                            src="images/photo1.jpg"
+                            src="images/photo1-lg.webp"
                             alt="Fashion portrait of a woman in a green sari posing outside a modern glass building"
                             loading="eager"
                         >
@@ -153,10 +153,10 @@
                             data-tag="Fashion Portrait"
                             data-headline="Clean styling, elegant movement, and a polished editorial feel."
                             data-description="Designed to read as a signature portrait instead of just another gallery image."
-                            data-image="images/photo1.jpg"
+                            data-image="images/photo1-lg.webp"
                             data-alt="Fashion portrait of a woman in a green sari posing outside a modern glass building"
                         >
-                            <img src="images/photo1.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo1-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Fashion Portrait</span>
                                 <span class="portfolio-card-name">Signature editorial frame</span>
@@ -172,10 +172,10 @@
                             data-tag="Couples"
                             data-headline="Close, intimate framing built around connection and expression."
                             data-description="More personal and cinematic than a standard posed couple shot."
-                            data-image="images/photo7.jpg"
+                            data-image="images/photo7-lg.webp"
                             data-alt="Close indoor portrait of a couple embracing and smiling"
                         >
-                            <img src="images/photo7.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo7-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Couples</span>
                                 <span class="portfolio-card-name">Close emotional portrait</span>
@@ -191,10 +191,10 @@
                             data-tag="Creative Composite"
                             data-headline="A mixed concept board pairing fantasy portrait work with a custom bike frame."
                             data-description="This image reads more like a portfolio montage than a single-category shoot."
-                            data-image="images/photo8.jpg"
+                            data-image="images/photo8-lg.webp"
                             data-alt="Composite image featuring a mermaid-inspired beach portrait and a custom motorcycle shot"
                         >
-                            <img src="images/photo8.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo8-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Creative Composite</span>
                                 <span class="portfolio-card-name">Concept collage study</span>
@@ -210,10 +210,10 @@
                             data-tag="Client Work Mix"
                             data-headline="Interior photography and outdoor maternity portraiture in one frame."
                             data-description="A broader sample of client work rather than a single editorial story."
-                            data-image="images/photo9.jpg"
+                            data-image="images/photo9-lg.webp"
                             data-alt="Composite image showing an interior real-estate photo above an outdoor maternity portrait"
                         >
-                            <img src="images/photo9.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo9-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Client Work Mix</span>
                                 <span class="portfolio-card-name">Multi-brief client sample</span>
@@ -229,10 +229,10 @@
                             data-tag="Product"
                             data-headline="Menu-board and hero-product visuals built for promotions and social campaigns."
                             data-description="Clear, commercial framing with pricing and branding baked into the composition."
-                            data-image="images/photo10.jpg"
+                            data-image="images/photo10-lg.webp"
                             data-alt="Product campaign layout for smoothie and shake menu items with branded pricing"
                         >
-                            <img src="images/photo10.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo10-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Product</span>
                                 <span class="portfolio-card-name">Commercial menu campaign</span>
@@ -248,10 +248,10 @@
                             data-tag="Portfolio Mix"
                             data-headline="Action-led outdoor imagery paired with monochrome studio portraits."
                             data-description="A varied model portfolio sample rather than straight event coverage."
-                            data-image="images/photo11.jpg"
+                            data-image="images/photo11-lg.webp"
                             data-alt="Composite image with a skater portrait at sunset and two monochrome studio headshots"
                         >
-                            <img src="images/photo11.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo11-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Portfolio Mix</span>
                                 <span class="portfolio-card-name">Movement plus studio contrast</span>
@@ -267,10 +267,10 @@
                             data-tag="Runway"
                             data-headline="Runway styling captured with a strong full-length fashion presentation."
                             data-description="A clean closing statement for the gallery's fashion side."
-                            data-image="images/photo12.jpg"
+                            data-image="images/photo12-lg.webp"
                             data-alt="Runway fashion photo of a model in a gold dress walking a catwalk"
                         >
-                            <img src="images/photo12.jpg" alt="" draggable="false" loading="lazy">
+                            <img src="images/photo12-thumb.webp" alt="" draggable="false" loading="lazy" decoding="async">
                             <span class="portfolio-card-overlay">
                                 <span class="portfolio-card-tag">Runway</span>
                                 <span class="portfolio-card-name">Full-length catwalk moment</span>
@@ -290,55 +290,55 @@
             <p class="section-subtitle">Flexible packages tailored for personal and commercial projects.</p>
             <div class="services-container">
                 <article class="service">
-                    <img src="images/services/pre_wedding.png" alt="Pre-wedding illustration" loading="lazy">
+                    <img src="images/services/pre_wedding.webp" alt="Pre-wedding illustration" loading="lazy">
                     <h3>Pre-Wedding Photography</h3>
                     <p>Intimate storytelling sessions before your big day.</p>
                     <p class="price-range">AED 1,000-2,000</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/post_wedding.png" alt="Post-wedding illustration" loading="lazy">
+                    <img src="images/services/post_wedding.webp" alt="Post-wedding illustration" loading="lazy">
                     <h3>Post-Wedding Sessions</h3>
                     <p>Relaxed portraits in your favorite locations.</p>
                     <p class="price-range">AED 1,500-5,000</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/events.png" alt="Events illustration" loading="lazy">
+                    <img src="images/services/events.webp" alt="Events illustration" loading="lazy">
                     <h3>Wedding &amp; Event Coverage</h3>
                     <p>Full photo and video coverage for celebrations and corporate events.</p>
                     <p class="price-range">AED 1,500-8,000</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/model_portfolio.png" alt="Model portfolio illustration" loading="lazy">
+                    <img src="images/services/model_portfolio.webp" alt="Model portfolio illustration" loading="lazy">
                     <h3>Model Portfolio Sessions</h3>
                     <p>High-impact portfolio shoots with styling guidance.</p>
                     <p class="price-range">AED 1,500-5,000</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/videography.png" alt="Videography illustration" loading="lazy">
+                    <img src="images/services/videography.webp" alt="Videography illustration" loading="lazy">
                     <h3>Videography</h3>
                     <p>Dynamic visual production for reels, events, and campaigns.</p>
                     <p class="price-range">AED 350-600/hr</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/headshots.png" alt="Headshots illustration" loading="lazy">
+                    <img src="images/services/headshots.webp" alt="Headshots illustration" loading="lazy">
                     <h3>Headshots &amp; Portraits</h3>
                     <p>Professional portraits for personal branding and profiles.</p>
                     <p class="price-range">AED 300-2,000</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/baby.png" alt="Baby and newborn illustration" loading="lazy">
+                    <img src="images/services/baby.webp" alt="Baby and newborn illustration" loading="lazy">
                     <h3>Baby &amp; Newborn Shoots</h3>
                     <p>Soft, patient sessions built for comfort and safety.</p>
                     <p class="price-range">AED 800-1,500</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/product.png" alt="Product photography illustration" loading="lazy">
+                    <img src="images/services/product.webp" alt="Product photography illustration" loading="lazy">
                     <h3>Product Photography</h3>
                     <p>Clean studio-style visuals for e-commerce and social campaigns.</p>
                     <p class="price-range">AED 200-650/photo</p>
                 </article>
                 <article class="service">
-                    <img src="images/services/automobile.png" alt="Automobile photography illustration" loading="lazy">
+                    <img src="images/services/automobile.webp" alt="Automobile photography illustration" loading="lazy">
                     <h3>Automobile Shoots</h3>
                     <p>Sleek automotive imagery in urban and natural scenes.</p>
                     <p class="price-range">AED 1,000-2,000</p>

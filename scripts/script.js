@@ -182,10 +182,39 @@ function initPortfolioGallery() {
         });
     };
 
-    if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(preloadImages, { timeout: 1200 });
+    // Preloading all seven full-size frames on load cost every visitor the whole
+    // gallery whether they touched it or not. Warm them on first intent instead.
+    let preloaded = false;
+
+    const warmGallery = () => {
+        if (preloaded) {
+            return;
+        }
+
+        preloaded = true;
+
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(preloadImages, { timeout: 1200 });
+        } else {
+            window.setTimeout(preloadImages, 200);
+        }
+    };
+
+    ['pointerenter', 'touchstart', 'focusin', 'click'].forEach((evt) => {
+        track.addEventListener(evt, warmGallery, { once: true, passive: true });
+    });
+
+    if ('IntersectionObserver' in window) {
+        const galleryObserver = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+                warmGallery();
+                galleryObserver.disconnect();
+            }
+        }, { rootMargin: '200px' });
+
+        galleryObserver.observe(track);
     } else {
-        window.setTimeout(preloadImages, 400);
+        warmGallery();
     }
 }
 
@@ -812,8 +841,40 @@ function initCameraCursor() {
     });
 }
 
+function initHeroVideo() {
+    const video = document.querySelector('.hero-video-main');
+
+    if (!video || !video.dataset.src) {
+        return;
+    }
+
+    // The poster carries the hero on phones and on metered or slow connections;
+    // only attach the clip where it is cheap to fetch and decode.
+    const connection = navigator.connection || {};
+    const slow = /2g/.test(connection.effectiveType || '');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const wideEnough = window.matchMedia('(min-width: 900px)').matches;
+
+    if (!wideEnough || slow || connection.saveData || reduced) {
+        return;
+    }
+
+    const source = document.createElement('source');
+    source.src = video.dataset.src;
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    video.load();
+
+    const play = video.play();
+
+    if (play && typeof play.catch === 'function') {
+        play.catch(() => {});
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
+    initHeroVideo();
     initCameraCursor();
     initPortfolioGallery();
     initContactForm();
