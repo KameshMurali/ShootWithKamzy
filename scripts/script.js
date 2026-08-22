@@ -432,7 +432,7 @@ function initContactForm() {
 
         if (!phoneRegex.test(phoneInput.value)) {
             goToStep(steps.length - 1);
-            setFormStatus('error', 'Enter a valid international phone number, like +971509943327.');
+            setFormStatus('error', 'Enter a valid international phone number, like +971509969876.');
             phoneInput.focus();
             return;
         }
@@ -488,7 +488,7 @@ function offerWhatsAppFallback(form) {
 
     const link = document.createElement('a');
     link.className = 'form-status-whatsapp btn btn-whatsapp';
-    link.href = `https://wa.me/971509943327?text=${encodeURIComponent(lines.join('\n'))}`;
+    link.href = `https://wa.me/971509969876?text=${encodeURIComponent(lines.join('\n'))}`;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.textContent = 'Send via WhatsApp';
