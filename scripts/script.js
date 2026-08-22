@@ -454,7 +454,7 @@ function initContactForm() {
             resetGuidedFlow();
             setFormStatus('success', 'Inquiry sent successfully. I will get back to you with the best-fit package and next steps.');
         } catch (error) {
-            setFormStatus('error', 'Inquiry failed to send. You can send the same details straight to me on WhatsApp instead.');
+            setFormStatus('error', 'Inquiry failed to send. Reach me on WhatsApp or at hello@tonewbeginning.com instead.');
             offerWhatsAppFallback(form);
         }
     });
