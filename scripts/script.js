@@ -1,3 +1,9 @@
+const WHATSAPP_NUMBER = '971509969876';
+
+function buildWhatsAppUrl(text) {
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
+
 function setFormStatus(type, message) {
     const formStatus = document.getElementById('formStatus');
     if (!formStatus) {
@@ -297,6 +303,7 @@ function initContactForm() {
             ['Preferred date', formatDate(getFieldValue('preferredDate'))],
             ['Location', getFieldValue('location') || 'Not shared yet'],
             ['Budget', getFieldValue('budgetRange') || 'Not selected yet'],
+            ['Package', getFieldValue('configuredPackage') || 'Not configured'],
             ['Name', getFieldValue('name') || 'Not shared yet'],
             ['Email', getFieldValue('email') || 'Not shared yet'],
             ['Phone', getFieldValue('contactNumber') || 'Not shared yet']
@@ -517,7 +524,7 @@ function offerWhatsAppFallback(form) {
 
     const link = document.createElement('a');
     link.className = 'form-status-whatsapp btn btn-whatsapp';
-    link.href = `https://wa.me/971509969876?text=${encodeURIComponent(lines.join('\n'))}`;
+    link.href = buildWhatsAppUrl(lines.join('\n'));
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.textContent = 'Send via WhatsApp';
@@ -872,12 +879,842 @@ function initHeroVideo() {
     }
 }
 
+/* ---------------------------------------------------------------------------
+   Service configurator: pick a package, drag for extra edited images, tick
+   add-ons, see an itemised total, send it to WhatsApp.
+   Reads every price from scripts/pricing-data.js.
+   --------------------------------------------------------------------------- */
+
+function formatAed(amount) {
+    return new Intl.NumberFormat(PRICING_CONFIG.locale, { maximumFractionDigits: 0 }).format(amount);
+}
+
+function getTierList(service, groupId) {
+    if (!service.groups) {
+        return service.tiers;
+    }
+
+    const group = service.groups.find((item) => item.id === groupId) || service.groups[0];
+    return group.tiers;
+}
+
+function getAddOnList(service, groupId) {
+    const keys = service.groups
+        ? (service.groups.find((item) => item.id === groupId) || service.groups[0]).addOns
+        : service.addOns || [];
+
+    const shared = keys.map((key) => Object.assign({ id: key }, SHARED_ADD_ONS[key]));
+    const extra = Object.keys(service.extraAddOns || {})
+        .map((key) => Object.assign({ id: key }, service.extraAddOns[key]));
+
+    return shared.concat(extra);
+}
+
+/* Pure: no DOM. The returned `lines` array is the audit trail shown on screen,
+   so every dirham in `total` is traceable to a row the visitor can read. */
+function computeQuote(serviceKey, selection) {
+    const service = SERVICE_PRICING[serviceKey];
+
+    if (!service) {
+        return null;
+    }
+
+    const tiers = getTierList(service, selection.groupId);
+    const tier = tiers.find((item) => item.id === selection.tierId) || tiers[0];
+    const lines = [];
+    const notes = [];
+    let subtotal = 0;
+    let mode = 'exact';
+
+    if (tier.enquireOnly) {
+        mode = 'enquire';
+    } else if (tier.fromPrice) {
+        mode = 'from';
+    }
+
+    if (!tier.enquireOnly) {
+        lines.push({ label: tier.name, detail: tier.includes.slice(0, 3).join(' · '), amount: tier.price });
+        subtotal += tier.price;
+    } else {
+        lines.push({ label: tier.name, detail: 'Quoted on your brief', amount: null });
+    }
+
+    // Extra edited images, on top of what the package already includes.
+    const extraEdits = Math.min(
+        Math.max(0, Number(selection.extraEdits) || 0),
+        PRICING_CONFIG.maxExtraEdits
+    );
+
+    if (extraEdits > 0 && service.extraEditPrice > 0 && !tier.enquireOnly) {
+        const amount = extraEdits * service.extraEditPrice;
+        const included = tier.includedEdits || 0;
+        lines.push({
+            label: `${extraEdits} extra edited image${extraEdits === 1 ? '' : 's'}`,
+            detail: `${included} included + ${extraEdits} = ${included + extraEdits} total`,
+            amount: amount
+        });
+        subtotal += amount;
+    }
+
+    // Team headcount beyond what the package covers.
+    if (tier.perPerson) {
+        const people = Math.max(tier.minPeople || 0, Number(selection.people) || tier.includedPeople);
+        const extraPeople = Math.max(0, people - tier.includedPeople);
+
+        if (extraPeople > 0) {
+            const amount = extraPeople * tier.perPerson;
+            lines.push({
+                label: `${extraPeople} additional ${extraPeople === 1 ? 'person' : 'people'}`,
+                detail: `${people} people total, ${tier.includedPeople} included`,
+                amount: amount
+            });
+            subtotal += amount;
+        }
+    }
+
+    // Video deliverables are netted against the tier so nothing already
+    // bundled is charged for a second time.
+    if (service.videoOptions && !tier.enquireOnly) {
+        const video = selection.video || {};
+        const reelQty = Math.max(0, Number(video.reelQty) || 0);
+        const chargeableReels = Math.max(0, reelQty - (tier.includedReels || 0));
+        const format = service.videoOptions.reelFormats.find((item) => item.id === video.reelFormat)
+            || service.videoOptions.reelFormats[0];
+
+        if (chargeableReels > 0) {
+            const amount = chargeableReels * format.price;
+            lines.push({
+                label: `${chargeableReels} × ${format.label}`,
+                detail: (tier.includedReels ? `${tier.includedReels} already included` : 'Added to your package'),
+                amount: amount
+            });
+            subtotal += amount;
+        } else if (reelQty > 0) {
+            lines.push({ label: `${reelQty} × ${format.label}`, detail: 'Included in this package', amount: 0 });
+        }
+
+        const film = service.videoOptions.films.find((item) => item.id === video.filmLength);
+
+        if (film && film.id !== 'none') {
+            if (tier.includedFilm === film.id) {
+                lines.push({ label: film.label, detail: 'Included in this package', amount: 0 });
+            } else {
+                lines.push({ label: film.label, detail: 'Upgrade on this package', amount: film.price });
+                subtotal += film.price;
+            }
+        }
+    }
+
+    // Add-ons.
+    const available = getAddOnList(service, selection.groupId);
+
+    available.forEach((addOn) => {
+        const qty = Number((selection.addOns || {})[addOn.id]) || 0;
+
+        if (qty <= 0) {
+            return;
+        }
+
+        if (addOn.note) {
+            notes.push(addOn.note);
+        }
+
+        if (addOn.fromPrice) {
+            // Real figure depends on approval or scope, so it cannot sit in a total.
+            lines.push({
+                label: addOn.label,
+                detail: `from ${PRICING_CONFIG.currency} ${formatAed(addOn.price)} — quoted separately`,
+                amount: null
+            });
+            mode = mode === 'enquire' ? 'enquire' : 'from';
+            return;
+        }
+
+        const amount = qty * addOn.price;
+        const unit = addOn.unit && qty > 1 ? ` (${qty} ${addOn.unit}s)` : (qty > 1 ? ` × ${qty}` : '');
+        lines.push({ label: addOn.label + unit, detail: addOn.atCost ? 'Third-party fees extra' : '', amount: amount });
+        subtotal += amount;
+    });
+
+    if (service.rawFilesIncluded && tier.rawValue) {
+        lines.push({
+            label: 'Raw files',
+            detail: `Included — a ${PRICING_CONFIG.currency} ${formatAed(tier.rawValue)} add-on elsewhere`,
+            amount: 0
+        });
+    }
+
+    let vatAmount = 0;
+
+    if (PRICING_CONFIG.vatRegistered === true) {
+        if (service.vatMode === 'exclusive') {
+            vatAmount = Math.round(subtotal * PRICING_CONFIG.vatRate);
+            lines.push({ label: 'VAT (5%)', detail: '', amount: vatAmount });
+        } else {
+            notes.push('Prices include VAT.');
+        }
+    }
+
+    const total = subtotal + vatAmount;
+    let headline;
+
+    if (mode === 'enquire') {
+        headline = 'Custom quote';
+    } else if (mode === 'from') {
+        headline = `From ${PRICING_CONFIG.currency} ${formatAed(total)}`;
+    } else {
+        headline = `${PRICING_CONFIG.currency} ${formatAed(total)}`;
+    }
+
+    return { mode: mode, tier: tier, lines: lines, subtotal: subtotal, total: total, notes: notes, headline: headline };
+}
+
+function initServiceConfigurator() {
+    const container = document.querySelector('.services-container');
+    const panel = document.getElementById('serviceConfigurator');
+
+    if (!container || !panel || typeof SERVICE_PRICING === 'undefined') {
+        return;
+    }
+
+    const cards = Array.from(container.querySelectorAll('.service[data-service]'));
+
+    if (!cards.length) {
+        return;
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeKey = null;
+    let activeCard = null;
+    let selection = null;
+    let liveTimer = null;
+
+    cards.forEach((card) => {
+        const toggle = card.querySelector('.service-toggle');
+        const key = card.dataset.service;
+        const service = SERVICE_PRICING[key];
+
+        if (!toggle || !service) {
+            return;
+        }
+
+        toggle.hidden = false;
+
+        // Advertise the real floor instead of the old wide range.
+        const priceEl = card.querySelector('[data-price-range]');
+        const tiers = service.groups ? service.groups[0].tiers : service.tiers;
+        const cheapest = tiers.reduce((low, tier) => (tier.price < low.price ? tier : low), tiers[0]);
+
+        if (priceEl) {
+            priceEl.textContent = `From ${PRICING_CONFIG.currency} ${formatAed(cheapest.price)}`
+                + (cheapest.perImage ? ' per image' : '');
+        }
+    });
+
+    function defaultSelection(key) {
+        const service = SERVICE_PRICING[key];
+        const groupId = service.groups ? service.groups[0].id : null;
+        const tiers = getTierList(service, groupId);
+        const preferred = tiers.find((tier) => tier.popular) || tiers[0];
+        const state = { groupId: groupId, tierId: preferred.id, extraEdits: 0, addOns: {} };
+
+        if (preferred.perPerson) {
+            state.people = preferred.includedPeople;
+        }
+
+        if (service.videoOptions) {
+            const reel = service.videoOptions.reelFormats.find((item) => item.recommended);
+            const film = service.videoOptions.films.find((item) => item.recommended);
+            state.video = {
+                reelFormat: reel ? reel.id : service.videoOptions.reelFormats[0].id,
+                reelQty: preferred.includedReels || 0,
+                filmLength: preferred.includedFilm || (film ? film.id : 'none')
+            };
+        }
+
+        return state;
+    }
+
+    function positionPanelForCard(card) {
+        const wasHidden = panel.hidden;
+
+        // Measure with the panel out of flow, or its own height skews the row test.
+        panel.hidden = true;
+        void container.offsetHeight;
+
+        const rowTop = card.offsetTop;
+        let last = cards.indexOf(card);
+
+        while (last + 1 < cards.length && cards[last + 1].offsetTop === rowTop) {
+            last += 1;
+        }
+
+        const anchor = cards[last + 1] || null;
+
+        // Moving the node re-parents it and drops focus, so only move it if the
+        // slot actually changed.
+        if (panel.nextElementSibling !== anchor || panel.parentElement !== container) {
+            container.insertBefore(panel, anchor);
+        }
+
+        panel.hidden = wasHidden ? true : false;
+    }
+
+    function renderList(items, className) {
+        return items.map((item) => `<li class="${className}">${escapeConfigHtml(item)}</li>`).join('');
+    }
+
+    function breakdownHtml(quote) {
+        return quote.lines.map((line) => `
+            <div class="config-line">
+                <span class="config-line-label">${escapeConfigHtml(line.label)}
+                    ${line.detail ? `<small>${escapeConfigHtml(line.detail)}</small>` : ''}</span>
+                <span class="config-line-amount">${line.amount === null
+                    ? 'quoted separately'
+                    : (line.amount === 0 ? 'included' : PRICING_CONFIG.currency + ' ' + formatAed(line.amount))}</span>
+            </div>`).join('');
+    }
+
+    function render() {
+        const service = SERVICE_PRICING[activeKey];
+        const quote = computeQuote(activeKey, selection);
+        const tiers = getTierList(service, selection.groupId);
+        const tier = quote.tier;
+        const addOns = getAddOnList(service, selection.groupId);
+
+        const groupHtml = service.groups ? `
+            <div class="config-groups" role="group" aria-label="Type of coverage">
+                ${service.groups.map((group) => `
+                    <button type="button" class="config-group${group.id === selection.groupId ? ' is-active' : ''}"
+                            data-group="${group.id}" aria-pressed="${group.id === selection.groupId}">
+                        ${escapeConfigHtml(group.label)}
+                    </button>`).join('')}
+            </div>` : '';
+
+        const tiersHtml = `
+            <div class="config-tiers" role="radiogroup" aria-label="Choose a package">
+                ${tiers.map((item) => `
+                    <label class="config-choice">
+                        <input type="radio" name="configTier" value="${item.id}"${item.id === tier.id ? ' checked' : ''}>
+                        <span class="config-choice-body">
+                            ${item.popular ? '<span class="config-badge">Most booked</span>' : ''}
+                            <strong>${escapeConfigHtml(item.name)}</strong>
+                            <span class="config-choice-price">${item.enquireOnly || item.fromPrice
+                                ? 'from ' + PRICING_CONFIG.currency + ' ' + formatAed(item.price) + (item.perImage ? ' / image' : '')
+                                : PRICING_CONFIG.currency + ' ' + formatAed(item.price)}</span>
+                            <small>${escapeConfigHtml(item.includes.slice(0, 2).join(' · '))}</small>
+                        </span>
+                    </label>`).join('')}
+            </div>`;
+
+        const canSlide = service.extraEditPrice > 0 && !tier.enquireOnly;
+        const sliderHtml = canSlide ? `
+            <div class="config-slider">
+                <label class="config-slider-label" id="extraEditsLabel" for="extraEdits">
+                    Extra edited images
+                    <span class="config-slider-rate">${PRICING_CONFIG.currency} ${formatAed(service.extraEditPrice)} each</span>
+                </label>
+                <div class="config-slider-row">
+                    <button type="button" class="config-step" data-step="-1" aria-label="One fewer extra image">&minus;</button>
+                    <input type="range" id="extraEdits" min="0" max="${PRICING_CONFIG.maxExtraEdits}" step="1"
+                           value="${selection.extraEdits}" aria-labelledby="extraEditsLabel"
+                           aria-valuetext="${selection.extraEdits} extra images">
+                    <button type="button" class="config-step" data-step="1" aria-label="One more extra image">+</button>
+                    <output class="config-slider-readout" aria-hidden="true">${selection.extraEdits}</output>
+                </div>
+                <p class="config-slider-total">
+                    ${tier.includedEdits || 0} included + ${selection.extraEdits} extra =
+                    <strong>${(tier.includedEdits || 0) + selection.extraEdits} edited images</strong>
+                </p>
+            </div>` : '';
+
+        const peopleHtml = tier.perPerson ? `
+            <div class="config-slider">
+                <label class="config-slider-label" for="teamPeople">
+                    Team size
+                    <span class="config-slider-rate">${PRICING_CONFIG.currency} ${formatAed(tier.perPerson)} per person past ${tier.includedPeople}</span>
+                </label>
+                <div class="config-slider-row">
+                    <button type="button" class="config-step" data-people="-1" aria-label="One fewer person">&minus;</button>
+                    <input type="number" id="teamPeople" min="${tier.minPeople}" max="60" step="1"
+                           value="${selection.people || tier.includedPeople}" inputmode="numeric">
+                    <button type="button" class="config-step" data-people="1" aria-label="One more person">+</button>
+                </div>
+                <p class="config-slider-total">Minimum ${tier.minPeople} people</p>
+            </div>` : '';
+
+        const videoHtml = service.videoOptions && !tier.enquireOnly ? `
+            <div class="config-block">
+                <h5>Reel format</h5>
+                <div class="config-pills" role="radiogroup" aria-label="Reel format">
+                    ${service.videoOptions.reelFormats.map((item) => `
+                        <label class="config-pill">
+                            <input type="radio" name="reelFormat" value="${item.id}"${selection.video.reelFormat === item.id ? ' checked' : ''}>
+                            <span>${escapeConfigHtml(item.label)}</span>
+                        </label>`).join('')}
+                </div>
+                <div class="config-slider-row config-inline">
+                    <span>How many reels?</span>
+                    <button type="button" class="config-step" data-reel="-1" aria-label="One fewer reel">&minus;</button>
+                    <output class="config-slider-readout">${selection.video.reelQty}</output>
+                    <button type="button" class="config-step" data-reel="1" aria-label="One more reel">+</button>
+                </div>
+                <h5>Candid film</h5>
+                <div class="config-pills" role="radiogroup" aria-label="Candid film length">
+                    ${service.videoOptions.films.map((item) => `
+                        <label class="config-pill">
+                            <input type="radio" name="filmLength" value="${item.id}"${selection.video.filmLength === item.id ? ' checked' : ''}>
+                            <span>${escapeConfigHtml(item.label)}</span>
+                        </label>`).join('')}
+                </div>
+            </div>` : '';
+
+        const addOnsHtml = addOns.length && !tier.enquireOnly ? `
+            <div class="config-block">
+                <h5>Add-ons</h5>
+                <div class="config-addons">
+                    ${addOns.map((addOn) => {
+                        const qty = Number((selection.addOns || {})[addOn.id]) || 0;
+                        const priceLabel = (addOn.fromPrice ? 'from ' : '') + PRICING_CONFIG.currency + ' ' + formatAed(addOn.price);
+
+                        if (addOn.type === 'stepper') {
+                            return `
+                                <div class="config-addon config-addon-stepper">
+                                    <span class="config-addon-name">${escapeConfigHtml(addOn.label)}
+                                        <small>${priceLabel}${addOn.unit ? ' per ' + addOn.unit : ''}</small></span>
+                                    <span class="config-slider-row">
+                                        <button type="button" class="config-step" data-addon-step="${addOn.id}" data-delta="-1"
+                                                aria-label="Fewer: ${escapeConfigHtml(addOn.label)}">&minus;</button>
+                                        <output class="config-slider-readout">${qty}</output>
+                                        <button type="button" class="config-step" data-addon-step="${addOn.id}" data-delta="1"
+                                                aria-label="More: ${escapeConfigHtml(addOn.label)}">+</button>
+                                    </span>
+                                </div>`;
+                        }
+
+                        return `
+                            <label class="config-addon">
+                                <input type="checkbox" data-addon="${addOn.id}"${qty ? ' checked' : ''}>
+                                <span class="config-addon-name">${escapeConfigHtml(addOn.label)}
+                                    <small>${priceLabel}${addOn.atCost ? ' + fees at cost' : ''}</small></span>
+                            </label>`;
+                    }).join('')}
+                </div>
+            </div>` : '';
+
+        const breakdown = breakdownHtml(quote);
+
+        panel.innerHTML = `
+            <div class="config-head">
+                <div>
+                    <p class="config-kicker">Build your package</p>
+                    <h4>${escapeConfigHtml(service.cardTitle)}</h4>
+                </div>
+                <button type="button" class="config-close" aria-label="Close package builder">Close</button>
+            </div>
+            ${groupHtml}
+            ${tiersHtml}
+            <div class="config-body">
+                <div class="config-controls">
+                    ${sliderHtml}
+                    ${peopleHtml}
+                    ${videoHtml}
+                    ${addOnsHtml}
+                </div>
+                <aside class="config-summary">
+                    <p class="config-total-label">Your estimate</p>
+                    <p class="config-total" data-config-total>${quote.headline}</p>
+                    <div class="config-breakdown">${breakdown}</div>
+                    ${quote.notes.length ? `<ul class="config-notes">${renderList(quote.notes, 'config-note')}</ul>` : ''}
+                    <div class="config-includes">
+                        <strong>Included</strong>
+                        <ul>${renderList(tier.includes, 'config-inc')}</ul>
+                        ${tier.excludes && tier.excludes.length
+                            ? `<strong>Not included</strong><ul>${renderList(tier.excludes, 'config-exc')}</ul>` : ''}
+                    </div>
+                    <div class="config-actions">
+                        <a class="btn btn-whatsapp" data-config-whatsapp href="#" target="_blank" rel="noopener noreferrer">
+                            ${quote.mode === 'enquire' ? 'Ask Kamzy for a quote' : 'Send this on WhatsApp'}
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-config-enquiry>Add to my enquiry</button>
+                    </div>
+                    <p class="config-disclaimer">${escapeConfigHtml(PRICING_CONFIG.estimateDisclaimer)}
+                        Prices updated ${escapeConfigHtml(PRICING_CONFIG.pricesUpdated)}.
+                        Not VAT-registered — the price you see is the price you pay.</p>
+                </aside>
+            </div>
+            <p class="config-live sr-only" role="status" aria-live="polite"></p>`;
+
+        const link = panel.querySelector('[data-config-whatsapp]');
+        link.href = buildWhatsAppUrl(buildConfigMessage(service, quote));
+
+        announceTotal(quote.headline);
+    }
+
+    function announceTotal(text) {
+        const live = panel.querySelector('.config-live');
+
+        if (!live) {
+            return;
+        }
+
+        window.clearTimeout(liveTimer);
+        liveTimer = window.setTimeout(() => {
+            live.textContent = `Estimate ${text}`;
+        }, 500);
+    }
+
+    function buildConfigMessage(service, quote) {
+        const lines = ['Hi Kamzy — I built this package on your site:', '', `Service: ${service.cardTitle}`];
+
+        quote.lines.forEach((line) => {
+            const amount = line.amount === null
+                ? 'quoted separately'
+                : (line.amount === 0 ? 'included' : `${PRICING_CONFIG.currency} ${formatAed(line.amount)}`);
+            lines.push(`- ${line.label}: ${amount}`);
+        });
+
+        lines.push('', `Estimated total: ${quote.headline}`, PRICING_CONFIG.estimateDisclaimer);
+
+        return lines.join('\n');
+    }
+
+    function openCard(card) {
+        const key = card.dataset.service;
+
+        if (!SERVICE_PRICING[key]) {
+            return;
+        }
+
+        cards.forEach((item) => {
+            const toggle = item.querySelector('.service-toggle');
+            const isTarget = item === card;
+            item.classList.toggle('is-open', isTarget);
+
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', String(isTarget));
+            }
+        });
+
+        activeKey = key;
+        activeCard = card;
+        selection = defaultSelection(key);
+
+        const heading = card.querySelector('h3');
+
+        if (heading && heading.id) {
+            panel.setAttribute('aria-labelledby', heading.id);
+        }
+
+        render();
+        panel.hidden = false;
+        positionPanelForCard(card);
+        panel.focus({ preventScroll: true });
+        // Put the opened card just below the fixed header so the card and the top
+        // of its panel are both in view. Computed after a frame so the freshly
+        // inserted panel has been laid out, and scrolled instantly: a smooth
+        // scroll races the surrounding content still settling and overshoots.
+        // scroll-margin-top on .service keeps the card clear of the fixed header.
+        // A second pass covers lazy images above settling and shifting the page.
+        const settle = () => card.scrollIntoView({ block: 'start', behavior: 'auto' });
+
+        window.requestAnimationFrame(settle);
+        window.setTimeout(settle, 200);
+        window.setTimeout(settle, 500);
+    }
+
+    function closePanel(returnFocus) {
+        if (!activeCard) {
+            return;
+        }
+
+        const toggle = activeCard.querySelector('.service-toggle');
+
+        activeCard.classList.remove('is-open');
+
+        if (toggle) {
+            toggle.setAttribute('aria-expanded', 'false');
+
+            if (returnFocus) {
+                toggle.focus({ preventScroll: true });
+            }
+        }
+
+        panel.hidden = true;
+        panel.innerHTML = '';
+        activeKey = null;
+        activeCard = null;
+        selection = null;
+    }
+
+    container.addEventListener('click', (event) => {
+        if (event.target.closest('.service-config')) {
+            return;
+        }
+
+        const card = event.target.closest('.service[data-service]');
+
+        if (!card) {
+            return;
+        }
+
+        if (card === activeCard) {
+            closePanel(true);
+            return;
+        }
+
+        openCard(card);
+    });
+
+    panel.addEventListener('click', (event) => {
+        const target = event.target;
+
+        if (target.closest('.config-close')) {
+            closePanel(true);
+            return;
+        }
+
+        const group = target.closest('[data-group]');
+
+        if (group) {
+            selection = defaultSelection(activeKey);
+            selection.groupId = group.dataset.group;
+            const tiers = getTierList(SERVICE_PRICING[activeKey], selection.groupId);
+            selection.tierId = (tiers.find((tier) => tier.popular) || tiers[0]).id;
+            render();
+            return;
+        }
+
+        const step = target.closest('[data-step]');
+
+        if (step) {
+            const max = PRICING_CONFIG.maxExtraEdits;
+            selection.extraEdits = Math.min(max, Math.max(0, selection.extraEdits + Number(step.dataset.step)));
+            render();
+            return;
+        }
+
+        const people = target.closest('[data-people]');
+
+        if (people) {
+            const tier = computeQuote(activeKey, selection).tier;
+            const next = (selection.people || tier.includedPeople) + Number(people.dataset.people);
+            selection.people = Math.min(60, Math.max(tier.minPeople, next));
+            render();
+            return;
+        }
+
+        const reel = target.closest('[data-reel]');
+
+        if (reel) {
+            selection.video.reelQty = Math.min(6, Math.max(0, selection.video.reelQty + Number(reel.dataset.reel)));
+            render();
+            return;
+        }
+
+        const addonStep = target.closest('[data-addon-step]');
+
+        if (addonStep) {
+            const id = addonStep.dataset.addonStep;
+            const current = Number(selection.addOns[id]) || 0;
+            selection.addOns[id] = Math.min(10, Math.max(0, current + Number(addonStep.dataset.delta)));
+            render();
+            return;
+        }
+
+        if (target.closest('[data-config-enquiry]')) {
+            sendToBookingForm();
+        }
+    });
+
+    panel.addEventListener('change', (event) => {
+        const target = event.target;
+
+        if (target.name === 'configTier') {
+            const keep = selection.extraEdits;
+            selection = Object.assign(defaultSelection(activeKey), { groupId: selection.groupId });
+            selection.tierId = target.value;
+            selection.extraEdits = keep;
+            render();
+            return;
+        }
+
+        if (target.name === 'reelFormat') {
+            selection.video.reelFormat = target.value;
+            render();
+            return;
+        }
+
+        if (target.name === 'filmLength') {
+            selection.video.filmLength = target.value;
+            render();
+            return;
+        }
+
+        if (target.id === 'teamPeople') {
+            selection.people = Number(target.value) || 0;
+            render();
+            return;
+        }
+
+        if (target.dataset.addon) {
+            selection.addOns[target.dataset.addon] = target.checked ? 1 : 0;
+            render();
+        }
+    });
+
+    // Live drag: update the visible number without re-rendering the whole panel.
+    panel.addEventListener('input', (event) => {
+        if (event.target.id !== 'extraEdits') {
+            return;
+        }
+
+        const value = Number(event.target.value);
+        selection.extraEdits = value;
+        event.target.setAttribute('aria-valuetext', `${value} extra images`);
+        event.target.style.setProperty('--range-fill', `${(value / PRICING_CONFIG.maxExtraEdits) * 100}%`);
+
+        const quote = computeQuote(activeKey, selection);
+        const totalEl = panel.querySelector('[data-config-total]');
+        const readout = panel.querySelector('.config-slider-readout');
+        const running = panel.querySelector('.config-slider-total');
+
+        if (totalEl) {
+            totalEl.textContent = quote.headline;
+        }
+
+        if (readout) {
+            readout.textContent = value;
+        }
+
+        if (running) {
+            const included = quote.tier.includedEdits || 0;
+            running.innerHTML = `${included} included + ${value} extra = <strong>${included + value} edited images</strong>`;
+        }
+
+        const link = panel.querySelector('[data-config-whatsapp]');
+
+        if (link) {
+            link.href = buildWhatsAppUrl(buildConfigMessage(SERVICE_PRICING[activeKey], quote));
+        }
+
+        // Refresh the itemised lines in place. A full re-render here would
+        // replace the range input mid-interaction and drop keyboard focus,
+        // so arrow keys would only ever register one step.
+        const breakdown = panel.querySelector('.config-breakdown');
+
+        if (breakdown) {
+            breakdown.innerHTML = breakdownHtml(quote);
+        }
+
+        announceTotal(quote.headline);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && activeCard) {
+            closePanel(true);
+        }
+    });
+
+    if ('ResizeObserver' in window) {
+        let frame = null;
+        let lastWidth = 0;
+        const observer = new ResizeObserver((entries) => {
+            const width = Math.round(entries[0].contentRect.width);
+
+            // Height changes come from the panel's own content and must not
+            // trigger a reposition; only a width change can alter the columns.
+            if (width === lastWidth) {
+                return;
+            }
+
+            lastWidth = width;
+
+            if (!activeCard) {
+                return;
+            }
+
+            window.cancelAnimationFrame(frame);
+            frame = window.requestAnimationFrame(() => positionPanelForCard(activeCard));
+        });
+
+        observer.observe(container);
+    }
+
+    function sendToBookingForm() {
+        const service = SERVICE_PRICING[activeKey];
+        const quote = computeQuote(activeKey, selection);
+        const form = document.getElementById('contactForm');
+
+        if (!form) {
+            return;
+        }
+
+        const setRadio = (name, value) => {
+            const radio = form.querySelector(`input[name="${name}"][value="${value}"]`);
+
+            if (radio) {
+                radio.checked = true;
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        };
+
+        setRadio('serviceType', service.formBucket);
+
+        const wantsVideo = Boolean(service.videoOptions)
+            || (selection.video && selection.video.filmLength && selection.video.filmLength !== 'none');
+        setRadio('coverageType', service.coverage === 'Video' ? 'Video' : (wantsVideo ? 'Photo + Video' : service.coverage));
+
+        const budget = quote.total >= 10000 ? 'AED 10,000+'
+            : quote.total >= 5000 ? 'AED 5,000-10,000'
+            : quote.total >= 3000 ? 'AED 3,000-5,000'
+            : quote.total >= 1000 ? 'AED 1,000-3,000' : 'AED 300-1,000';
+        setRadio('budgetRange', budget);
+
+        const configured = document.getElementById('configuredPackage');
+        const text = `${service.cardTitle} — ${quote.tier.name}`
+            + (selection.extraEdits ? `, +${selection.extraEdits} edited images` : '')
+            + ` — ${quote.headline}`;
+
+        if (configured) {
+            configured.value = text;
+            configured.defaultValue = text;
+            configured.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        const source = form.querySelector('input[name="inquirySource"]');
+
+        if (source) {
+            source.value = 'Service configurator';
+        }
+
+        const contact = document.getElementById('contact');
+
+        if (contact) {
+            contact.classList.add('visible');
+            window.requestAnimationFrame(() => {
+                contact.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+            });
+        }
+    }
+}
+
+function escapeConfigHtml(value) {
+    return String(value === undefined || value === null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initHeroVideo();
     initCameraCursor();
     initPortfolioGallery();
     initContactForm();
+    initServiceConfigurator();
     initSectionHighlight();
     initScrollReveal();
     initMobileMenu();

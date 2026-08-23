@@ -1043,7 +1043,14 @@ body[data-theme='light'] .hero-video-main {
 .services-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: start;
     gap: 1rem;
+}
+
+@media (max-width: 700px) {
+    .services-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 .service {
@@ -2311,4 +2318,602 @@ body[data-theme='light'] .theme-toggle-knob {
     .hero-cta-row .btn-whatsapp {
         display: none;
     }
+}
+
+
+/* ==========================================================================
+   Service configurator
+   ========================================================================== */
+
+.service {
+    cursor: pointer;
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
+.service.is-open,
+.service.is-open:hover {
+    transform: none;
+    border-color: rgba(83, 231, 255, 0.55);
+}
+
+.service-toggle {
+    margin-top: 0.7rem;
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(83, 231, 255, 0.4);
+    background: rgba(16, 24, 43, 0.66);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.service-toggle:hover {
+    background: rgba(24, 36, 60, 0.85);
+    border-color: rgba(83, 231, 255, 0.7);
+}
+
+.service-toggle:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.service-config {
+    grid-column: 1 / -1;
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+    padding: 1.2rem;
+    border-radius: 24px;
+    border: 1px solid rgba(145, 186, 255, 0.18);
+    background:
+        radial-gradient(circle at top left, rgba(83, 231, 255, 0.06), transparent 30%),
+        rgba(9, 15, 30, 0.58);
+    animation: bookingStepIn 0.35s ease;
+}
+
+.service-config[hidden] {
+    display: none;
+}
+
+.service-config:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.config-kicker {
+    color: var(--accent);
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.config-head h4 {
+    font-size: clamp(1.2rem, 1vw + 1rem, 1.6rem);
+}
+
+.config-close {
+    border: 1px solid rgba(145, 186, 255, 0.28);
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.config-close:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+}
+
+.config-group {
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(145, 186, 255, 0.22);
+    background: rgba(13, 20, 38, 0.68);
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.config-group.is-active {
+    color: var(--text);
+    border-color: rgba(83, 231, 255, 0.5);
+    background: rgba(20, 34, 56, 0.9);
+}
+
+.config-group:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.7rem;
+    margin-bottom: 1.1rem;
+}
+
+.config-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.config-choice-body {
+    position: relative;
+    display: grid;
+    gap: 0.3rem;
+    height: 100%;
+    padding: 0.9rem;
+    border-radius: 18px;
+    border: 1px solid rgba(145, 186, 255, 0.18);
+    background: rgba(13, 20, 38, 0.68);
+    cursor: pointer;
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.config-choice:hover .config-choice-body {
+    border-color: rgba(83, 231, 255, 0.34);
+}
+
+.config-choice input:focus-visible + .config-choice-body {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-choice input:checked + .config-choice-body {
+    border-color: rgba(83, 231, 255, 0.48);
+    background: linear-gradient(145deg, rgba(14, 28, 49, 0.9), rgba(11, 20, 37, 0.88));
+    box-shadow: 0 18px 32px rgba(6, 14, 28, 0.34), 0 0 0 1px rgba(83, 231, 255, 0.12);
+}
+
+.config-choice-body strong {
+    font-size: 1rem;
+}
+
+.config-choice-body small {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.config-choice-price {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.config-badge {
+    justify-self: start;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(83, 231, 255, 0.16);
+    color: var(--accent);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.config-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 1.2rem;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .config-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+.config-controls {
+    display: grid;
+    gap: 1rem;
+}
+
+.config-block h5 {
+    font-size: 0.86rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.config-slider-label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: baseline;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.config-slider-rate {
+    color: var(--accent);
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.config-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.config-inline {
+    margin-top: 0.6rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.config-step {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(145, 186, 255, 0.28);
+    background: rgba(13, 20, 38, 0.75);
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.config-step:hover {
+    border-color: rgba(83, 231, 255, 0.55);
+}
+
+.config-step:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-slider input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    touch-action: pan-y;
+    background: linear-gradient(
+        90deg,
+        var(--accent) 0 var(--range-fill, 0%),
+        rgba(145, 186, 255, 0.18) var(--range-fill, 0%) 100%
+    );
+    cursor: pointer;
+}
+
+/* These two cannot share a selector list: one unknown pseudo-element would
+   invalidate the whole rule in every browser. */
+.config-slider input[type="range"]::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 8px;
+}
+
+.config-slider input[type="range"]::-moz-range-track {
+    background: transparent;
+    height: 8px;
+}
+
+.config-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    margin-top: -9px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--surface-strong);
+    cursor: grab;
+}
+
+.config-slider input[type="range"]::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--surface-strong);
+    cursor: grab;
+}
+
+.config-slider input[type="range"]:focus-visible {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 4px;
+}
+
+.config-slider-readout {
+    min-width: 2.4rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.config-slider-total {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.config-slider input[type="number"] {
+    width: 5.5rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 11px;
+    border: 1px solid rgba(145, 186, 255, 0.24);
+    background: rgba(9, 15, 30, 0.6);
+    color: var(--text);
+    text-align: center;
+    font-weight: 700;
+}
+
+.config-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.config-pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.config-pill span {
+    display: inline-block;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(145, 186, 255, 0.22);
+    background: rgba(13, 20, 38, 0.68);
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    cursor: pointer;
+}
+
+.config-pill input:checked + span {
+    color: var(--text);
+    border-color: rgba(83, 231, 255, 0.5);
+    background: rgba(20, 34, 56, 0.9);
+}
+
+.config-pill input:focus-visible + span {
+    outline: 2px solid rgba(83, 231, 255, 0.65);
+    outline-offset: 2px;
+}
+
+.config-addons {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.config-addon {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 14px;
+    border: 1px solid rgba(145, 186, 255, 0.14);
+    background: rgba(13, 20, 38, 0.5);
+    cursor: pointer;
+}
+
+.config-addon-stepper {
+    justify-content: space-between;
+}
+
+.config-addon input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+    flex: none;
+}
+
+.config-addon-name {
+    display: grid;
+    gap: 0.1rem;
+    font-size: 0.92rem;
+}
+
+.config-addon-name small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.config-summary {
+    padding: 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(145, 186, 255, 0.18);
+    background: rgba(9, 15, 30, 0.68);
+}
+
+.config-total-label {
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.config-total {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 2vw + 1rem, 2.5rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+    margin-bottom: 0.7rem;
+}
+
+.config-breakdown {
+    display: grid;
+    gap: 0.4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(145, 186, 255, 0.14);
+}
+
+.config-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.config-line-label {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.config-line-label small {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.config-line-amount {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.config-notes {
+    margin-top: 0.6rem;
+    padding-left: 1rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.config-includes {
+    margin-top: 0.8rem;
+    font-size: 0.86rem;
+}
+
+.config-includes strong {
+    display: block;
+    margin: 0.6rem 0 0.3rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.config-includes ul {
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+}
+
+.config-inc::marker {
+    color: var(--accent);
+}
+
+.config-actions {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.config-actions .btn {
+    width: 100%;
+}
+
+.config-disclaimer {
+    margin-top: 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+
+/* Service configurator — light theme */
+body[data-theme='light'] .service {
+    border-color: rgba(143, 103, 50, 0.22);
+}
+
+body[data-theme='light'] .service:hover {
+    box-shadow: 0 16px 32px rgba(143, 103, 50, 0.18);
+    border-color: rgba(143, 103, 50, 0.45);
+}
+
+body[data-theme='light'] .service.is-open,
+body[data-theme='light'] .service.is-open:hover {
+    border-color: rgba(143, 103, 50, 0.6);
+}
+
+body[data-theme='light'] .service-toggle {
+    border-color: rgba(143, 103, 50, 0.4);
+    background: rgba(255, 252, 245, 0.9);
+}
+
+body[data-theme='light'] .service-toggle:hover {
+    background: rgba(244, 234, 216, 0.95);
+    border-color: rgba(143, 103, 50, 0.7);
+}
+
+body[data-theme='light'] .service-config {
+    border-color: rgba(143, 103, 50, 0.2);
+    background:
+        radial-gradient(circle at top left, rgba(207, 173, 117, 0.14), transparent 30%),
+        rgba(255, 253, 248, 0.92);
+}
+
+body[data-theme='light'] .config-choice-body,
+body[data-theme='light'] .config-group,
+body[data-theme='light'] .config-pill span,
+body[data-theme='light'] .config-step,
+body[data-theme='light'] .config-addon,
+body[data-theme='light'] .config-summary,
+body[data-theme='light'] .config-slider input[type="number"] {
+    border-color: rgba(143, 103, 50, 0.22);
+    background: rgba(255, 252, 245, 0.9);
+}
+
+body[data-theme='light'] .config-choice input:checked + .config-choice-body {
+    border-color: rgba(143, 103, 50, 0.55);
+    background: linear-gradient(145deg, rgba(247, 238, 222, 0.95), rgba(252, 248, 240, 0.95));
+    box-shadow: 0 18px 32px rgba(143, 103, 50, 0.14), 0 0 0 1px rgba(143, 103, 50, 0.16);
+}
+
+body[data-theme='light'] .config-group.is-active,
+body[data-theme='light'] .config-pill input:checked + span {
+    border-color: rgba(143, 103, 50, 0.55);
+    background: rgba(244, 234, 216, 0.95);
+}
+
+body[data-theme='light'] .config-badge {
+    background: rgba(143, 103, 50, 0.14);
+}
+
+body[data-theme='light'] .config-slider input[type="range"] {
+    background: linear-gradient(
+        90deg,
+        var(--accent) 0 var(--range-fill, 0%),
+        rgba(143, 103, 50, 0.2) var(--range-fill, 0%) 100%
+    );
+}
+
+body[data-theme='light'] .config-breakdown {
+    border-bottom-color: rgba(143, 103, 50, 0.18);
+}
+
+body[data-theme='light'] .service-toggle:focus-visible,
+body[data-theme='light'] .config-step:focus-visible,
+body[data-theme='light'] .config-close:focus-visible,
+body[data-theme='light'] .config-group:focus-visible,
+body[data-theme='light'] .service-config:focus-visible,
+body[data-theme='light'] .config-slider input[type="range"]:focus-visible,
+body[data-theme='light'] .config-choice input:focus-visible + .config-choice-body,
+body[data-theme='light'] .config-pill input:focus-visible + span {
+    outline-color: rgba(143, 103, 50, 0.85);
 }

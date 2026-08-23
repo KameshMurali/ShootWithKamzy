@@ -289,61 +289,81 @@
             <h2>Services &amp; Pricing</h2>
             <p class="section-subtitle">Flexible packages tailored for personal and commercial projects.</p>
             <div class="services-container">
-                <article class="service">
+                <article class="service" data-service="pre-wedding">
                     <img src="images/services/pre_wedding.webp" alt="Pre-wedding illustration" loading="lazy">
-                    <h3>Pre-Wedding Photography</h3>
+                    <h3 id="svc-pre-wedding-title">Pre-Wedding Photography</h3>
                     <p>Intimate storytelling sessions before your big day.</p>
-                    <p class="price-range">AED 1,000-2,000</p>
+                    <p class="price-range" data-price-range>From AED 1,500</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="post-wedding">
                     <img src="images/services/post_wedding.webp" alt="Post-wedding illustration" loading="lazy">
-                    <h3>Post-Wedding Sessions</h3>
+                    <h3 id="svc-post-wedding-title">Post-Wedding Sessions</h3>
                     <p>Relaxed portraits in your favorite locations.</p>
-                    <p class="price-range">AED 1,500-5,000</p>
+                    <p class="price-range" data-price-range>From AED 1,500</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="wedding-event">
                     <img src="images/services/events.webp" alt="Events illustration" loading="lazy">
-                    <h3>Wedding &amp; Event Coverage</h3>
+                    <h3 id="svc-wedding-event-title">Wedding &amp; Event Coverage</h3>
                     <p>Full photo and video coverage for celebrations and corporate events.</p>
-                    <p class="price-range">AED 1,500-8,000</p>
+                    <p class="price-range" data-price-range>From AED 2,400</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="model-portfolio">
                     <img src="images/services/model_portfolio.webp" alt="Model portfolio illustration" loading="lazy">
-                    <h3>Model Portfolio Sessions</h3>
+                    <h3 id="svc-model-portfolio-title">Model Portfolio Sessions</h3>
                     <p>High-impact portfolio shoots with styling guidance.</p>
-                    <p class="price-range">AED 1,500-5,000</p>
+                    <p class="price-range" data-price-range>From AED 900</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="videography">
                     <img src="images/services/videography.webp" alt="Videography illustration" loading="lazy">
-                    <h3>Videography</h3>
+                    <h3 id="svc-videography-title">Videography</h3>
                     <p>Dynamic visual production for reels, events, and campaigns.</p>
-                    <p class="price-range">AED 350-600/hr</p>
+                    <p class="price-range" data-price-range>From AED 1,800</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="headshots">
                     <img src="images/services/headshots.webp" alt="Headshots illustration" loading="lazy">
-                    <h3>Headshots &amp; Portraits</h3>
+                    <h3 id="svc-headshots-title">Headshots &amp; Portraits</h3>
                     <p>Professional portraits for personal branding and profiles.</p>
-                    <p class="price-range">AED 300-2,000</p>
+                    <p class="price-range" data-price-range>From AED 750</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="newborn">
                     <img src="images/services/baby.webp" alt="Baby and newborn illustration" loading="lazy">
-                    <h3>Baby &amp; Newborn Shoots</h3>
+                    <h3 id="svc-newborn-title">Baby &amp; Newborn Shoots</h3>
                     <p>Soft, patient sessions built for comfort and safety.</p>
-                    <p class="price-range">AED 800-1,500</p>
+                    <p class="price-range" data-price-range>From AED 1,200</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="product">
                     <img src="images/services/product.webp" alt="Product photography illustration" loading="lazy">
-                    <h3>Product Photography</h3>
+                    <h3 id="svc-product-title">Product Photography</h3>
                     <p>Clean studio-style visuals for e-commerce and social campaigns.</p>
-                    <p class="price-range">AED 200-650/photo</p>
+                    <p class="price-range" data-price-range>From AED 1,450</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
-                <article class="service">
+                <article class="service" data-service="automobile">
                     <img src="images/services/automobile.webp" alt="Automobile photography illustration" loading="lazy">
-                    <h3>Automobile Shoots</h3>
+                    <h3 id="svc-automobile-title">Automobile Shoots</h3>
                     <p>Sleek automotive imagery in urban and natural scenes.</p>
-                    <p class="price-range">AED 1,000-2,000</p>
+                    <p class="price-range" data-price-range>From AED 1,800</p>
+                    <button class="service-toggle" type="button" hidden
+                            aria-expanded="false" aria-controls="serviceConfigurator">Build your package</button>
                 </article>
             </div>
+            <section class="service-config" id="serviceConfigurator" hidden tabindex="-1"
+                     role="region" aria-label="Package builder"></section>
         </section>
 
         <section class="about reveal" id="about">
@@ -368,6 +388,7 @@
                 <form id="contactForm" class="booking-form" action="https://formspree.io/f/xwpkkrdj" method="POST" novalidate>
                     <input type="hidden" name="inquirySource" value="Guided booking flow">
                     <input type="hidden" name="inquirySummary" id="inquirySummary">
+                <input type="hidden" name="configuredPackage" id="configuredPackage">
 
                     <div class="booking-progress-shell">
                         <div class="booking-progress-bar" aria-hidden="true">
@@ -558,9 +579,16 @@
                                         </span>
                                     </label>
                                     <label class="booking-choice">
-                                        <input type="radio" name="budgetRange" value="AED 5,000+" required>
+                                        <input type="radio" name="budgetRange" value="AED 5,000-10,000" required>
                                         <span class="booking-choice-body">
-                                            <strong>AED 5,000+</strong>
+                                            <strong>AED 5,000-10,000</strong>
+                                            <small>Extended coverage or multi-deliverable work.</small>
+                                        </span>
+                                    </label>
+                                    <label class="booking-choice">
+                                        <input type="radio" name="budgetRange" value="AED 10,000+" required>
+                                        <span class="booking-choice-body">
+                                            <strong>AED 10,000+</strong>
                                             <small>Extended coverage or multi-deliverable work.</small>
                                         </span>
                                     </label>
@@ -660,6 +688,7 @@
     </div>
     <div class="camera-click-burst" id="cameraClickBurst" aria-hidden="true"></div>
 
+    <script src="scripts/pricing-data.js"></script>
     <script src="scripts/script.js"></script>
 </body>
 </html>
