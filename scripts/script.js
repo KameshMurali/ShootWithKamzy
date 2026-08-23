@@ -1365,7 +1365,7 @@ function initServiceConfigurator() {
     }
 
     function buildConfigMessage(service, quote) {
-        const lines = ['Hi Kamzy — I built this package on your site:', '', `Service: ${service.cardTitle}`];
+        const lines = ['Hi Kamzy - I built this package on your site as per my requirement:', '', `Service: ${service.cardTitle}`];
 
         quote.lines.forEach((line) => {
             const amount = line.amount === null

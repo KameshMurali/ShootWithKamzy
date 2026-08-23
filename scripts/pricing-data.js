@@ -59,7 +59,7 @@ const SERVICE_PRICING = {
         formBucket: 'Weddings & Events',
         coverage: 'Photo',
         archetype: 'session',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'session', name: 'The Session', price: 1500, includedEdits: 25, rawValue: 350,
@@ -81,7 +81,7 @@ const SERVICE_PRICING = {
         formBucket: 'Weddings & Events',
         coverage: 'Photo',
         archetype: 'session',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'session', name: 'The Session', price: 1500, includedEdits: 25, rawValue: 350,
@@ -149,7 +149,7 @@ const SERVICE_PRICING = {
         formBucket: 'Fashion & Portfolio',
         coverage: 'Photo',
         archetype: 'session',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'digitals', name: 'Digitals & Polaroids', price: 900, includedEdits: 12, rawValue: 350,
@@ -218,7 +218,7 @@ const SERVICE_PRICING = {
         formBucket: 'Portraits & Headshots',
         coverage: 'Photo',
         archetype: 'session',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'headshot', name: 'The Headshot', price: 750, includedEdits: 5, rawValue: 350,
@@ -241,7 +241,7 @@ const SERVICE_PRICING = {
         formBucket: 'Portraits & Headshots',
         coverage: 'Photo',
         archetype: 'session',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'studio', name: 'Newborn Studio', price: 1200, includedEdits: 15, rawValue: 350,
@@ -268,7 +268,7 @@ const SERVICE_PRICING = {
         formBucket: 'Product & Brand',
         coverage: 'Photo',
         archetype: 'volume',
-        extraEditPrice: 100,
+        extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
             { id: 'starter', name: 'Starter Pack', price: 1450, includedEdits: 10, rawValue: 350,
