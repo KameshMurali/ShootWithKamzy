@@ -250,7 +250,7 @@ const SERVICE_PRICING = {
             { id: 'family', name: 'Newborn & Family', price: 1800, includedEdits: 15, rawValue: 600, popular: true,
               includes: ['3-4 hours', '5 setups', '15 edited images', 'Family and sibling portraits', 'Ten 6x8 prints'],
               excludes: ['Home visit', 'Album', 'Digital negatives'] },
-            { id: 'firstyear', name: 'First Year Story', price: 4500, includedEdits: 45, rawValue: 900,
+            { id: 'firstyear', name: 'First Year Story', price: 4200, includedEdits: 45, rawValue: 900,
               includes: ['3 sessions across the year', '4 setups per session', '15 edited images per session', 'Hardcover album'],
               excludes: ['Home visit', 'Additional sessions', 'Framing'] }
         ],
