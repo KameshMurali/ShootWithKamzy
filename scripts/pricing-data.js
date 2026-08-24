@@ -62,17 +62,17 @@ const SERVICE_PRICING = {
         extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
-            { id: 'session', name: 'The Session', price: 1500, includedEdits: 25, rawValue: 350,
-              includes: ['90 minutes', '1 location', '1 outfit', '25 edited images', '10-day delivery'],
+            { id: 'session', name: 'The Session', price: 1500, includedEdits: 15, rawValue: 350,
+              includes: ['90 minutes', '1 location', '1 outfit', '15 edited images', '10-day delivery'],
               excludes: ['Video', 'Hair and makeup', 'Permit fees'] },
-            { id: 'story', name: 'The Story', price: 2900, includedEdits: 60, rawValue: 600, popular: true,
-              includes: ['3 hours', '2 locations', '2 outfits', '60 edited images', '30-second vertical reel', '7-day delivery'],
+            { id: 'story', name: 'The Story', price: 2900, includedEdits: 30, rawValue: 600, popular: true,
+              includes: ['3 hours', '2 locations', '2 outfits', '30 edited images', '30-second vertical reel', '7-day delivery'],
               excludes: ['Hair and makeup', 'Permit fees', 'Drone'] },
-            { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 100, rawValue: 600,
-              includes: ['5 hours', '3 locations', '3 outfits', '100 edited images', '60-second film', 'Hair and makeup for one person'],
+            { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 50, rawValue: 600,
+              includes: ['5 hours', '3 locations', '3 outfits', '50 edited images', '60-second film', 'Hair and makeup for one person'],
               excludes: ['Permit fees', 'Drone', 'Outfit rental'] }
         ],
-        addOns: ['extraLocation', 'extraOutfit', 'hmua', 'express', 'permits', 'travelUAE']
+        addOns: ['extraLocation', 'extraOutfit', 'hmua', 'permits', 'travelUAE']
     },
 
     'post-wedding': {
@@ -84,17 +84,17 @@ const SERVICE_PRICING = {
         extraEditPrice: 50,
         rawFilesIncluded: true,
         tiers: [
-            { id: 'session', name: 'The Session', price: 1500, includedEdits: 25, rawValue: 350,
-              includes: ['90 minutes', '1 location', '1 outfit', '25 edited images', '10-day delivery'],
+            { id: 'session', name: 'The Session', price: 1500, includedEdits: 15, rawValue: 350,
+              includes: ['90 minutes', '1 location', '1 outfit', '15 edited images', '10-day delivery'],
               excludes: ['Video', 'Hair and makeup', 'Permit fees'] },
-            { id: 'story', name: 'The Story', price: 2900, includedEdits: 60, rawValue: 600, popular: true,
-              includes: ['3 hours', '2 locations', '2 outfits', '60 edited images', '30-second vertical reel', '7-day delivery'],
+            { id: 'story', name: 'The Story', price: 2900, includedEdits: 30, rawValue: 600, popular: true,
+              includes: ['3 hours', '2 locations', '2 outfits', '30 edited images', '30-second vertical reel', '7-day delivery'],
               excludes: ['Hair and makeup', 'Permit fees', 'Drone'] },
-            { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 100, rawValue: 600,
-              includes: ['5 hours', '3 locations', '3 outfits', '100 edited images', '60-second film', 'Hair and makeup for one person'],
+            { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 50, rawValue: 600,
+              includes: ['5 hours', '3 locations', '3 outfits', '50 edited images', '60-second film', 'Hair and makeup for one person'],
               excludes: ['Permit fees', 'Drone', 'Outfit rental'] }
         ],
-        addOns: ['extraLocation', 'extraOutfit', 'hmua', 'express', 'permits', 'travelUAE']
+        addOns: ['extraLocation', 'extraOutfit', 'hmua', 'permits', 'travelUAE']
     },
 
     'wedding-event': {
