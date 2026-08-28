@@ -43,8 +43,6 @@ const SHARED_ADD_ONS = {
     secondShooter:    { label: 'Second photographer', price: 1800 },
     express:          { label: 'Express delivery', price: 600 },
     expressWedding:   { label: 'Express gallery (7 days instead of 21)', price: 1200 },
-    drone:            { label: 'Licensed drone operator', price: 2500, fromPrice: true,
-                        note: 'Drone work is subcontracted to a licensed operator and depends on permit approval.' },
     permits:          { label: 'Permit coordination', price: 300, atCost: true,
                         note: 'Permit fees are charged at cost on top of this estimate. DFTC processing is AED 520 per application; location fees vary by site.' },
     travelUAE:        { label: 'Travel outside Dubai', price: 400 },
@@ -67,10 +65,10 @@ const SERVICE_PRICING = {
               excludes: ['Video', 'Hair and makeup', 'Permit fees'] },
             { id: 'story', name: 'The Story', price: 2900, includedEdits: 30, rawValue: 600, popular: true,
               includes: ['3 hours', '2 locations', '2 outfits', '30 edited images', '30-second vertical reel', '7-day delivery'],
-              excludes: ['Hair and makeup', 'Permit fees', 'Drone'] },
+              excludes: ['Hair and makeup', 'Permit fees'] },
             { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 50, rawValue: 600,
               includes: ['5 hours', '3 locations', '3 outfits', '50 edited images', '60-second film', 'Hair and makeup for one person'],
-              excludes: ['Permit fees', 'Drone', 'Outfit rental'] }
+              excludes: ['Permit fees', 'Outfit rental'] }
         ],
         addOns: ['extraLocation', 'extraOutfit', 'hmua', 'permits', 'travelUAE']
     },
@@ -89,10 +87,10 @@ const SERVICE_PRICING = {
               excludes: ['Video', 'Hair and makeup', 'Permit fees'] },
             { id: 'story', name: 'The Story', price: 2900, includedEdits: 30, rawValue: 600, popular: true,
               includes: ['3 hours', '2 locations', '2 outfits', '30 edited images', '30-second vertical reel', '7-day delivery'],
-              excludes: ['Hair and makeup', 'Permit fees', 'Drone'] },
+              excludes: ['Hair and makeup', 'Permit fees'] },
             { id: 'feature', name: 'The Feature', price: 4800, includedEdits: 50, rawValue: 600,
               includes: ['5 hours', '3 locations', '3 outfits', '50 edited images', '60-second film', 'Hair and makeup for one person'],
-              excludes: ['Permit fees', 'Drone', 'Outfit rental'] }
+              excludes: ['Permit fees', 'Outfit rental'] }
         ],
         addOns: ['extraLocation', 'extraOutfit', 'hmua', 'permits', 'travelUAE']
     },
@@ -112,18 +110,18 @@ const SERVICE_PRICING = {
                 tiers: [
                     { id: 'ceremony', name: 'The Ceremony', price: 5500, rawValue: 900,
                       includes: ['6 hours, one day, one venue', 'One photographer', '400 edited images', '15 images within 72 hours', '21-day gallery'],
-                      excludes: ['Video', 'Second photographer', 'Album', 'Drone', 'Permit fees'] },
+                      excludes: ['Video', 'Second photographer', 'Permit fees'] },
                     { id: 'celebration', name: 'The Celebration', price: 9500, rawValue: 900, popular: true,
                       includes: ['10 hours continuous', 'Second photographer for the busiest 5 hours', '700 edited images', '90-second highlight film', '60-second teaser within 5 days', 'Travel across all seven emirates'],
-                      excludes: ['Album', 'Drone', 'Permit fees', 'Additional event days'] },
+                      excludes: ['Permit fees', 'Additional event days'] },
                     { id: 'legacy', name: 'The Legacy', price: 16500, rawValue: 900,
-                      includes: ['Two event days, up to 10 hours each', 'Second photographer both days', '1,000 edited images', '3-5 minute wedding film', 'Same-day teaser reel', 'Premium 30-page album plus two parent copies'],
-                      excludes: ['Drone', 'Permit fees', 'Third event day', 'Hair and makeup'] },
+                      includes: ['Two event days, up to 10 hours each', 'Second photographer both days', '1,000 edited images', '3-5 minute wedding film'],
+                      excludes: ['Permit fees', 'Third event day', 'Hair and makeup'] },
                     { id: 'multiday', name: 'Multi-Day & Destination', enquireOnly: true, price: 22000, fromPrice: true,
                       includes: ['Multiple days or destinations', 'Larger crew', 'Scoped to your schedule'],
                       excludes: [] }
                 ],
-                addOns: ['secondShooter', 'expressWedding', 'drone', 'permits', 'travelUAE']
+                addOns: ['secondShooter', 'expressWedding', 'permits', 'travelUAE']
             },
             {
                 id: 'corporate', label: 'Corporate event',
@@ -136,9 +134,9 @@ const SERVICE_PRICING = {
                       excludes: ['Overtime', 'Travel outside Dubai', 'Permit fees'] },
                     { id: 'fullfilm', name: 'Full Day + Film', price: 7500, rawValue: 900,
                       includes: ['8 hours photo and video', '300 edited images', '60-90 second recap reel in 48 hours', '3-minute full edit in 7 days', '12-month UAE usage licence'],
-                      excludes: ['Drone', 'Live streaming', 'Permit fees'] }
+                      excludes: ['Live streaming', 'Permit fees'] }
                 ],
-                addOns: ['extraHour', 'secondShooter', 'drone', 'permits', 'travelUAE']
+                addOns: ['extraHour', 'secondShooter', 'permits', 'travelUAE']
             }
         ]
     },
@@ -182,11 +180,11 @@ const SERVICE_PRICING = {
             { id: 'halfday', name: 'Half-Day Production', price: 3200,
               includedReels: 0, includedFilm: '60-90s', includedCutdowns: 2, popular: true,
               includes: ['4 hours on location', '60-90 second film', '2 vertical cutdowns', 'Subtitles burned in and as .srt', '7 working days', '1 revision round', '12-month UAE licence'],
-              excludes: ['Professional voiceover', 'Talent', 'Animated graphics', 'Drone', 'Permits'] },
+              excludes: ['Professional voiceover', 'Talent', 'Animated graphics', 'Permits'] },
             { id: 'fullday', name: 'Full-Day Production', price: 5800,
               includedReels: 0, includedFilm: '60-90s', includedCutdowns: 2,
               includes: ['8 hours, multiple locations', '90-second film', '2 vertical cutdowns', 'Interview audio with lav and boom', '10 working days', '1 revision round'],
-              excludes: ['2-3 minute candid film (upgrade below)', 'Scriptwriting', 'Voiceover artist', 'Talent', 'Drone', 'Permits', 'Studio hire'] },
+              excludes: ['2-3 minute candid film (upgrade below)', 'Scriptwriting', 'Voiceover artist', 'Talent', 'Permits', 'Studio hire'] },
             { id: 'brand', name: 'Brand Films & Multi-Day', enquireOnly: true, price: 12000, fromPrice: true,
               includes: ['Scoped to your brief', 'Multi-day or multi-location', 'Full pre-production'],
               excludes: [] }
@@ -203,7 +201,7 @@ const SERVICE_PRICING = {
                 { id: '2-3min', label: '2-3 minute candid film', price: 2600, recommended: true }
             ]
         },
-        addOns: ['extraHour', 'drone', 'permits', 'travelUAE'],
+        addOns: ['extraHour', 'permits', 'travelUAE'],
         extraAddOns: {
             cutdown:      { label: 'Additional cutdown', price: 400, type: 'stepper', max: 4 },
             rawFootage:   { label: 'Raw footage handover', price: 1200 },
@@ -246,12 +244,12 @@ const SERVICE_PRICING = {
         tiers: [
             { id: 'studio', name: 'Newborn Studio', price: 1200, includedEdits: 10, rawValue: 350,
               includes: ['2-3 hours, baby-led', '3 setups', '10 edited images', '10-day delivery'],
-              excludes: ['Family portraits', 'Prints', 'Home visit'] },
+              excludes: ['Family portraits', 'Home visit'] },
             { id: 'family', name: 'Newborn & Family', price: 1800, includedEdits: 15, rawValue: 600, popular: true,
-              includes: ['3-4 hours', '5 setups', '15 edited images', 'Family and sibling portraits', 'Ten 6x8 prints'],
-              excludes: ['Home visit', 'Album', 'Digital negatives'] },
+              includes: ['3-4 hours', '5 setups', '15 edited images', 'Family and sibling portraits'],
+              excludes: ['Home visit', 'Digital negatives'] },
             { id: 'firstyear', name: 'First Year Story', price: 4200, includedEdits: 45, rawValue: 900,
-              includes: ['3 sessions across the year', '4 setups per session', '15 edited images per session', 'Hardcover album'],
+              includes: ['3 sessions across the year', '4 setups per session', '15 edited images per session'],
               excludes: ['Home visit', 'Additional sessions', 'Framing'] }
         ],
         addOns: ['express', 'travelUAE'],
@@ -286,8 +284,6 @@ const SERVICE_PRICING = {
         ],
         addOns: ['express', 'commercialLicence'],
         extraAddOns: {
-            ghostMannequin: { label: 'Ghost mannequin', price: 90, type: 'stepper', max: 10, unit: 'image' },
-            spin360:        { label: '360-degree spin set', price: 250, type: 'stepper', max: 10, unit: 'SKU' },
             productVideo:   { label: '10-second product video clip', price: 450, type: 'stepper', max: 5 }
         }
     },
@@ -307,12 +303,12 @@ const SERVICE_PRICING = {
               excludes: ['Video', 'Rolling shots', 'Permit fees', 'Commercial use'] },
             { id: 'goldenhour', name: 'Golden Hour Feature', price: 3400, includedEdits: 30, rawValue: 600, popular: true,
               includes: ['3 hours', '1-2 vehicles', '2 locations', '30 edited images', '15-second vertical reel', 'Rolling shots at legal speeds'],
-              excludes: ['Permit and location fees', 'Drone', 'Closed-road access', 'Commercial use'] },
+              excludes: ['Permit and location fees', 'Closed-road access', 'Commercial use'] },
             { id: 'commercial', name: 'Commercial / Dealer', price: 4500, fromPrice: true, includedEdits: 40, rawValue: 900,
               includes: ['Full day', 'Up to 4 vehicles', '40 edited images', '30-60 second film with 3 cutdowns', '12-month UAE commercial licence included'],
-              excludes: ['Closed-road permits', 'Talent', 'Drone'] }
+              excludes: ['Closed-road permits', 'Talent'] }
         ],
-        addOns: ['extraLocation', 'drone', 'permits', 'travelUAE', 'commercialLicence'],
+        addOns: ['extraLocation', 'permits', 'travelUAE', 'commercialLicence'],
         extraAddOns: {
             extraVehicle: { label: 'Additional vehicle', price: 450, type: 'stepper', max: 4 },
             rollingShoot: { label: 'Tracking-vehicle rolling shoot', price: 900 },
