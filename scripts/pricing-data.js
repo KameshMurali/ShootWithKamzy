@@ -45,9 +45,7 @@ const SHARED_ADD_ONS = {
     expressWedding:   { label: 'Express gallery (7 days instead of 21)', price: 1200 },
     permits:          { label: 'Permit coordination', price: 300, atCost: true,
                         note: 'Permit fees are charged at cost on top of this estimate. DFTC processing is AED 520 per application; location fees vary by site.' },
-    travelUAE:        { label: 'Travel outside Dubai', price: 400 },
-    commercialLicence:{ label: '12-month UAE commercial licence', price: 1500, fromPrice: true,
-                        note: 'Needed if the images run as advertising. Priced on where and how long they run.' }
+    travelUAE:        { label: 'Travel outside Dubai', price: 400 }
 };
 
 const SERVICE_PRICING = {
@@ -127,13 +125,13 @@ const SERVICE_PRICING = {
                 id: 'corporate', label: 'Corporate event',
                 tiers: [
                     { id: 'half', name: 'Half Day', price: 2400, rawValue: 600,
-                      includes: ['4 hours', '150 edited images', '10 PR selects within 3 hours', 'Full gallery in 24 hours', '12-month UAE usage licence'],
+                      includes: ['4 hours', '150 edited images', '10 PR selects within 3 hours', 'Full gallery in 24 hours', 'Commercial use included'],
                       excludes: ['Overtime', 'Travel outside Dubai', 'Permit fees'] },
                     { id: 'full', name: 'Full Day', price: 4200, rawValue: 900, popular: true,
-                      includes: ['8 hours', '300 edited images', '15 PR selects within 2 hours', 'Full gallery in 24 hours', '12-month UAE usage licence'],
+                      includes: ['8 hours', '300 edited images', '15 PR selects within 2 hours', 'Full gallery in 24 hours', 'Commercial use included'],
                       excludes: ['Overtime', 'Travel outside Dubai', 'Permit fees'] },
                     { id: 'fullfilm', name: 'Full Day + Film', price: 7500, rawValue: 900,
-                      includes: ['8 hours photo and video', '300 edited images', '60-90 second recap reel in 48 hours', '3-minute full edit in 7 days', '12-month UAE usage licence'],
+                      includes: ['8 hours photo and video', '300 edited images', '60-90 second recap reel in 48 hours', '3-minute full edit in 7 days', 'Commercial use included'],
                       excludes: ['Live streaming', 'Permit fees'] }
                 ],
                 addOns: ['extraHour', 'secondShooter', 'permits', 'travelUAE']
@@ -179,7 +177,7 @@ const SERVICE_PRICING = {
               excludes: ['Scripting', 'Voiceover', 'Talent', 'Motion graphics'] },
             { id: 'halfday', name: 'Half-Day Production', price: 3200,
               includedReels: 0, includedFilm: '60-90s', includedCutdowns: 2, popular: true,
-              includes: ['4 hours on location', '60-90 second film', '2 vertical cutdowns', 'Subtitles burned in and as .srt', '7 working days', '1 revision round', '12-month UAE licence'],
+              includes: ['4 hours on location', '60-90 second film', '2 vertical cutdowns', 'Subtitles burned in and as .srt', '7 working days', '1 revision round', 'Commercial use included'],
               excludes: ['Professional voiceover', 'Talent', 'Animated graphics', 'Permits'] },
             { id: 'fullday', name: 'Full-Day Production', price: 5800,
               includedReels: 0, includedFilm: '60-90s', includedCutdowns: 2,
@@ -227,7 +225,7 @@ const SERVICE_PRICING = {
               excludes: ['Hair and makeup', 'Team members', 'Video'] },
             { id: 'team', name: 'Team Day (on-site)', price: 4800, includedEdits: 30, rawValue: 900,
               perPerson: 320, includedPeople: 15, minPeople: 8,
-              includes: ['Mobile studio brought to your office', '4-6 minutes per person', 'Identical lighting and crop across the team', '2 retouched images per person', '12-month commercial licence'],
+              includes: ['Mobile studio brought to your office', '4-6 minutes per person', 'Identical lighting and crop across the team', '2 retouched images per person', 'Commercial use included'],
               excludes: ['Hair and makeup', 'Background cutouts', 'Same-day delivery'] }
         ],
         addOns: ['hmua', 'express', 'travelUAE']
@@ -270,11 +268,11 @@ const SERVICE_PRICING = {
         rawFilesIncluded: true,
         tiers: [
             { id: 'starter', name: 'Starter Pack', price: 1450, includedEdits: 10, rawValue: 350,
-              includes: ['Up to 10 final images', '1-3 SKUs', 'White background, e-commerce ready', '5 working days', '12-month UAE licence'],
+              includes: ['Up to 10 final images', '1-3 SKUs', 'White background, e-commerce ready', '5 working days', 'Commercial use included'],
               excludes: ['Lifestyle sets', 'Models', 'Video', 'Rush delivery'] },
             { id: 'catalogue', name: 'Catalogue', price: 3900, includedEdits: 40, rawValue: 600, popular: true,
               includes: ['Up to 40 final images', 'Up to 20 SKUs', 'White background plus one styled set-up', 'Multiple angles per SKU', '7 working days'],
-              excludes: ['Models', 'Location work', 'Video', 'Paid-media licence'] },
+              excludes: ['Models', 'Location work', 'Video'] },
             { id: 'campaign', name: 'Campaign Day', price: 6800, includedEdits: 60, rawValue: 900,
               includes: ['Full shoot day', 'Up to 60 final images', 'Styled lifestyle, hero product, flat lays', 'Art direction and mood board', '10 working days'],
               excludes: ['Talent and model fees', 'Location and permit fees', 'Full video production'] },
@@ -282,7 +280,7 @@ const SERVICE_PRICING = {
               includes: ['100+ SKUs', 'Recurring catalogue refreshes', 'Fixed per-image rate quoted within 24 hours'],
               excludes: [] }
         ],
-        addOns: ['express', 'commercialLicence'],
+        addOns: ['express'],
         extraAddOns: {
             productVideo:   { label: '10-second product video clip', price: 450, type: 'stepper', max: 5 }
         }
@@ -305,10 +303,10 @@ const SERVICE_PRICING = {
               includes: ['3 hours', '1-2 vehicles', '2 locations', '30 edited images', '15-second vertical reel', 'Rolling shots at legal speeds'],
               excludes: ['Permit and location fees', 'Closed-road access', 'Commercial use'] },
             { id: 'commercial', name: 'Commercial / Dealer', price: 4500, fromPrice: true, includedEdits: 40, rawValue: 900,
-              includes: ['Full day', 'Up to 4 vehicles', '40 edited images', '30-60 second film with 3 cutdowns', '12-month UAE commercial licence included'],
+              includes: ['Full day', 'Up to 4 vehicles', '40 edited images', '30-60 second film with 3 cutdowns', 'Commercial use included'],
               excludes: ['Closed-road permits', 'Talent'] }
         ],
-        addOns: ['extraLocation', 'permits', 'travelUAE', 'commercialLicence'],
+        addOns: ['extraLocation', 'permits', 'travelUAE'],
         extraAddOns: {
             extraVehicle: { label: 'Additional vehicle', price: 450, type: 'stepper', max: 4 },
             rollingShoot: { label: 'Tracking-vehicle rolling shoot', price: 900 },
