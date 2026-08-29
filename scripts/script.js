@@ -1103,7 +1103,12 @@ function initServiceConfigurator() {
         // Advertise the real floor instead of the old wide range.
         const priceEl = card.querySelector('[data-price-range]');
         const tiers = service.groups ? service.groups[0].tiers : service.tiers;
-        const cheapest = tiers.reduce((low, tier) => (tier.price < low.price ? tier : low), tiers[0]);
+        // A per-image rate is not comparable with a package price: without this,
+        // product's "from 65 per image" would beat its 1,450 Starter Pack and
+        // advertise a floor no package actually costs.
+        const comparable = tiers.filter((tier) => !tier.perImage);
+        const pool = comparable.length ? comparable : tiers;
+        const cheapest = pool.reduce((low, tier) => (tier.price < low.price ? tier : low), pool[0]);
 
         if (priceEl) {
             priceEl.textContent = `From ${PRICING_CONFIG.currency} ${formatAed(cheapest.price)}`

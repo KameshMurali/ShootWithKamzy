@@ -1040,11 +1040,20 @@ body[data-theme='light'] .hero-video-main {
     max-width: 38ch;
 }
 
+/* Nine services, so three columns is the only whole-number tiling.
+   Default stretch is deliberate: it gives every card in a row the same
+   height. The configurator panel is grid-column: 1 / -1, so it always sits
+   on a row of its own and has no siblings to stretch. */
 .services-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+}
+
+@media (max-width: 999px) {
+    .services-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 700px) {
@@ -1054,6 +1063,8 @@ body[data-theme='light'] .hero-video-main {
 }
 
 .service {
+    display: flex;
+    flex-direction: column;
     background: var(--surface);
     border: 1px solid rgba(147, 189, 255, 0.24);
     border-radius: var(--radius-md);
@@ -1087,7 +1098,8 @@ body[data-theme='light'] .hero-video-main {
 }
 
 .price-range {
-    margin-top: 0.4rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
     color: var(--accent);
     font-weight: 700;
 }
@@ -2334,6 +2346,12 @@ body[data-theme='light'] .theme-toggle-knob {
 .service.is-open:hover {
     transform: none;
     border-color: rgba(83, 231, 255, 0.55);
+}
+
+@media (max-width: 700px) {
+    .service img {
+        height: 200px;
+    }
 }
 
 .service-toggle {
